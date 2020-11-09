@@ -1,5 +1,9 @@
 package de.chess.app;
 
+import de.chess.app.server.ChessServer;
+import de.chess.app.server.ServerProperties;
+
+import java.io.IOException;
 import java.util.logging.Logger;
 
 /** Chess Server */
@@ -7,7 +11,9 @@ public class ChessBackend implements IChessBackend {
   private static final Logger LOGGER = Logger.getLogger(ChessBackend.class.getName());
   private static ChessBackend chessBackend;
 
-  public static void main(String[] args) {
+  private ServerProperties serverProperties;
+
+  public static void main(String[] args) throws IOException {
     chessBackend = new ChessBackend();
     chessBackend.preStart();
     chessBackend.start();
@@ -15,13 +21,15 @@ public class ChessBackend implements IChessBackend {
   }
 
   @Override
-  public void preStart() {
+  public void preStart() throws IOException {
     LOGGER.info("************* - Starting Chess Backend - ************");
+    serverProperties = new ServerProperties();
+    LOGGER.info("************* - " + serverProperties.getServerName() + "- ************");
   }
 
   @Override
-  public void start() {
-    LOGGER.info("Chess Backend Started...");
+  public void start() throws IOException {
+    new ChessServer(serverProperties).start();
   }
 
   @Override
