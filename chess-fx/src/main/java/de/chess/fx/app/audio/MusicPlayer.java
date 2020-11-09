@@ -7,7 +7,7 @@ import java.net.URISyntaxException;
 
 
 public class MusicPlayer {
-    private static final String MUSIC_FILE_NAME = "audio/music/got.mp3";
+    private static final String MUSIC_FILE_NAME = "audio/music/got.bm";
     private final double VOLUME=.03;
     private static  MediaPlayer player;
     private static Media media;
