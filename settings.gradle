@@ -1,0 +1,3 @@
+rootProject.name = 'chess-game'
+include 'chess-ws'
+include 'chess-fx'

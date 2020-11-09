@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
+
+}
+
+
+mainClassName = 'de.chess.fx.app.ChessFX'
+group 'de.chess'
+version '1.0-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(15)
+    }
+}
+
+javafx {
+    version = "15.0.1"
+    modules = ['javafx.controls']
+}
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+}
+
+
+
