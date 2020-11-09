@@ -44,4 +44,6 @@ public class MainMenu extends VBox {
     Button newButton = new Button(title);
     buttonList.add(newButton);
   }
+
+
 }

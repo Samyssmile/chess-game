@@ -1,42 +1,40 @@
 package de.chess.app.server;
 
+import de.chess.app.ChessBackend;
+import de.chess.reader.ApplicationPropertiesReader;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class ServerProperties {
 
-  private final String propertieFileName = "server.properties";
-  private Properties serverProperties;
+    private final String propertieFileName = "server.properties";
+    private Properties serverProperties;
 
-  public ServerProperties() throws IOException {
-    initProperties();
-  }
-
-  private void initProperties() throws IOException {
-    serverProperties = new Properties();
-
-    try (InputStream inputStream =
-        getClass().getClassLoader().getResourceAsStream(propertieFileName)) {
-      if (inputStream != null) {
-        serverProperties.load(inputStream);
-      }
+    public ServerProperties() throws IOException {
+        initProperties();
     }
-  }
 
-  public Properties getServerProperties() {
-    return serverProperties;
-  }
+    private void initProperties() throws IOException {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        ApplicationPropertiesReader applicationPropertiesReader = new ApplicationPropertiesReader(classLoader.getResourceAsStream(propertieFileName));
+        serverProperties = applicationPropertiesReader.readProperties(propertieFileName);
+    }
 
-  public int getServerPort() {
-    return Integer.parseInt(serverProperties.getProperty("application.port"));
-  }
+    public Properties getServerProperties() {
+        return serverProperties;
+    }
 
-  public String getServerName() {
-    return serverProperties.getProperty("application.name");
-  }
+    public int getServerPort() {
+        return Integer.parseInt(serverProperties.getProperty("application.port"));
+    }
 
-  public boolean isBlockingMode() {
-    return Boolean.parseBoolean(serverProperties.getProperty("server.blocking"));
-  }
+    public String getServerName() {
+        return serverProperties.getProperty("application.name");
+    }
+
+    public boolean isBlockingMode() {
+        return Boolean.parseBoolean(serverProperties.getProperty("server.blocking"));
+    }
 }

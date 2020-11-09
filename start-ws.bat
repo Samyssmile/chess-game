@@ -1,0 +1,1 @@
+gradlew :chess-ws:run
