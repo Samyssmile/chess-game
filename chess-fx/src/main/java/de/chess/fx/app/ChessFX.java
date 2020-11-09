@@ -1,8 +1,8 @@
 package de.chess.fx.app;
 
+import de.chess.fx.app.ui.MainMenu;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -19,11 +19,9 @@ public class ChessFX extends Application {
   public void start(Stage stage) throws Exception {
     LOGGER.info("************* - Starting ChessFX UI - ************");
 
-    String javaVersion = System.getProperty("java.version");
-    String javafxVersion = System.getProperty("javafx.version");
-    Label l =
-        new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-    Scene scene = new Scene(new StackPane(l), 900, 650);
+    MainMenu mainMenu = new MainMenu();
+
+    Scene scene = new Scene(new StackPane(mainMenu), 900, 650);
     stage.setScene(scene);
     stage.show();
   }
