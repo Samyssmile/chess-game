@@ -34,7 +34,7 @@ public class ChessFX extends Application {
         HostGameUi hostGameUi = new HostGameUi();
 
 
-        Scene scene = new Scene(new StackPane(hostGameUi), 900, 650);
+        Scene scene = new Scene(new StackPane(mainMenu), 900, 650);
         stage.setScene(scene);
         stage.show();
         stage.setTitle(clientProperties.getApplicationTitle());
