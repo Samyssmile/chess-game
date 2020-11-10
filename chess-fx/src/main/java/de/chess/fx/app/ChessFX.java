@@ -3,6 +3,7 @@ package de.chess.fx.app;
 import de.chess.fx.app.audio.MusicPlayer;
 import de.chess.fx.app.client.ClientProperties;
 import de.chess.fx.app.ui.MainMenu;
+import de.chess.fx.app.ui.host.HostGameUi;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -30,6 +31,8 @@ public class ChessFX extends Application {
 
         ClientProperties clientProperties = new ClientProperties();
         MainMenu mainMenu = new MainMenu();
+        HostGameUi hostGameUi = new HostGameUi();
+
 
         Scene scene = new Scene(new StackPane(mainMenu), 900, 650);
         stage.setScene(scene);
