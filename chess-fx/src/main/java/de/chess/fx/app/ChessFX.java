@@ -8,29 +8,36 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import java.net.URISyntaxException;
 import java.util.logging.Logger;
 
 public class ChessFX extends Application {
-  private static final Logger LOGGER = Logger.getLogger(ChessFX.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ChessFX.class.getName());
 
-  public static void main(String[] args) {
-    launch(args);
-  }
+    private MusicPlayer musicPlayer;
 
-  @Override
-  public void start(Stage stage) throws Exception {
-    LOGGER.info("************* - Starting ChessFX UI - ************");
+    public ChessFX() throws URISyntaxException {
+        musicPlayer = new MusicPlayer();
+    }
 
-    ClientProperties clientProperties = new ClientProperties();
-    MainMenu mainMenu = new MainMenu();
+    public static void main(String[] args) {
+        launch(args);
+    }
 
-    Scene scene = new Scene(new StackPane(mainMenu), 900, 650);
-    stage.setScene(scene);
-    stage.show();
-    stage.setTitle( clientProperties.getApplicationTitle());
+    @Override
+    public void start(Stage stage) throws Exception {
+        LOGGER.info("************* - Starting ChessFX UI - ************");
 
-    MusicPlayer musicPlayer = new MusicPlayer();
-    musicPlayer.playBackgroundMusic();
+        ClientProperties clientProperties = new ClientProperties();
+        MainMenu mainMenu = new MainMenu();
 
-  }
+        Scene scene = new Scene(new StackPane(mainMenu), 900, 650);
+        stage.setScene(scene);
+        stage.show();
+        stage.setTitle(clientProperties.getApplicationTitle());
+
+
+        musicPlayer.playBackgroundMusic();
+
+    }
 }

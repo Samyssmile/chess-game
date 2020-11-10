@@ -1,5 +1,9 @@
 package de.chess.fx.app.ui;
 
+import de.chess.fx.app.ui.handler.CloseApplicationHandler;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -37,12 +41,13 @@ public class MainMenu extends VBox {
   private void createMenuButtons() {
     addButton("Host Game");
     addButton("Join Game");
-    addButton("Exit Game");
+    addButton("Exit Game").setOnAction(new CloseApplicationHandler());
   }
 
-  private void addButton(String title) {
+  private Button addButton(String title) {
     Button newButton = new Button(title);
     buttonList.add(newButton);
+    return newButton;
   }
 
 
