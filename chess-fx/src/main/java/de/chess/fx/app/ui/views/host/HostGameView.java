@@ -1,5 +1,7 @@
-package de.chess.fx.app.ui.host;
+package de.chess.fx.app.ui.views.host;
 
+import de.chess.fx.app.i18n.Internalization;
+import de.chess.fx.app.ui.views.UIView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -11,7 +13,7 @@ import javafx.scene.text.Font;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HostGameUi extends VBox implements Internalization {
+public class HostGameView extends VBox implements Internalization, UIView {
 
     private static final double SPACING = 10;
     private static final int RIGHT_COL_WIDTH = 200;
@@ -19,9 +21,9 @@ public class HostGameUi extends VBox implements Internalization {
     private static final int HEIGHT = 50;
     private static final double FONT_SIZE = 35;
     private final List<Node> nodeList;
-    private HBox hBoxHostName;
-    private HBox hBoxStartAsButtons;
-    private HBox hBoxStartAs;
+    private final HBox hBoxHostName;
+    private final HBox hBoxStartAsButtons;
+    private final HBox hBoxStartAs;
     private Label lblTitle;
     private TextField txtHostName;
     private Label lblHostName;
@@ -34,15 +36,17 @@ public class HostGameUi extends VBox implements Internalization {
 
 
     private ToggleGroup radioToggleGroup;
+    private HostGameViewModel hostGameViewModel;
 
-    public HostGameUi() {
+    public HostGameView() {
         this.setPadding(new Insets(50));
         this.setSpacing(SPACING);
         this.setAlignment(Pos.CENTER);
         this.setPrefWidth(RIGHT_COL_WIDTH);
         this.setWidth(RIGHT_COL_WIDTH);
 
-        nodeList = createNodes();
+        nodeList = initNodes();
+        initActionsEvents();
 
         lblTitle.setFont(new Font(FONT_SIZE));
 
@@ -69,6 +73,22 @@ public class HostGameUi extends VBox implements Internalization {
         hBoxStartAs.getChildren().add(hBoxStartAsButtons);
 
         structureMenu();
+        initViewModel();
+    }
+
+    @Override
+    public void initViewModel() {
+        hostGameViewModel = new HostGameViewModel();
+        txtHostName.textProperty().bindBidirectional(hostGameViewModel.gameNameProperty());
+        radioBlack.disableProperty().bindBidirectional(hostGameViewModel.blackSelectedProperty());
+        radioWhite.disableProperty().bindBidirectional(hostGameViewModel.whiteSelectedProperty());
+        radioRandom.disableProperty().bindBidirectional(hostGameViewModel.randomSelectedProperty());
+    }
+
+    @Override
+    public void initActionsEvents() {
+        btnBack.setOnAction(event -> hostGameViewModel.getToMainMenuCommand(getScene()).execute());
+        btnStart.setOnAction(event -> hostGameViewModel.getStartCommand().execute());
     }
 
     private void structureMenu() {
@@ -88,7 +108,8 @@ public class HostGameUi extends VBox implements Internalization {
         return button;
     }
 
-    private List<Node> createNodes() {
+    @Override
+    public List<Node> initNodes() {
         List<Node> nodeList = new ArrayList<>();
         lblTitle = new Label(i18n("menu.hostGame.title"));
         lblHostName = new Label(i18n("menu.hostGame.gameName"));

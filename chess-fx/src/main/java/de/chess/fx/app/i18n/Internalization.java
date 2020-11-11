@@ -1,4 +1,4 @@
-package de.chess.fx.app.ui.host;
+package de.chess.fx.app.i18n;
 
 import java.util.ResourceBundle;
 
