@@ -1,6 +1,7 @@
 package de.chess.fx.app.ui.views.join;
 
 import de.chess.fx.app.i18n.Internalization;
+import de.chess.fx.app.model.Game;
 import de.chess.fx.app.ui.views.UIView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
@@ -22,8 +24,8 @@ public class JoinGameView extends VBox implements Internalization, UIView {
     private final List<Node> nodeList;
     private TableColumn gameName;
     private TableColumn creator;
-    private TableColumn color;
-    private TableColumn runungSince;
+    private TableColumn creatorsColor;
+    private TableColumn timeElapsed;
     private Label title;
     private Button btnJoin;
     private Button btnLeave;
@@ -32,8 +34,8 @@ public class JoinGameView extends VBox implements Internalization, UIView {
 
 
     public JoinGameView() {
-        table = setupGameBrowserTable();
         initViewModel();
+        table = setupGameBrowserTable();
         nodeList = initNodes();
         initActionsEvents();
         this.setAlignment(Pos.CENTER);
@@ -47,14 +49,19 @@ public class JoinGameView extends VBox implements Internalization, UIView {
     }
 
 
-
     private TableView setupGameBrowserTable() {
         TableView table = new TableView();
         gameName = new TableColumn(i18n("menu.joinGame.gameName"));
+        gameName.setCellValueFactory(new PropertyValueFactory<Game, String>("gameName"));
         creator = new TableColumn(i18n("menu.joinGame.creator"));
-        color = new TableColumn(i18n("menu.joinGame.color"));
-        runungSince = new TableColumn(i18n("menu.joinGame.runingSince"));
-        table.getColumns().addAll(gameName, creator, color, runungSince);
+        creator.setCellValueFactory(new PropertyValueFactory<Game, String>("creator"));
+        creatorsColor = new TableColumn(i18n("menu.joinGame.color"));
+        creatorsColor.setCellValueFactory(new PropertyValueFactory<Game, String>("creatorsColor"));
+        timeElapsed = new TableColumn(i18n("menu.joinGame.runingSince"));
+        timeElapsed.setCellValueFactory(new PropertyValueFactory<Game, String>("timeElapsed"));
+
+        table.getColumns().addAll(gameName, creator, creatorsColor, timeElapsed);
+        table.setItems(viewModel.getData());
         return table;
     }
 
