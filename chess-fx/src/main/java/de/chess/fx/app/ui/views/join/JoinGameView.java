@@ -3,13 +3,12 @@ package de.chess.fx.app.ui.views.join;
 import de.chess.fx.app.i18n.Internalization;
 import de.chess.fx.app.model.Game;
 import de.chess.fx.app.ui.views.UIView;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -62,6 +61,7 @@ public class JoinGameView extends VBox implements Internalization, UIView {
 
         table.getColumns().addAll(gameName, creator, creatorsColor, timeElapsed);
         table.setItems(viewModel.getData());
+        viewModel.selectedGameProperty.bind(table.getSelectionModel().selectedItemProperty());
         return table;
     }
 

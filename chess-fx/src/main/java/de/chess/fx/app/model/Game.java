@@ -2,7 +2,10 @@ package de.chess.fx.app.model;
 
 import javafx.beans.property.SimpleStringProperty;
 
-public class Game {
+import java.io.Serializable;
+import java.util.Objects;
+
+public class Game implements Serializable {
     private SimpleStringProperty creator;
     private SimpleStringProperty oppnent;
     private SimpleStringProperty gameName ;
@@ -80,5 +83,18 @@ public class Game {
 
     public void setTimeElapsed(String timeElapsed) {
         this.timeElapsed.set(timeElapsed);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Game game = (Game) o;
+        return Objects.equals(creator, game.creator) && Objects.equals(oppnent, game.oppnent) && Objects.equals(gameName, game.gameName) && Objects.equals(creatorsColor, game.creatorsColor) && Objects.equals(timeElapsed, game.timeElapsed);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(creator, oppnent, gameName, creatorsColor, timeElapsed);
     }
 }
