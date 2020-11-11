@@ -1,10 +1,12 @@
 package de.chess.fx.app.ui.command;
 
-import de.chess.fx.app.ui.MainMenu;
+import de.chess.fx.app.ui.views.mainMenu.MainMenuView;
 import javafx.scene.Scene;
 
-public class ToMainMenuCommand implements ICommando {
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+public class ToMainMenuCommand implements ICommando {
     private final Scene scene;
 
     public ToMainMenuCommand(Scene scene) {
@@ -13,6 +15,7 @@ public class ToMainMenuCommand implements ICommando {
 
     @Override
     public void execute() {
-        scene.setRoot(new MainMenu());
+        LOGGER.log(Level.SEVERE, "Enter Main Menu Command...");
+        scene.setRoot(new MainMenuView());
     }
 }

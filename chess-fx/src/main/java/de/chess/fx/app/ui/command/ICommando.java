@@ -1,6 +1,8 @@
 package de.chess.fx.app.ui.command;
 
-public interface ICommando {
+import java.util.logging.Logger;
 
+public interface ICommando {
+    public static final Logger LOGGER = Logger.getLogger(ICommando.class.getSimpleName());
     public void execute();
 }

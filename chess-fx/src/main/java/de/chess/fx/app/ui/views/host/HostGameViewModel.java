@@ -1,6 +1,5 @@
-package de.chess.fx.app.ui.host;
+package de.chess.fx.app.ui.views.host;
 
-import de.chess.fx.app.ui.MainMenu;
 import de.chess.fx.app.ui.command.ICommando;
 import de.chess.fx.app.ui.command.StartGameCommand;
 import de.chess.fx.app.ui.command.ToMainMenuCommand;

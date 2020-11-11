@@ -2,7 +2,7 @@ package de.chess.fx.app;
 
 import de.chess.fx.app.audio.MusicPlayer;
 import de.chess.fx.app.client.ClientProperties;
-import de.chess.fx.app.ui.MainMenu;
+import de.chess.fx.app.ui.views.mainMenu.MainMenuView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -29,7 +29,7 @@ public class ChessFX extends Application {
         LOGGER.info("************* - Starting ChessFX UI - ************");
 
         ClientProperties clientProperties = new ClientProperties();
-        MainMenu mainMenu = new MainMenu();
+        MainMenuView mainMenu = new MainMenuView();
 
 
 
