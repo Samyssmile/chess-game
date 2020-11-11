@@ -1,8 +1,8 @@
 package de.chess.fx.app.ui;
 
 import de.chess.fx.app.ui.handler.CloseApplicationHandler;
-import de.chess.fx.app.ui.host.Internalization;
-import javafx.application.Platform;
+import de.chess.fx.app.ui.host.HostGameView;
+import de.chess.fx.app.i18n.Internalization;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -19,7 +19,7 @@ public class MainMenu extends VBox implements Internalization {
   private static final int BUTTON_WIDTH = 120;
   private static final int BUTTON_HEIGHT = 50;
 
-  public MainMenu() {
+  public MainMenu( ) {
     this.setPadding(new Insets(10));
     this.setSpacing(10);
     this.setAlignment(Pos.CENTER);
@@ -28,6 +28,7 @@ public class MainMenu extends VBox implements Internalization {
     createMenuButtons();
     configureLayout();
     addButtons();
+    
   }
 
   private void addButtons() {
@@ -41,6 +42,12 @@ public class MainMenu extends VBox implements Internalization {
 
   private void createMenuButtons() {
     addButton(i18n("menu.hostGame"));
+    buttonList.get(0).setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent event) {
+        getScene().setRoot(new HostGameView());
+      }
+    });
     addButton(i18n("menu.joinGame"));
     addButton(i18n("menu.exitGame")).setOnAction(new CloseApplicationHandler());
   }

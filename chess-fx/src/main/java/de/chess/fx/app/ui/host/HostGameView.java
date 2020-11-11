@@ -1,5 +1,8 @@
 package de.chess.fx.app.ui.host;
 
+import com.sun.tools.javac.Main;
+import de.chess.fx.app.i18n.Internalization;
+import de.chess.fx.app.ui.MainMenu;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -11,7 +14,7 @@ import javafx.scene.text.Font;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HostGameUi extends VBox implements Internalization {
+public class HostGameView extends VBox implements Internalization {
 
     private static final double SPACING = 10;
     private static final int RIGHT_COL_WIDTH = 200;
@@ -34,8 +37,9 @@ public class HostGameUi extends VBox implements Internalization {
 
 
     private ToggleGroup radioToggleGroup;
+    private HostGameViewModel hostGameViewModel;
 
-    public HostGameUi() {
+    public HostGameView() {
         this.setPadding(new Insets(50));
         this.setSpacing(SPACING);
         this.setAlignment(Pos.CENTER);
@@ -43,6 +47,7 @@ public class HostGameUi extends VBox implements Internalization {
         this.setWidth(RIGHT_COL_WIDTH);
 
         nodeList = createNodes();
+        initActionsEvents();
 
         lblTitle.setFont(new Font(FONT_SIZE));
 
@@ -69,6 +74,24 @@ public class HostGameUi extends VBox implements Internalization {
         hBoxStartAs.getChildren().add(hBoxStartAsButtons);
 
         structureMenu();
+        initViewModel();
+    }
+
+    private void initViewModel() {
+        hostGameViewModel = new HostGameViewModel();
+        txtHostName.textProperty().bindBidirectional(hostGameViewModel.gameNameProperty());
+        radioBlack.disableProperty().bindBidirectional(hostGameViewModel.blackSelectedProperty());
+        radioWhite.disableProperty().bindBidirectional(hostGameViewModel.whiteSelectedProperty());
+        radioRandom.disableProperty().bindBidirectional(hostGameViewModel.randomSelectedProperty());
+    }
+
+    private void initActionsEvents() {
+        btnBack.setOnAction(event -> {
+            hostGameViewModel.getToMainMenuCommand(getScene()).execute();
+        });
+        btnStart.setOnAction(event -> {
+            hostGameViewModel.getStartCommand().execute();
+        });
     }
 
     private void structureMenu() {
