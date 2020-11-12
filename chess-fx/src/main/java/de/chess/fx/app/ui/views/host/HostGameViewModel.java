@@ -17,8 +17,8 @@ public class HostGameViewModel {
     private BooleanProperty whiteSelected = new SimpleBooleanProperty();
     private BooleanProperty randomSelected = new SimpleBooleanProperty();
 
-    public ICommando getStartCommand(){
-        return new StartGameCommand();
+    public ICommando getStartCommand(Scene scene){
+        return new StartGameCommand(scene);
     }
 
     public ICommando getToMainMenuCommand(Scene scene) {
