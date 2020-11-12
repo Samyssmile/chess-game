@@ -30,6 +30,7 @@ public class JoinGameView extends VBox implements Internalization, UIView {
     private Button btnLeave;
     private TableView table;
     private JoinGameViewModel viewModel;
+    private TableColumn timeLimit;
 
 
     public JoinGameView() {
@@ -59,7 +60,10 @@ public class JoinGameView extends VBox implements Internalization, UIView {
         timeElapsed = new TableColumn(i18n("menu.joinGame.runingSince"));
         timeElapsed.setCellValueFactory(new PropertyValueFactory<Game, String>("timeElapsed"));
 
-        table.getColumns().addAll(gameName, creator, creatorsColor, timeElapsed);
+        timeLimit = new TableColumn(i18n("menu.joinGame.timeLimit"));
+        timeLimit.setCellValueFactory(new PropertyValueFactory<Game, String>("timeLimit"));
+
+        table.getColumns().addAll(gameName, creator, creatorsColor, timeElapsed, timeLimit);
         table.setItems(viewModel.getData());
         viewModel.selectedGameProperty.bind(table.getSelectionModel().selectedItemProperty());
         return table;
