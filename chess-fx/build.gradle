@@ -35,4 +35,13 @@ test {
     useJUnitPlatform()
 }
 
-
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'de.chess.fx.app.GameLauncher'
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
