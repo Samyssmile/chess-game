@@ -13,16 +13,16 @@ import java.io.File;
 public abstract class ChessFigure extends ImageView {
 
     private final ChessColor color;
-    private  String pawnImageLocation = "figures";
+    private String pawnImageLocation = "figures";
     private final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
 
     public void loadImage(String imageFileName) {
-        pawnImageLocation=pawnImageLocation+ File.separator+(((color == ChessColor.WHITE))?"white_":"black_")+imageFileName;
-        setImage(new Image( classLoader.getResourceAsStream(pawnImageLocation)));
+        pawnImageLocation = pawnImageLocation + File.separator + (((color == ChessColor.WHITE)) ? "white_" : "black_") + imageFileName;
+        setImage(new Image(classLoader.getResourceAsStream(pawnImageLocation)));
     }
 
-    public ChessFigure(ChessColor color)  {
+    public ChessFigure(ChessColor color) {
         this.color = color;
         loadImage(getImageFileName());
 

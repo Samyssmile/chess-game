@@ -20,6 +20,7 @@ public class FieldViewModel {
 
     public void setFigure(ChessFigure figure) {
         this.figure.set(figure);
+
     }
 
     public int getxCoordinate() {
