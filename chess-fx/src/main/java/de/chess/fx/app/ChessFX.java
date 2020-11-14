@@ -1,8 +1,9 @@
 package de.chess.fx.app;
 
 import de.chess.fx.app.audio.MusicPlayer;
-import de.chess.fx.app.client.ClientProperties;
-import de.chess.fx.app.ui.views.gameboard.GameBoardView;
+import de.chess.fx.app.client.IClientProperties;
+import de.chess.fx.app.client.LocalDevPClientProperties;
+import de.chess.fx.app.client.ProductionClientProperties;
 import de.chess.fx.app.ui.views.mainMenu.MainMenuView;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -30,7 +31,7 @@ public class ChessFX extends Application {
     public void start(Stage stage) throws Exception {
         LOGGER.info("************* - Starting ChessFX UI - ************");
 
-        ClientProperties clientProperties = new ClientProperties();
+        IClientProperties clientProperties = LocalDevPClientProperties.instance();
         MainMenuView mainMenu = new MainMenuView();
         StackPane stackPane = new StackPane(mainMenu);
         stackPane.setAlignment(Pos.CENTER);

@@ -13,7 +13,7 @@ public class ChessBackend implements IChessBackend {
 
   private ServerProperties serverProperties;
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) throws IOException, ClassNotFoundException {
     chessBackend = new ChessBackend();
     chessBackend.preStart();
     chessBackend.start();
@@ -28,7 +28,7 @@ public class ChessBackend implements IChessBackend {
   }
 
   @Override
-  public void start() throws IOException {
+  public void start() throws IOException, ClassNotFoundException {
     new ChessServer(serverProperties).start();
   }
 

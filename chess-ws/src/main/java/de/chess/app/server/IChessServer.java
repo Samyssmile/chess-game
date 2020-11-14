@@ -5,5 +5,5 @@ import java.io.IOException;
 public interface IChessServer {
 
   /** Start Chess Server */
-  public void start() throws IOException;
+  public void start() throws IOException, ClassNotFoundException;
 }
