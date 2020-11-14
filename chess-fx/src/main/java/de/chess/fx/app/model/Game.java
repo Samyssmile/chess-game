@@ -1,5 +1,6 @@
 package de.chess.fx.app.model;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.io.Serializable;
@@ -11,19 +12,39 @@ public class Game implements Serializable {
     private SimpleStringProperty gameName ;
     private SimpleStringProperty creatorsColor;
     private SimpleStringProperty timeElapsed;
+    private SimpleStringProperty timeLimit;
+
+    private SimpleBooleanProperty isRankedGame;
 
     public Game(String creatorValue,String gameNameValue , String creatorsColorValue) {
-        this(creatorValue, "",gameNameValue,creatorsColorValue,"00:00");
+        this(creatorValue, "",gameNameValue,creatorsColorValue,"00:00", "05:00");
     }
 
-    public Game(String creatorValue, String oppnentValue, String gameNameValue, String creatorsColorValue, String timeElapsedValue) {
+    public Game(String creatorValue, String oppnentValue, String gameNameValue, String creatorsColorValue, String timeElapsedValue, String timeLimitValue) {
         this.creator = new SimpleStringProperty(creatorValue);
         this.oppnent = new SimpleStringProperty(oppnentValue);
         this.gameName = new SimpleStringProperty(gameNameValue);
         this.creatorsColor = new SimpleStringProperty(creatorsColorValue);
         this.timeElapsed = new SimpleStringProperty(timeElapsedValue);
+        this.timeLimit = new SimpleStringProperty(timeLimitValue);
     }
 
+    public Game(String creatorValue,String gameNameValue , String creatorsColorValue, String timeLimitValue) {
+        this(creatorValue, "",gameNameValue,creatorsColorValue,"00:00", timeLimitValue);
+    }
+
+
+    public String getTimeLimit() {
+        return timeLimit.get();
+    }
+
+    public SimpleStringProperty timeLimitProperty() {
+        return timeLimit;
+    }
+
+    public void setTimeLimit(String timeLimit) {
+        this.timeLimit.set(timeLimit);
+    }
 
     public String getCreator() {
         return creator.get();

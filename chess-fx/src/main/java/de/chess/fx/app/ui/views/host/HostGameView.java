@@ -18,16 +18,19 @@ public class HostGameView extends VBox implements Internalization, UIView {
     private static final double SPACING = 10;
     private static final int RIGHT_COL_WIDTH = 200;
     private static final int LEFT_COL_WIDTH = 100;
-    private static final int HEIGHT = 50;
+    private static final int HEIGHT = 20;
     private static final double FONT_SIZE = 35;
     private final List<Node> nodeList;
     private final HBox hBoxHostName;
     private final HBox hBoxStartAsButtons;
     private final HBox hBoxStartAs;
+    private final HBox hBoxRankedGame;
     private Label lblTitle;
     private TextField txtHostName;
     private Label lblHostName;
     private Label lblStartAs;
+    private Label lblRankedGame;
+    private CheckBox cbIsRankedGame;
     private RadioButton radioBlack;
     private RadioButton radioWhite;
     private RadioButton radioRandom;
@@ -72,6 +75,12 @@ public class HostGameView extends VBox implements Internalization, UIView {
         hBoxStartAs.getChildren().add(lblStartAs);
         hBoxStartAs.getChildren().add(hBoxStartAsButtons);
 
+        hBoxRankedGame = getConfiguredHBox();
+        lblRankedGame.setMinWidth(LEFT_COL_WIDTH);
+        cbIsRankedGame.setMinWidth(RIGHT_COL_WIDTH);
+        hBoxRankedGame.getChildren().add(lblRankedGame);
+        hBoxRankedGame.getChildren().add(cbIsRankedGame);
+
         structureMenu();
         initViewModel();
     }
@@ -88,7 +97,7 @@ public class HostGameView extends VBox implements Internalization, UIView {
     @Override
     public void initActionsEvents() {
         btnBack.setOnAction(event -> hostGameViewModel.getToMainMenuCommand(getScene()).execute());
-        btnStart.setOnAction(event -> hostGameViewModel.getStartCommand().execute());
+        btnStart.setOnAction(event -> hostGameViewModel.getStartCommand(getScene()).execute());
     }
 
     private void structureMenu() {
@@ -97,6 +106,8 @@ public class HostGameView extends VBox implements Internalization, UIView {
         this.getChildren().add(hBoxHostName);
         this.getChildren().add(getConfiguredSeparator());
         this.getChildren().add(hBoxStartAs);
+        this.getChildren().add(getConfiguredSeparator());
+        this.getChildren().add(hBoxRankedGame);
         this.getChildren().add(getConfiguredSeparator());
         this.getChildren().add(btnStart);
         this.getChildren().add(btnBack);
@@ -121,6 +132,8 @@ public class HostGameView extends VBox implements Internalization, UIView {
         radioRandom = new RadioButton(i18n("menu.hostGame.random"));
         btnStart = getConfiguredButton(i18n("menu.hostGame.start"));
         btnBack = getConfiguredButton(i18n("menu.hostGame.back"));
+        lblRankedGame = new Label(i18n("menu.hostGame.isRankedGame"));
+        cbIsRankedGame = new CheckBox();
 
         nodeList.add(lblTitle);
         nodeList.add(lblHostName);
@@ -131,6 +144,8 @@ public class HostGameView extends VBox implements Internalization, UIView {
         nodeList.add(radioRandom);
         nodeList.add(btnStart);
         nodeList.add(btnBack);
+        nodeList.add(lblRankedGame);
+
         return nodeList;
     }
 
@@ -144,7 +159,6 @@ public class HostGameView extends VBox implements Internalization, UIView {
         hBox.setMinWidth(RIGHT_COL_WIDTH);
 
         return hBox;
-
     }
 
     private Separator getConfiguredSeparator() {
