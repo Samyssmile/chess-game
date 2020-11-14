@@ -27,7 +27,7 @@ public class GameBoardViewModel {
     private void initFields() {
         for (int i = 0; i < boardMatrix.get().length; i++) {
             for (int y = 0; y <  boardMatrix.get()[i].length; y++) {
-                FieldView pane = new FieldView(i,y);
+                FieldView pane = new FieldView(i,7-y);
 
                 boardMatrix.get()[i][y] = pane;
                 pane.setBorder(new Border(new BorderStroke(Color.BLACK,

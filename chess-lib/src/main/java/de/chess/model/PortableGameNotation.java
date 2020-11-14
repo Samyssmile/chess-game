@@ -16,7 +16,7 @@ public class PortableGameNotation implements Serializable {
 
     public PortableGameNotation(int xCoordninate, int yCoordinate) {
         this.xCoordninate = xCoordninate;
-        this.yCoordinate = yCoordinate;
+        this.yCoordinate = yCoordinate+1;
     }
 
     @Override

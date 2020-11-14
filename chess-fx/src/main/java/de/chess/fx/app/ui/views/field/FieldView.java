@@ -9,6 +9,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.effect.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
@@ -73,7 +74,8 @@ public class FieldView extends Pane implements UIView {
 
                 /* Put a string on a dragboard */
                 ClipboardContent content = new ClipboardContent();
-                content.putString("Hello Drag Drop Function ;)");
+                content.putString(toPGN().toString());
+
                 db.setContent(content);
 
                 event.consume();
@@ -88,16 +90,18 @@ public class FieldView extends Pane implements UIView {
                 Dragboard db = event.getDragboard();
                 boolean success = false;
                 if (db.hasString()) {
-                    System.out.println(db.getString() + " String aus Target");
+                    String pgn = db.getString();
+                    System.out.println("Von: "+pgn+ " drop nach "+toPGN());
+                    shotAlertDialogWithPGN(pgn, toPGN().toString());
                     success = true;
                 }
                 /* let the source know whether the string was successfully
                  * transferred and used */
                 event.setDropCompleted(success);
-                System.out.println("Drag Dropped...");
                 event.consume();
             }
         });
+
 
         setOnDragOver(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
@@ -122,6 +126,15 @@ public class FieldView extends Pane implements UIView {
         });
 
 
+    }
+
+    private void shotAlertDialogWithPGN(String from, String to) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Debug Information Dialog");
+        alert.setHeaderText("Drag & Drop Detected");
+        alert.setContentText("Draged from: "+from +" to "+ to);
+
+        alert.showAndWait();
     }
 
 
