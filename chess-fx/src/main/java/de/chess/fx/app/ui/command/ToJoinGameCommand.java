@@ -14,6 +14,6 @@ public class ToJoinGameCommand implements ICommando{
 
     @Override
     public void execute() {
-        LOGGER.log(Level.SEVERE, "Join Game Command...");
+        LOGGER.log(Level.INFO, "Join Game Command...");
     }
 }

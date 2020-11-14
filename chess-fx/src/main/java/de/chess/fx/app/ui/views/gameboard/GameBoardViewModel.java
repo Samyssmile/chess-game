@@ -4,20 +4,19 @@ import de.chess.fx.app.ui.views.field.FieldView;
 import de.chess.fx.app.ui.views.figure.*;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.Flow;
 
-public class GameBoardViewModel {
+public class GameBoardViewModel implements Flow.Subscriber<String> {
 
     private static final String COLOR_BLACK = "#D18B47";
     private static final String COLOR_WHITE = "#FFCE9E";
     private static final double PREFERED_FIELD_SIZE = 90;
     private static final Background BLACK_COLOR = new Background(new BackgroundFill(Color.web(COLOR_BLACK), CornerRadii.EMPTY, Insets.EMPTY));
     private static final Background WHITE_COLOR = new Background(new BackgroundFill(Color.web(COLOR_WHITE), CornerRadii.EMPTY, Insets.EMPTY));
+    private Flow.Subscription subscription;
 
     public GameBoardViewModel() {
         initFields();
@@ -26,9 +25,9 @@ public class GameBoardViewModel {
 
     private void initFields() {
         for (int i = 0; i < boardMatrix.get().length; i++) {
-            for (int y = 0; y <  boardMatrix.get()[i].length; y++) {
-                FieldView pane = new FieldView(i,7-y);
-
+            for (int y = 0; y < boardMatrix.get()[i].length; y++) {
+                FieldView pane = new FieldView(i, 7 - y);
+                pane.subscribe(this);
                 boardMatrix.get()[i][y] = pane;
                 pane.setBorder(new Border(new BorderStroke(Color.BLACK,
                         BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
@@ -128,5 +127,28 @@ public class GameBoardViewModel {
 
     public SimpleObjectProperty<FieldView[][]> boardMatrixProperty() {
         return boardMatrix;
+    }
+
+    @Override
+    public void onSubscribe(Flow.Subscription subscription) {
+        this.subscription = subscription;
+        subscription.request(100);
+    }
+
+    @Override
+    public void onNext(String item) {
+        System.out.println("Received Item: "+item);
+        subscription.request(100);
+    }
+
+
+    @Override
+    public void onError(Throwable throwable) {
+        System.out.println("Flow API: Error");
+    }
+
+    @Override
+    public void onComplete() {
+        System.out.println("Flow API: complete");
     }
 }

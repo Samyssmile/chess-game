@@ -39,7 +39,6 @@ public class GameBoardView extends GridPane implements UIView {
 
     @Override
     public void initActionsEvents() {
-
     }
 
     @Override

@@ -15,7 +15,7 @@ public class ToJoinMenuCommand implements ICommando {
 
     @Override
     public void execute() {
-        LOGGER.log(Level.SEVERE, "Enter Game Browser Command...");
+        LOGGER.log(Level.INFO, "Enter Game Browser Command...");
         scene.setRoot(new JoinGameView());
     }
 }

@@ -14,7 +14,7 @@ import java.net.URISyntaxException;
 import java.util.logging.Logger;
 
 public class ChessFX extends Application {
-    private static final Logger LOGGER = Logger.getLogger(ChessFX.class.getName());
+    private static final Logger LOGGER =  Logger.getGlobal();
 
     private MusicPlayer musicPlayer;
 
