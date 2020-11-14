@@ -15,7 +15,7 @@ public class ToMainMenuCommand implements ICommando {
 
     @Override
     public void execute() {
-        LOGGER.log(Level.SEVERE, "Enter Main Menu Command...");
+        LOGGER.log(Level.INFO, "Enter Main Menu Command...");
         scene.setRoot(new MainMenuView());
     }
 }

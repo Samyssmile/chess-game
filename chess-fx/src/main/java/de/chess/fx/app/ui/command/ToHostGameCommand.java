@@ -15,7 +15,7 @@ public class ToHostGameCommand implements ICommando {
 
     @Override
     public void execute() {
-        LOGGER.log(Level.SEVERE, "Enter Host Game Menu Command...");
+        LOGGER.log(Level.INFO, "Enter Host Game Menu Command...");
         scene.setRoot(new HostGameView());;
     }
 }

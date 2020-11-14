@@ -1,6 +1,5 @@
 package de.chess.reader.model;
 
-import java.io.Serial;
 import java.io.Serializable;
 
 public class Player implements Serializable {
