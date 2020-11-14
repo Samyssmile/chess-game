@@ -3,6 +3,7 @@ package de.chess.fx.app.ui.views.field;
 import de.chess.fx.app.ui.views.UIView;
 import de.chess.fx.app.ui.views.figure.ChessColor;
 import de.chess.fx.app.ui.views.figure.ChessFigure;
+import de.chess.fx.app.ui.views.gameboard.GameBoardViewModel;
 import de.chess.model.PortableGameNotation;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -17,10 +18,12 @@ import javafx.scene.paint.Color;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Flow;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.SubmissionPublisher;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class FieldView extends Pane implements UIView, Flow.Publisher<String> {
+public class FieldView extends Pane implements UIView {
     public static final Logger LOGGER = Logger.getLogger(FieldView.class.getSimpleName());
     private static final double PREFERED_FIELD_SIZE = 90;
 
@@ -45,6 +48,7 @@ public class FieldView extends Pane implements UIView, Flow.Publisher<String> {
         initNodes();
         initActionsEvents();
         viewModel.setFigure(figureOnField);
+
 
     }
 
@@ -91,8 +95,8 @@ public class FieldView extends Pane implements UIView, Flow.Publisher<String> {
             if (db.hasString()) {
                 String pgn = db.getString();
                 LOGGER.log(Level.FINE, "Von: %s drop nach %s".formatted(pgn, toPGN()));
-                success=true;
-                subscriber.onNext(pgn+","+toPGN());
+                success = true;
+                publisher.submit(pgn+"-"+toPGN().toString());
                 shotAlertDialogWithPGN(pgn, toPGN().toString());
 
 
@@ -129,7 +133,7 @@ public class FieldView extends Pane implements UIView, Flow.Publisher<String> {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Debug Information Dialog");
         alert.setHeaderText("Drag & Drop Detected");
-        alert.setContentText("Draged from: "+from +" to "+ to);
+        alert.setContentText("Draged from: " + from + " to " + to);
 
         alert.showAndWait();
     }
@@ -148,8 +152,12 @@ public class FieldView extends Pane implements UIView, Flow.Publisher<String> {
         return figureOnFieldProperty.isNotNull().get();
     }
 
-    @Override
-    public void subscribe(Flow.Subscriber subscriber) {
-        this.subscriber = subscriber;
+    final SubmissionPublisher<String> publisher =
+            new SubmissionPublisher<>(ForkJoinPool.commonPool(), 100);
+
+    public void registerOnPublisher(Flow.Subscriber<String> gameBoardViewModel) {
+        publisher.subscribe(gameBoardViewModel);
+
+
     }
 }

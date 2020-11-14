@@ -27,7 +27,8 @@ public class GameBoardViewModel implements Flow.Subscriber<String> {
         for (int i = 0; i < boardMatrix.get().length; i++) {
             for (int y = 0; y < boardMatrix.get()[i].length; y++) {
                 FieldView pane = new FieldView(i, 7 - y);
-                pane.subscribe(this);
+                Flow.Subscriber<String> gameBoardSubscriber = this;
+                pane.registerOnPublisher(gameBoardSubscriber);
                 boardMatrix.get()[i][y] = pane;
                 pane.setBorder(new Border(new BorderStroke(Color.BLACK,
                         BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
