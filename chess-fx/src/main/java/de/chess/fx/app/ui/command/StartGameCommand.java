@@ -8,22 +8,19 @@ import javafx.scene.Scene;
 import java.io.IOException;
 import java.util.logging.Level;
 
-public class StartGameCommand implements ICommando{
+public class StartGameCommand implements ICommando {
     private final Scene scene;
 
     public StartGameCommand(Scene scene) {
         this.scene = scene;
     }
+
     @Override
     public void execute() {
         LOGGER.log(Level.INFO, "Start Game Command...");
 
-        try {
-            GameClient gameClient = new GameClient();
-            gameClient.connect();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        GameClient gameClient = new GameClient();
+        gameClient.connect();
         GameBoardView gameBoardView = new GameBoardView();
 
         gameBoardView.setAlignment(Pos.CENTER);

@@ -29,7 +29,8 @@ public class ChessBackend implements IChessBackend {
 
   @Override
   public void start() throws IOException, ClassNotFoundException {
-    new ChessServer(serverProperties).start();
+    Thread gameServerThread = new ChessServer(serverProperties);
+    gameServerThread.start();
   }
 
   @Override

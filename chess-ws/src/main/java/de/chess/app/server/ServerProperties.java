@@ -37,4 +37,8 @@ public class ServerProperties {
     public boolean isBlockingMode() {
         return Boolean.parseBoolean(serverProperties.getProperty("server.blocking"));
     }
+
+    public String serverAddress() {
+        return serverProperties.getProperty("server.address");
+    }
 }
