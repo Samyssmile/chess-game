@@ -2,6 +2,7 @@ package de.chess.fx.app.ui.views.gameboard;
 
 import de.chess.fx.app.ui.views.field.FieldView;
 import de.chess.fx.app.ui.views.figure.*;
+import de.chess.model.ChessColor;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Insets;
 import javafx.scene.layout.*;

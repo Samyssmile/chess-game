@@ -1,5 +1,10 @@
 package de.chess.app.server;
 
+import com.google.gson.Gson;
+import de.chess.dto.Declaration;
+import de.chess.dto.Signal;
+
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -27,17 +32,18 @@ public class ChessServer extends Thread implements IChessServer {
 
     private final GameClientReceiver gameClientReceiver = new GameClientReceiver();
     private final String address;
-    private SubmissionPublisher<SocketChannel> publisher;
+    private SubmissionPublisher<ServerGameClient> publisher;
     private boolean running;
     private ServerSocketChannel serverSocket;
     private Selector selector;
+    private Gson gson;
 
     public ChessServer(ServerProperties serverProperties) throws IOException {
         this.serverProperties = serverProperties;
         this.port = serverProperties.getServerPort();
         this.address = serverProperties.serverAddress();
         this.isBlockingMode = serverProperties.isBlockingMode();
-
+        this.gson = new Gson();
         init();
         subscribeReceiver();
     }
@@ -74,12 +80,11 @@ public class ChessServer extends Thread implements IChessServer {
 
                     SelectionKey key = iter.next();
 
-                    if (key.isAcceptable()) {
-                        register(selector, serverSocket);
-                    }
 
-                    if (key.isReadable()) {
-                        answerWithEcho(buffer, key);
+
+                    if (key.isReadable() && key.isAcceptable()) {
+                        Declaration filledDeclaration = answerWithEcho(buffer, key);
+                        register(selector, key,  filledDeclaration);
                     }
                     iter.remove();
                 }
@@ -89,22 +94,25 @@ public class ChessServer extends Thread implements IChessServer {
         }
     }
 
-    private void register(Selector selector, ServerSocketChannel serverSocket)
+    private void register(Selector selector, SelectionKey key, Declaration filledDeclaration)
             throws IOException {
 
         SocketChannel client = serverSocket.accept();
         client.configureBlocking(false);
         client.register(selector, SelectionKey.OP_READ);
-        publisher.submit(client);
+        ServerGameClient serverGameClient = new ServerGameClient(selector, client, key, filledDeclaration);
+        publisher.submit(serverGameClient);
     }
 
-    private void answerWithEcho(ByteBuffer buffer, SelectionKey key)
+    private Declaration answerWithEcho(ByteBuffer buffer, SelectionKey key)
             throws IOException {
 
         SocketChannel client = (SocketChannel) key.channel();
+
         client.read(buffer);
-        String receivedMessage = new String(buffer.array()).trim();
-        LOGGER.info("Received Message from Client: "+receivedMessage);
+        String declarationAsJson = new String(buffer.array()).trim();
+        Declaration declaration = gson.fromJson(declarationAsJson, Declaration.class);
+        LOGGER.info("Received Message from Client: " + declarationAsJson);
         if (new String(buffer.array()).trim().equals(POISON_PILL)) {
             client.close();
             System.out.println("Not accepting client messages anymore");
@@ -113,6 +121,7 @@ public class ChessServer extends Thread implements IChessServer {
             client.write(buffer);
             buffer.clear();
         }
+        return declaration;
     }
 
 

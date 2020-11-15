@@ -1,5 +1,6 @@
 package de.chess.fx.app.ui.views.figure;
 
+import de.chess.model.ChessColor;
 import javafx.event.EventHandler;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;

@@ -1,54 +1,46 @@
 package de.chess.fx.app.client;
 
+import com.google.gson.Gson;
+import de.chess.dto.Declaration;
+import de.chess.dto.GameDTO;
+import de.chess.dto.Signal;
 import de.chess.fx.app.handler.ExceptionHandler;
+import org.ietf.jgss.GSSContext;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.Random;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GameClient implements Serializable {
     public static final Logger LOGGER = Logger.getLogger(GameClient.class.getSimpleName());
-
-    private ObjectOutputStream objectOutputStream;
-    private ObjectInputStream objectInputStream;
+    private final GameDTO gameDTO;
 
     private SocketChannel client;
-
+    Gson gson = new Gson();
     private static ByteBuffer buffer;
 
-    public GameClient() {
+    public GameClient(GameDTO gameDTO) {
+        this.gameDTO = gameDTO;
         try {
-            client = SocketChannel.open(new InetSocketAddress("localhost", 8085));
+            String paramterIP = System.getProperty("ip");
+            client = SocketChannel.open(new InetSocketAddress((paramterIP != null) ? paramterIP : "localhost", 8085));
             buffer = ByteBuffer.allocate(256);
+            if (client != null && client.isConnected()) {
+                Declaration declarationDTO = new Declaration(UUID.randomUUID().toString(), gameDTO);
+                String declarationAsJson = gson.toJson(declarationDTO);
+                writeTextMessageToServer(declarationAsJson);
+                LOGGER.log(Level.INFO, "Client connected...");
+
+            }
         } catch (IOException e) {
             ExceptionHandler.handle(e);
         }
-    }
-
-    public void connect()   {
-
-        try{
-            IClientProperties clientProperties = LocalDevPClientProperties.instance();
-            if (client != null && client.isConnected()) {
-
-                objectOutputStream = new ObjectOutputStream(client.socket().getOutputStream());
-                objectInputStream = new ObjectInputStream(client.socket().getInputStream());
-                writeTextMessageToServer("Hello from Client ******* Hello from Client *******");
-
-            }
-        }catch (IOException e){
-            ExceptionHandler.handle(e);
-        }
-
-
-        LOGGER.log(Level.INFO, "Client connected...");
     }
 
 
