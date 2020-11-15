@@ -26,11 +26,12 @@ class FieldViewTest {
     @Test
     public void testPGN(){
         FieldView fieldB2 = new FieldView(1, 2, new Pawn(ChessColor.BLACK), ChessColor.BLACK);
-        PortableGameNotation pgnB2 = fieldB2.toPGN();
-        assertEquals("b2", pgnB2.toString());
+        PortableGameNotation pgnB3 = fieldB2.toPGN();
+        String actual = pgnB3.toString();
+        assertEquals("b3",actual );
 
-        FieldView fieldH7 = new FieldView(1, 7, new Pawn(ChessColor.BLACK), ChessColor.BLACK);
-        PortableGameNotation pgnH7 = fieldH7.toPGN();
-        assertEquals("b7", pgnH7.toString());
+        FieldView fieldH8 = new FieldView(1, 7, new Pawn(ChessColor.BLACK), ChessColor.BLACK);
+        PortableGameNotation pgnH8 = fieldH8.toPGN();
+        assertEquals("b8", pgnH8.toString());
     }
 }
