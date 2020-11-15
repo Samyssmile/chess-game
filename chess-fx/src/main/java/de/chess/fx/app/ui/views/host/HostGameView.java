@@ -2,6 +2,8 @@ package de.chess.fx.app.ui.views.host;
 
 import de.chess.fx.app.i18n.Internalization;
 import de.chess.fx.app.ui.views.UIView;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -25,6 +27,9 @@ public class HostGameView extends VBox implements Internalization, UIView {
     private final HBox hBoxStartAsButtons;
     private final HBox hBoxStartAs;
     private final HBox hBoxRankedGame;
+    private final HBox hBoxPlayerName;
+    private final HBox hBoxLimit;
+    private TextField txtPlayerName;
     private Label lblTitle;
     private TextField txtHostName;
     private Label lblHostName;
@@ -39,7 +44,10 @@ public class HostGameView extends VBox implements Internalization, UIView {
 
 
     private ToggleGroup radioToggleGroup;
-    private HostGameViewModel hostGameViewModel;
+    private HostGameViewModel viewModel;
+    private Label lblPlayerName;
+    private Label lblTimeLimit;
+    private ComboBox<String> comboTimeLimit;
 
     public HostGameView() {
         this.setPadding(new Insets(50));
@@ -53,8 +61,16 @@ public class HostGameView extends VBox implements Internalization, UIView {
 
         lblTitle.setFont(new Font(FONT_SIZE));
 
+        lblPlayerName.setMinWidth(LEFT_COL_WIDTH);
+        txtPlayerName.setMinWidth(RIGHT_COL_WIDTH);
+
         lblHostName.setMinWidth(LEFT_COL_WIDTH);
         txtHostName.setMinWidth(RIGHT_COL_WIDTH);
+
+
+        hBoxPlayerName = getConfiguredHBox();
+        hBoxPlayerName.getChildren().add(lblPlayerName);
+        hBoxPlayerName.getChildren().add(txtPlayerName);
 
         hBoxHostName = getConfiguredHBox();
         hBoxHostName.getChildren().add(lblHostName);
@@ -67,13 +83,22 @@ public class HostGameView extends VBox implements Internalization, UIView {
         radioRandom.setToggleGroup(radioToggleGroup);
 
         hBoxStartAsButtons = getConfiguredHBox();
-        hBoxStartAsButtons.getChildren().add(radioBlack);
+        radioWhite.setSelected(true);
         hBoxStartAsButtons.getChildren().add(radioWhite);
+        hBoxStartAsButtons.getChildren().add(radioBlack);
         hBoxStartAsButtons.getChildren().add(radioRandom);
 
         hBoxStartAs = getConfiguredHBox();
         hBoxStartAs.getChildren().add(lblStartAs);
         hBoxStartAs.getChildren().add(hBoxStartAsButtons);
+
+        hBoxLimit = getConfiguredHBox();
+        hBoxLimit.getChildren().add(lblTimeLimit);
+        hBoxLimit.getChildren().add(comboTimeLimit);
+        comboTimeLimit.getSelectionModel().select(0);
+        lblTimeLimit.setMinWidth(LEFT_COL_WIDTH);
+        comboTimeLimit.setMinWidth(RIGHT_COL_WIDTH);
+
 
         hBoxRankedGame = getConfiguredHBox();
         lblRankedGame.setMinWidth(LEFT_COL_WIDTH);
@@ -87,25 +112,31 @@ public class HostGameView extends VBox implements Internalization, UIView {
 
     @Override
     public void initViewModel() {
-        hostGameViewModel = new HostGameViewModel();
-        txtHostName.textProperty().bindBidirectional(hostGameViewModel.gameNameProperty());
-        radioBlack.disableProperty().bindBidirectional(hostGameViewModel.blackSelectedProperty());
-        radioWhite.disableProperty().bindBidirectional(hostGameViewModel.whiteSelectedProperty());
-        radioRandom.disableProperty().bindBidirectional(hostGameViewModel.randomSelectedProperty());
+        viewModel = new HostGameViewModel();
+        txtPlayerName.textProperty().bindBidirectional((viewModel).payerNameProperty());
+        txtHostName.textProperty().bindBidirectional(viewModel.gameNameProperty());
+        radioBlack.disableProperty().bindBidirectional(viewModel.blackSelectedProperty());
+        radioWhite.disableProperty().bindBidirectional(viewModel.whiteSelectedProperty());
+        radioRandom.disableProperty().bindBidirectional(viewModel.randomSelectedProperty());
+        viewModel.timeLimitProperty().bind(comboTimeLimit.getSelectionModel().selectedItemProperty());
     }
 
     @Override
     public void initActionsEvents() {
-        btnBack.setOnAction(event -> hostGameViewModel.getToMainMenuCommand(getScene()).execute());
-        btnStart.setOnAction(event -> hostGameViewModel.getStartCommand(getScene()).execute());
+        btnBack.setOnAction(event -> viewModel.getToMainMenuCommand(getScene()).execute());
+        btnStart.setOnAction(event -> viewModel.getStartCommand(getScene()).execute());
     }
 
     private void structureMenu() {
         this.getChildren().add(lblTitle);
         this.getChildren().add(getConfiguredSeparator());
+        this.getChildren().add(hBoxPlayerName);
+        this.getChildren().add(getConfiguredSeparator());
         this.getChildren().add(hBoxHostName);
         this.getChildren().add(getConfiguredSeparator());
         this.getChildren().add(hBoxStartAs);
+        this.getChildren().add(getConfiguredSeparator());
+        this.getChildren().add(hBoxLimit);
         this.getChildren().add(getConfiguredSeparator());
         this.getChildren().add(hBoxRankedGame);
         this.getChildren().add(getConfiguredSeparator());
@@ -123,6 +154,8 @@ public class HostGameView extends VBox implements Internalization, UIView {
     public List<Node> initNodes() {
         List<Node> nodeList = new ArrayList<>();
         lblTitle = new Label(i18n("menu.hostGame.title"));
+        lblPlayerName = new Label(i18n("menu.hostGame.playerName"));
+        txtPlayerName = new TextField();
         lblHostName = new Label(i18n("menu.hostGame.gameName"));
         txtHostName = new TextField();
         lblStartAs = new Label(i18n("menu.hostGame.startAs"));
@@ -134,8 +167,12 @@ public class HostGameView extends VBox implements Internalization, UIView {
         btnBack = getConfiguredButton(i18n("menu.hostGame.back"));
         lblRankedGame = new Label(i18n("menu.hostGame.isRankedGame"));
         cbIsRankedGame = new CheckBox();
+        lblTimeLimit = new Label(i18n("menu.hostGame.timeLimit"));
+        comboTimeLimit = new ComboBox<>(getLimitList());
 
         nodeList.add(lblTitle);
+        nodeList.add(lblPlayerName);
+        nodeList.add(txtPlayerName);
         nodeList.add(lblHostName);
         nodeList.add(txtHostName);
         nodeList.add(lblStartAs);
@@ -147,6 +184,11 @@ public class HostGameView extends VBox implements Internalization, UIView {
         nodeList.add(lblRankedGame);
 
         return nodeList;
+    }
+
+    private ObservableList<String> getLimitList() {
+        return FXCollections.observableArrayList(
+                "5:00", "10:00", "20:00", "40:00", "60:00", "120:00");
     }
 
 

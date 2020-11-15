@@ -1,9 +1,8 @@
 package de.chess.fx.app.ui.views.field;
 
 import de.chess.fx.app.ui.views.UIView;
-import de.chess.fx.app.ui.views.figure.ChessColor;
+import de.chess.model.ChessColor;
 import de.chess.fx.app.ui.views.figure.ChessFigure;
-import de.chess.fx.app.ui.views.gameboard.GameBoardViewModel;
 import de.chess.model.PortableGameNotation;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleIntegerProperty;

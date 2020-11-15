@@ -1,6 +1,6 @@
 package de.chess.fx.app.ui.views.field;
 
-import de.chess.fx.app.ui.views.figure.ChessColor;
+import de.chess.model.ChessColor;
 import de.chess.fx.app.ui.views.figure.Pawn;
 import de.chess.model.PortableGameNotation;
 import org.junit.jupiter.api.Test;

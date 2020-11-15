@@ -1,7 +1,7 @@
 package de.chess.fx.app.ui.views.join;
 
 import de.chess.fx.app.i18n.Internalization;
-import de.chess.fx.app.model.Game;
+import de.chess.fx.app.model.GameRowData;
 import de.chess.fx.app.ui.views.UIView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -26,6 +26,7 @@ public class JoinGameView extends VBox implements Internalization, UIView {
     private TableColumn creator;
     private TableColumn creatorsColor;
     private TableColumn timeElapsed;
+    private TableColumn isRanked;
     private Label title;
     private Button btnJoin;
     private Button btnLeave;
@@ -53,18 +54,21 @@ public class JoinGameView extends VBox implements Internalization, UIView {
     private TableView setupGameBrowserTable() {
         TableView table = new TableView();
         gameName = new TableColumn(i18n("menu.joinGame.gameName"));
-        gameName.setCellValueFactory(new PropertyValueFactory<Game, String>("gameName"));
+        gameName.setCellValueFactory(new PropertyValueFactory<GameRowData, String>("gameName"));
         creator = new TableColumn(i18n("menu.joinGame.creator"));
-        creator.setCellValueFactory(new PropertyValueFactory<Game, String>("creator"));
+        creator.setCellValueFactory(new PropertyValueFactory<GameRowData, String>("creator"));
         creatorsColor = new TableColumn(i18n("menu.joinGame.color"));
-        creatorsColor.setCellValueFactory(new PropertyValueFactory<Game, String>("creatorsColor"));
+        creatorsColor.setCellValueFactory(new PropertyValueFactory<GameRowData, String>("creatorsColor"));
         timeElapsed = new TableColumn(i18n("menu.joinGame.runingSince"));
-        timeElapsed.setCellValueFactory(new PropertyValueFactory<Game, String>("timeElapsed"));
+        timeElapsed.setCellValueFactory(new PropertyValueFactory<GameRowData, String>("timeElapsed"));
 
         timeLimit = new TableColumn(i18n("menu.joinGame.timeLimit"));
-        timeLimit.setCellValueFactory(new PropertyValueFactory<Game, String>("timeLimit"));
+        timeLimit.setCellValueFactory(new PropertyValueFactory<GameRowData, String>("timeLimit"));
 
-        table.getColumns().addAll(gameName, creator, creatorsColor, timeElapsed, timeLimit);
+        isRanked = new TableColumn(i18n("menu.joinGame.isRanked"));
+        isRanked.setCellValueFactory(new PropertyValueFactory<GameRowData, String>("isRankedGame"));
+
+        table.getColumns().addAll(gameName, creator, creatorsColor, timeElapsed, timeLimit, isRanked);
         table.setItems(viewModel.getData());
         viewModel.selectedGameProperty.bind(table.getSelectionModel().selectedItemProperty());
         return table;

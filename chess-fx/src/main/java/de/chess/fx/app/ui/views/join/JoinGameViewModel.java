@@ -1,6 +1,6 @@
 package de.chess.fx.app.ui.views.join;
 
-import de.chess.fx.app.model.Game;
+import de.chess.fx.app.model.GameRowData;
 import de.chess.fx.app.provider.DummyProvider;
 import de.chess.fx.app.provider.IGameListProvider;
 import de.chess.fx.app.ui.command.ICommando;
@@ -16,15 +16,15 @@ import javafx.scene.Scene;
 public class JoinGameViewModel {
 
 
-    private final ObservableList<Game> data;
-    public ObjectProperty<Game> selectedGameProperty = new SimpleObjectProperty<>();
+    private final ObservableList<GameRowData> data;
+    public ObjectProperty<GameRowData> selectedGameProperty = new SimpleObjectProperty<>();
 
     public JoinGameViewModel() {
         IGameListProvider provider = new DummyProvider();
         data = FXCollections.observableArrayList(provider.receiveGameList());
-        selectedGameProperty.addListener(new ChangeListener<Game>() {
+        selectedGameProperty.addListener(new ChangeListener<GameRowData>() {
             @Override
-            public void changed(ObservableValue<? extends Game> observable, Game oldValue, Game newValue) {
+            public void changed(ObservableValue<? extends GameRowData> observable, GameRowData oldValue, GameRowData newValue) {
                 isJoinButtonDisabled.set(false);
             }
         });
@@ -40,7 +40,7 @@ public class JoinGameViewModel {
         return new ToJoinGameCommand(scene);
     }
 
-    public ObservableList<Game> getData() {
+    public ObservableList<GameRowData> getData() {
         return data;
     }
 }

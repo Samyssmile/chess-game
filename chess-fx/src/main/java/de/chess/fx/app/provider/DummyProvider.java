@@ -1,6 +1,7 @@
 package de.chess.fx.app.provider;
 
-import de.chess.fx.app.model.Game;
+import de.chess.fx.app.model.GameRowData;
+import de.chess.model.ChessColor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,11 +9,11 @@ import java.util.List;
 public class DummyProvider implements IGameListProvider {
 
     @Override
-    public List<Game> receiveGameList() {
-        List<Game> gameList = new ArrayList<>();
-        Game dummyGame1 = new Game("Samy", "Samuels Chess Massaka", "Black", "10:00");
-        Game dummyGame2 = new Game("Dummy_User12", "Noobs Only", "White");
-        Game dummyGame3 = new Game("Alfred", "Wessex Attack", "Random", "20:00");
+    public List<GameRowData> receiveGameList() {
+        List<GameRowData> gameList = new ArrayList<>();
+        GameRowData dummyGame1 = new GameRowData("Samy", "Samuels Chess Massaka", ChessColor.BLACK, "10:00");
+        GameRowData dummyGame2 = new GameRowData("Dummy_User12", "Noobs Only", ChessColor.WHITE);
+        GameRowData dummyGame3 = new GameRowData("Alfred", "Wessex Attack", ChessColor.RANDOM, "20:00");
         gameList.add(dummyGame1);
         gameList.add(dummyGame2);
         gameList.add(dummyGame3);
