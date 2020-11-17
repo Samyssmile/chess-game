@@ -1,19 +1,27 @@
 package de.chess.app;
 
+import de.chess.logging.WebTextLogger;
 import de.chess.app.server.ChessServer;
 import de.chess.app.server.ServerProperties;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.logging.Logger;
 
 /** Chess Server */
 public class ChessBackend implements IChessBackend {
-  private static final Logger LOGGER = Logger.getLogger(ChessBackend.class.getName());
+  private static final Logger LOGGER = Logger.getGlobal();
   private static ChessBackend chessBackend;
 
   private ServerProperties serverProperties;
 
   public static void main(String[] args) throws IOException, ClassNotFoundException {
+    try {
+      WebTextLogger.setup();
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new RuntimeException("Problems with creating the log files");
+    }
     chessBackend = new ChessBackend();
     chessBackend.preStart();
     chessBackend.start();
@@ -22,9 +30,14 @@ public class ChessBackend implements IChessBackend {
 
   @Override
   public void preStart() throws IOException {
-    LOGGER.info("************* - Starting Chess Backend - ************");
     serverProperties = new ServerProperties();
+    InetAddress ip = InetAddress.getLocalHost();
+    String hostname = ip.getHostName();
+
+    LOGGER.info("************* - Starting Chess Backend - ************");
     LOGGER.info("************* - " + serverProperties.getServerName() + "- ************");
+    LOGGER.info("************* - " + ip + "- ************");
+    LOGGER.info("************* - " + hostname + "- ************");
   }
 
   @Override

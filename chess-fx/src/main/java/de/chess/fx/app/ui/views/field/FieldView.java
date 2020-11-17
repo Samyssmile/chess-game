@@ -93,7 +93,7 @@ public class FieldView extends Pane implements UIView {
             boolean success = false;
             if (db.hasString()) {
                 String pgn = db.getString();
-                LOGGER.log(Level.FINE, "Von: %s drop nach %s".formatted(pgn, toPGN()));
+                LOGGER.log(Level.INFO, "Von: %s drop nach %s".formatted(pgn, toPGN()));
                 success = true;
                 publisher.submit(pgn+"-"+toPGN().toString());
                 shotAlertDialogWithPGN(pgn, toPGN().toString());

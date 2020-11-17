@@ -36,3 +36,10 @@ AS12345.pdf
 /*.pdf
 PDF-Print-Service/temp/AS12345.pdf
 temp/*.pdf
+/chess-ws/log/
+/chess-ws/log/*
+chess-ws/log/
+chess-ws/Logging.html
+chess-ws/Logging.html.lck
+chess-ws/Logging.txt
+chess-ws/Logging.txt.lck

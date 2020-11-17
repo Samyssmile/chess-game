@@ -139,7 +139,6 @@ public class GameBoardViewModel implements Flow.Subscriber<String> {
 
     @Override
     public void onNext(String item) {
-        System.out.println("Received Item: "+item);
         subscription.request(100);
     }
 
