@@ -1,5 +1,8 @@
 package de.chess.fx.app.ui.views.gameboard;
 
+import com.google.gson.Gson;
+import de.chess.dto.Declaration;
+import de.chess.fx.app.client.GameClient;
 import de.chess.fx.app.ui.views.field.FieldView;
 import de.chess.fx.app.ui.views.figure.*;
 import de.chess.model.ChessColor;
@@ -8,6 +11,7 @@ import javafx.geometry.Insets;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import java.util.UUID;
 import java.util.concurrent.Flow;
 
 public class GameBoardViewModel implements Flow.Subscriber<String> {
@@ -17,7 +21,10 @@ public class GameBoardViewModel implements Flow.Subscriber<String> {
     private static final double PREFERED_FIELD_SIZE = 90;
     private static final Background BLACK_COLOR = new Background(new BackgroundFill(Color.web(COLOR_BLACK), CornerRadii.EMPTY, Insets.EMPTY));
     private static final Background WHITE_COLOR = new Background(new BackgroundFill(Color.web(COLOR_WHITE), CornerRadii.EMPTY, Insets.EMPTY));
+    private SimpleObjectProperty<FieldView[][]> boardMatrix = new SimpleObjectProperty<>(new FieldView[8][8]);
+
     private Flow.Subscription subscription;
+    private GameClient gameClient;
 
     public GameBoardViewModel() {
         initFields();
@@ -52,8 +59,6 @@ public class GameBoardViewModel implements Flow.Subscriber<String> {
 
         }
     }
-
-    private SimpleObjectProperty<FieldView[][]> boardMatrix = new SimpleObjectProperty<>(new FieldView[8][8]);
 
     public void resetFigures() {
 
@@ -139,6 +144,11 @@ public class GameBoardViewModel implements Flow.Subscriber<String> {
 
     @Override
     public void onNext(String item) {
+        Declaration declaration = new Declaration(UUID.randomUUID().toString(), null);
+        declaration.moveDeclaration(item);
+        Gson gson = new Gson();
+
+        this.gameClient.sendDataToServer(gson.toJson(declaration));
         subscription.request(100);
     }
 
@@ -151,5 +161,9 @@ public class GameBoardViewModel implements Flow.Subscriber<String> {
     @Override
     public void onComplete() {
         System.out.println("Flow API: complete");
+    }
+
+    public void setGameClient(GameClient gameClient) {
+        this.gameClient = gameClient;
     }
 }

@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.logging.*;
 
 public class WebTextLogger {
-    private static final boolean APPEND = true;
+    private static final boolean APPEND = false;
     private static final String LOG_DIR = "log";
     static private FileHandler fileTxt;
     static private SimpleFormatter formatterTxt;

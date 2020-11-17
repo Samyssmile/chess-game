@@ -1,5 +1,6 @@
 package de.chess.fx.app.ui.views.field;
 
+import de.chess.dto.Declaration;
 import de.chess.fx.app.ui.views.UIView;
 import de.chess.model.ChessColor;
 import de.chess.fx.app.ui.views.figure.ChessFigure;
@@ -47,7 +48,6 @@ public class FieldView extends Pane implements UIView {
         initNodes();
         initActionsEvents();
         viewModel.setFigure(figureOnField);
-
 
     }
 

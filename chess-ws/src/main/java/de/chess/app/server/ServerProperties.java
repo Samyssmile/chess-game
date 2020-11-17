@@ -5,6 +5,8 @@ import de.chess.reader.ApplicationPropertiesReader;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Properties;
 
 public class ServerProperties {
@@ -40,5 +42,15 @@ public class ServerProperties {
 
     public String serverAddress() {
         return serverProperties.getProperty("server.address");
+    }
+
+    public InetAddress getLocalHostAddress() {
+        InetAddress localhost=null;
+        try {
+            localhost = InetAddress.getByName(serverProperties.getProperty("server.address"));
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        return localhost;
     }
 }

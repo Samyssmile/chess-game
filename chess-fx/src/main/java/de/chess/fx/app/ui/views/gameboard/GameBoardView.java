@@ -1,5 +1,6 @@
 package de.chess.fx.app.ui.views.gameboard;
 
+import de.chess.fx.app.client.GameClient;
 import de.chess.fx.app.ui.views.UIView;
 import de.chess.fx.app.ui.views.field.FieldView;
 import javafx.beans.binding.Bindings;
@@ -18,8 +19,10 @@ public class GameBoardView extends GridPane implements UIView {
 
     private GameBoardViewModel viewModel;
 
-    public GameBoardView() {
+    public GameBoardView(GameClient gameClient) {
         initViewModel();
+        viewModel.setGameClient(gameClient);
+        gameClient.start();
         initNodes();
         Bindings.bindBidirectional(boardMatrix, viewModel.boardMatrixProperty());
     }

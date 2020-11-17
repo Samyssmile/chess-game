@@ -3,6 +3,8 @@ package de.chess.fx.app.client;
 import de.chess.reader.ApplicationPropertiesReader;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Properties;
 
 public class LocalDevPClientProperties implements IClientProperties {
@@ -34,6 +36,17 @@ public class LocalDevPClientProperties implements IClientProperties {
     @Override
     public void setClientProperties(Properties properties) {
         this.clientProperties = properties;
+    }
+
+    @Override
+    public InetAddress getLocalHostAddress() {
+        InetAddress localhost=null;
+        try {
+            localhost = InetAddress.getByName(this.clientProperties.getProperty("server.address"));
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        return localhost;
     }
 
     public static IClientProperties instance() throws IOException {

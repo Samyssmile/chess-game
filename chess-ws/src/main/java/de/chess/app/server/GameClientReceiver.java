@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GameClientReceiver implements IGameClientReceiver {
-    private static final Logger LOGGER = Logger.getGlobal();
+    private static final Logger LOGGER = Logger.getLogger(GameClientReceiver.class.getName());
 
     private final List<ServerGameClient> clientList = Collections.synchronizedList(new ArrayList<>());
     private Flow.Subscription subscription;

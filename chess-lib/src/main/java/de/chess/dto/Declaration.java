@@ -7,6 +7,8 @@ public class Declaration implements Serializable {
     private final GameDTO gameDTO;
     private String uuid;
     private String name;
+    private boolean isMoveDeclaration;
+    private String move;
 
     public Declaration(String uuid, GameDTO gameDTO) {
         this.uuid = uuid;
@@ -35,5 +37,26 @@ public class Declaration implements Serializable {
                 "uuid='" + uuid + '\'' +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    public void moveDeclaration(String item) {
+        this.isMoveDeclaration = true;
+        this.move = item;
+    }
+
+    public String getMove() {
+        return move;
+    }
+
+    public boolean isMoveDeclaration() {
+        return isMoveDeclaration;
+    }
+
+    public void setMoveDeclaration(boolean moveDeclaration) {
+        isMoveDeclaration = moveDeclaration;
+    }
+
+    public void setMove(String move) {
+        this.move = move;
     }
 }

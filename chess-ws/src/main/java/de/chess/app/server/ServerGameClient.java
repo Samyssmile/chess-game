@@ -18,6 +18,7 @@ public class ServerGameClient {
         this.serverSocket = serverSocket;
         this.key = key;
         this.filledDeclaration = filledDeclaration;
+
     }
 
     public Selector getSelector() {

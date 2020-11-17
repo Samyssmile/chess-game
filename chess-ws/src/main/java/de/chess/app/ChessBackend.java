@@ -1,7 +1,8 @@
 package de.chess.app;
 
+import de.chess.app.server.nio.EchoWorker;
+import de.chess.app.server.nio.NioServer;
 import de.chess.logging.WebTextLogger;
-import de.chess.app.server.ChessServer;
 import de.chess.app.server.ServerProperties;
 
 import java.io.IOException;
@@ -42,7 +43,9 @@ public class ChessBackend implements IChessBackend {
 
   @Override
   public void start() throws IOException, ClassNotFoundException {
-    Thread gameServerThread = new ChessServer(serverProperties);
+    EchoWorker worker = new EchoWorker();
+    new Thread(worker).start();
+    Thread gameServerThread = new Thread(new NioServer(serverProperties.getLocalHostAddress(), serverProperties.getServerPort(),worker));
     gameServerThread.start();
   }
 
