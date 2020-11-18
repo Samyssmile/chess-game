@@ -2,6 +2,7 @@ package de.chess.fx.app.ui.views.join;
 
 import de.chess.fx.app.model.GameRowData;
 import de.chess.fx.app.provider.DummyProvider;
+import de.chess.fx.app.provider.GameListProvider;
 import de.chess.fx.app.provider.IGameListProvider;
 import de.chess.fx.app.ui.command.ICommando;
 import de.chess.fx.app.ui.command.ToJoinGameCommand;
@@ -20,7 +21,7 @@ public class JoinGameViewModel {
     public ObjectProperty<GameRowData> selectedGameProperty = new SimpleObjectProperty<>();
 
     public JoinGameViewModel() {
-        IGameListProvider provider = new DummyProvider();
+        IGameListProvider provider = GameListProvider.getInstance();
         data = FXCollections.observableArrayList(provider.receiveGameList());
         selectedGameProperty.addListener(new ChangeListener<GameRowData>() {
             @Override

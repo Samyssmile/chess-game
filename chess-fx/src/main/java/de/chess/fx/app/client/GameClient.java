@@ -11,19 +11,26 @@ import java.util.logging.Logger;
 
 public class GameClient {
     public static final Logger LOGGER = Logger.getGlobal();
-    private final GameDTO gameDTO;
+    private GameDTO gameDTO;
     private IClientProperties clientProperties;
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private NioClient client = null;
+    private static GameClient instance = null;
 
-    public GameClient(GameDTO gameDTO) {
-        this.gameDTO = gameDTO;
+    private GameClient() {
         try {
             this.clientProperties = LocalDevPClientProperties.instance();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public static GameClient getInstance() {
+        if (instance == null) {
+            instance = new GameClient();
+            instance.start();
+        }
+        return instance;
     }
 
     public void start() {
@@ -32,11 +39,15 @@ public class GameClient {
             Thread t = new Thread(client);
             t.setDaemon(true);
             t.start();
-            sendRequest(new OpenGameRequest(gameDTO));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+    }
+
+    public void openGameRequest(){
+        sendRequest(new OpenGameRequest(gameDTO));
     }
 
     private void sendRequest(String jsonData) {
@@ -58,6 +69,14 @@ public class GameClient {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public GameDTO getGameDTO() {
+        return gameDTO;
+    }
+
+    public void setGameDTO(GameDTO gameDTO) {
+        this.gameDTO = gameDTO;
     }
 
     private byte[] getRequestAsByteData(Request request) {

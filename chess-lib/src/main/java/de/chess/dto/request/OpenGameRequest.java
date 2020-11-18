@@ -10,7 +10,6 @@ public class OpenGameRequest extends Request {
     public OpenGameRequest(GameDTO gameDTO) {
         super(RequestType.NEW_GAME);
         this.gameDTO = gameDTO;
-
     }
 
     public GameDTO getGameDTO() {

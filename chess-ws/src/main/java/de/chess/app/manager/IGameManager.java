@@ -2,6 +2,7 @@ package de.chess.app.manager;
 
 import de.chess.dto.GameDTO;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface IGameManager {
@@ -11,7 +12,7 @@ public interface IGameManager {
     public GameDTO requestGame(GameDTO gameDTO);
     public boolean isGameExists(UUID uuid) ;
     public int numberOfRunningGames();
-
+    public List<GameDTO> getActiveGameList();
     /**
      * Delete all games.
      */

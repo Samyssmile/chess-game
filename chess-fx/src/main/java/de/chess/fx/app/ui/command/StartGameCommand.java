@@ -15,14 +15,15 @@ public class StartGameCommand implements ICommando {
     public StartGameCommand(Scene scene, GameDTO gameDTO) {
         this.scene = scene;
         this.gameDTO = gameDTO;
-
     }
 
     @Override
     public void execute() {
         LOGGER.log(Level.INFO, "Start Game Command...");
-
-        GameBoardView gameBoardView = new GameBoardView(new GameClient(gameDTO));
+        GameClient.getInstance().setGameDTO(gameDTO);
+        GameClient.getInstance().start();
+        GameClient.getInstance().openGameRequest();
+        GameBoardView gameBoardView = new GameBoardView(GameClient.getInstance());
         gameBoardView.setAlignment(Pos.CENTER);
         scene.setRoot(gameBoardView);
     }

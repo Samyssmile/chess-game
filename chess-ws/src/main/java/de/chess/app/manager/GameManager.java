@@ -13,7 +13,7 @@ public class GameManager implements IGameManager {
     public static final Logger LOGGER = Logger.getGlobal();
     private static IGameManager instance = null;
     private List<GameDTO> activeGameList = new ArrayList<>();
-    private int gameLimit = 2;
+    private int gameLimit = 4;
 
 
     private GameManager() {
@@ -28,12 +28,13 @@ public class GameManager implements IGameManager {
 
     @Override
     public GameDTO requestGame(GameDTO gameDTO) {
-        GameDTO result = null;
+        GameDTO result = gameDTO;
         if (gameLimitNotReached()) {
             gameDTO.setUuid(generateUUID());
             activeGameList.add(gameDTO);
             result = gameDTO;
         }else{
+
             LOGGER.warning("Limit for concurent running games reached");
         }
         return result;
@@ -83,8 +84,10 @@ public class GameManager implements IGameManager {
     private UUID generateUUID() {
         return UUID.randomUUID();
     }
-
-
+    @Override
+    public List<GameDTO> getActiveGameList() {
+        return activeGameList;
+    }
 
     private void removeGame(List<GameDTO> list, UUID element) {
         for (int i = 0; i < list.size(); i++) {

@@ -1,5 +1,6 @@
 package de.chess.fx.app.provider;
 
+import de.chess.dto.GameDTO;
 import de.chess.fx.app.model.GameRowData;
 import de.chess.model.ChessColor;
 
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DummyProvider implements IGameListProvider {
+
 
     @Override
     public List<GameRowData> receiveGameList() {
@@ -18,5 +20,10 @@ public class DummyProvider implements IGameListProvider {
         gameList.add(dummyGame2);
         gameList.add(dummyGame3);
         return gameList;
+    }
+
+    @Override
+    public void setGameList(List<GameDTO> gameList) {
+
     }
 }
