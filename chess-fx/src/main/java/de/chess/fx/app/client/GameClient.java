@@ -32,7 +32,7 @@ public class GameClient {
             Thread t = new Thread(client);
             t.setDaemon(true);
             t.start();
-            sendRequest(new OpenGameRequest());
+            sendRequest(new OpenGameRequest(gameDTO));
         } catch (IOException e) {
             e.printStackTrace();
         }

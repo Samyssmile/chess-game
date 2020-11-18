@@ -2,6 +2,8 @@ package de.chess.app.server.nio;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import de.chess.app.manager.GameManager;
+import de.chess.dto.GameDTO;
 import de.chess.dto.RequestType;
 import de.chess.dto.request.OpenGameRequest;
 import de.chess.dto.request.Request;
@@ -49,10 +51,14 @@ public class EchoWorker implements Runnable {
 
     private Response prepareResponse(String request) {
         JsonObject jsonObjectb = gson.fromJson(request, JsonObject.class);
+
         String requestType = jsonObjectb.get("requestType").getAsString();
         Response openGameResponse = null;
         if (requestType.equals("NEW_GAME")){
+            GameDTO gameDTO = gson.fromJson(request, OpenGameRequest.class).getGameDTO();
+            gameDTO = GameManager.instance().requestGame(gameDTO);
             openGameResponse = new OpenGameResponse(UUID.randomUUID(), RequestType.NEW_GAME, true);
+            openGameResponse.setGameDTO(gameDTO);
         }
 
         return openGameResponse;
