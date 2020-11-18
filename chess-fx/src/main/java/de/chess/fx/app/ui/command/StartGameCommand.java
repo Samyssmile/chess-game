@@ -22,10 +22,7 @@ public class StartGameCommand implements ICommando {
     public void execute() {
         LOGGER.log(Level.INFO, "Start Game Command...");
 
-
-
         GameBoardView gameBoardView = new GameBoardView(new GameClient(gameDTO));
-
         gameBoardView.setAlignment(Pos.CENTER);
         scene.setRoot(gameBoardView);
     }

@@ -22,7 +22,8 @@ public class GameBoardView extends GridPane implements UIView {
     public GameBoardView(GameClient gameClient) {
         initViewModel();
         viewModel.setGameClient(gameClient);
-        gameClient.start();
+        viewModel.openGame();
+
         initNodes();
         Bindings.bindBidirectional(boardMatrix, viewModel.boardMatrixProperty());
     }

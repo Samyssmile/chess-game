@@ -2,6 +2,9 @@ package de.chess.fx.app.ui.views.gameboard;
 
 import com.google.gson.Gson;
 import de.chess.dto.Declaration;
+import de.chess.dto.RequestType;
+import de.chess.dto.request.MoveRequest;
+import de.chess.dto.request.Request;
 import de.chess.fx.app.client.GameClient;
 import de.chess.fx.app.ui.views.field.FieldView;
 import de.chess.fx.app.ui.views.figure.*;
@@ -143,12 +146,9 @@ public class GameBoardViewModel implements Flow.Subscriber<String> {
     }
 
     @Override
-    public void onNext(String item) {
-        Declaration declaration = new Declaration(UUID.randomUUID().toString(), null);
-        declaration.moveDeclaration(item);
-        Gson gson = new Gson();
-
-        this.gameClient.sendDataToServer(gson.toJson(declaration));
+    public void onNext(String move) {
+        Request request = new MoveRequest(UUID.randomUUID(), RequestType.MOVE, move);
+        this.gameClient.sendRequest(request);
         subscription.request(100);
     }
 
@@ -165,5 +165,11 @@ public class GameBoardViewModel implements Flow.Subscriber<String> {
 
     public void setGameClient(GameClient gameClient) {
         this.gameClient = gameClient;
+
+    }
+
+    public void openGame() {
+        assert this.gameClient != null;
+        this.gameClient.start();
     }
 }
