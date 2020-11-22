@@ -38,7 +38,7 @@ public class JoinGameViewModel {
     }
 
     public ICommando getJoinGameCommand(Scene scene) {
-        return new ToJoinGameCommand(scene);
+        return new ToJoinGameCommand(scene, selectedGameProperty.get().getUuid());
     }
 
     public ObservableList<GameRowData> getData() {

@@ -1,6 +1,7 @@
 package de.chess.fx.app.ui.views.host;
 
-import de.chess.dto.GameDTO;
+import de.chess.dto.ChessGame;
+import de.chess.dto.Player;
 import de.chess.fx.app.ui.command.ICommando;
 import de.chess.fx.app.ui.command.StartGameCommand;
 import de.chess.fx.app.ui.command.ToMainMenuCommand;
@@ -10,7 +11,6 @@ import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
-import javafx.scene.control.Toggle;
 
 public class HostGameViewModel {
 
@@ -76,8 +76,8 @@ public class HostGameViewModel {
     }
 
 
-    private GameDTO buildGameDTO(){
-         GameDTO gameDTO = new GameDTO(getGameName(), getPayerName(), getTimeLimit(), getSelectedColorValue(), getGameType());
+    private ChessGame buildGameDTO(){
+         ChessGame gameDTO = new ChessGame(getGameName(), new Player(getPayerName(), 1500), getTimeLimit(), getSelectedColorValue(), getGameType());
          return gameDTO;
 
     }

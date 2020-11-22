@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 public class Declaration implements Serializable {
 
-    private final GameDTO gameDTO;
+    private final ChessGame gameDTO;
     private String uuid;
     private String name;
     private boolean isMoveDeclaration;
     private String move;
 
-    public Declaration(String uuid, GameDTO gameDTO) {
+    public Declaration(String uuid, ChessGame gameDTO) {
         this.uuid = uuid;
         this.gameDTO= gameDTO;
     }

@@ -1,11 +1,8 @@
 package de.chess.fx.app.ui.views.gameboard;
 
-import com.google.gson.Gson;
-import de.chess.dto.Declaration;
 import de.chess.dto.RequestType;
 import de.chess.dto.request.MoveRequest;
 import de.chess.dto.request.Request;
-import de.chess.fx.app.client.GameClient;
 import de.chess.fx.app.ui.views.field.FieldView;
 import de.chess.fx.app.ui.views.figure.*;
 import de.chess.model.ChessColor;
@@ -27,7 +24,6 @@ public class GameBoardViewModel implements Flow.Subscriber<String> {
     private SimpleObjectProperty<FieldView[][]> boardMatrix = new SimpleObjectProperty<>(new FieldView[8][8]);
 
     private Flow.Subscription subscription;
-    private GameClient gameClient;
 
     public GameBoardViewModel() {
         initFields();
@@ -148,7 +144,6 @@ public class GameBoardViewModel implements Flow.Subscriber<String> {
     @Override
     public void onNext(String move) {
         Request request = new MoveRequest(UUID.randomUUID(), RequestType.MOVE, move);
-        this.gameClient.sendRequest(request);
         subscription.request(100);
     }
 
@@ -163,13 +158,7 @@ public class GameBoardViewModel implements Flow.Subscriber<String> {
         System.out.println("Flow API: complete");
     }
 
-    public void setGameClient(GameClient gameClient) {
-        this.gameClient = gameClient;
-
-    }
 
     public void openGame() {
-        assert this.gameClient != null;
-        this.gameClient.start();
     }
 }

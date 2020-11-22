@@ -143,6 +143,11 @@ public class FieldView extends Pane implements UIView {
         this.viewModel = new FieldViewModel();
     }
 
+    @Override
+    public void confugureView() {
+
+    }
+
     public PortableGameNotation toPGN() {
         return new PortableGameNotation(xCoordinate.getValue(), yCoordinate.getValue());
     }

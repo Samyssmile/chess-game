@@ -50,11 +50,7 @@ public class HostGameView extends VBox implements Internalization, UIView {
     private ComboBox<String> comboTimeLimit;
 
     public HostGameView() {
-        this.setPadding(new Insets(50));
-        this.setSpacing(SPACING);
-        this.setAlignment(Pos.CENTER);
-        this.setPrefWidth(RIGHT_COL_WIDTH);
-        this.setWidth(RIGHT_COL_WIDTH);
+        confugureView();
 
         nodeList = initNodes();
         initActionsEvents();
@@ -119,6 +115,16 @@ public class HostGameView extends VBox implements Internalization, UIView {
         radioWhite.disableProperty().bindBidirectional(viewModel.whiteSelectedProperty());
         radioRandom.disableProperty().bindBidirectional(viewModel.randomSelectedProperty());
         viewModel.timeLimitProperty().bind(comboTimeLimit.getSelectionModel().selectedItemProperty());
+    }
+
+    @Override
+    public void confugureView() {
+        this.setPadding(new Insets(50));
+        this.setSpacing(SPACING);
+        this.setAlignment(Pos.CENTER);
+        this.setPrefWidth(RIGHT_COL_WIDTH);
+        this.setWidth(RIGHT_COL_WIDTH);
+
     }
 
     @Override

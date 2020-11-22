@@ -1,6 +1,6 @@
 package de.chess.dto.response;
 
-import de.chess.dto.GameDTO;
+import de.chess.dto.ChessGame;
 import de.chess.dto.RequestType;
 
 import java.util.UUID;
@@ -9,7 +9,7 @@ public class Response {
 
     private UUID gameUUID;
     private RequestType requestType;
-    private GameDTO gameDTO;
+    private ChessGame gameDTO;
 
     public Response(RequestType requestType) {
         this.requestType = requestType;
@@ -21,11 +21,11 @@ public class Response {
     }
 
 
-    public GameDTO getGameDTO() {
+    public ChessGame getGameDTO() {
         return gameDTO;
     }
 
-    public void setGameDTO(GameDTO gameDTO) {
+    public void setGameDTO(ChessGame gameDTO) {
         this.gameDTO = gameDTO;
     }
 

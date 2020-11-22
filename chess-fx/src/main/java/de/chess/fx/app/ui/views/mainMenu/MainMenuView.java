@@ -24,14 +24,9 @@ public class MainMenuView extends VBox implements Internalization, UIView {
     private Separator titleSeparator;
 
     public MainMenuView() {
-        this.setPadding(new Insets(10));
-        this.setSpacing(10);
-        this.setAlignment(Pos.CENTER);
-        this.setPrefWidth(BUTTON_WIDTH);
-
         initNodes();
-        configureLayout();
         layoutNodes();
+        confugureView();
         initActionsEvents();
         initViewModel();
 
@@ -45,10 +40,6 @@ public class MainMenuView extends VBox implements Internalization, UIView {
         this.getChildren().addAll(buttonList);
     }
 
-    private void configureLayout() {
-        buttonList.forEach(e -> e.setMinWidth(BUTTON_WIDTH));
-        buttonList.forEach(e -> e.setMinHeight(BUTTON_HEIGHT));
-    }
 
     @Override
     public List<Node> initNodes() {
@@ -59,7 +50,7 @@ public class MainMenuView extends VBox implements Internalization, UIView {
         nodeList.add(addButton(i18n("menu.joinGame")));
         nodeList.add(addButton(i18n("menu.exitGame")));
         nodeList.add(lblTitle);
-         titleSeparator = new Separator();
+        titleSeparator = new Separator();
         titleSeparator.setMaxWidth(200);
         return nodeList;
     }
@@ -81,5 +72,15 @@ public class MainMenuView extends VBox implements Internalization, UIView {
     @Override
     public void initViewModel() {
         viewModel = new MainMenuViewModel();
+    }
+
+    @Override
+    public void confugureView() {
+        buttonList.forEach(e -> e.setMinWidth(BUTTON_WIDTH));
+        buttonList.forEach(e -> e.setMinHeight(BUTTON_HEIGHT));
+        this.setPadding(new Insets(10));
+        this.setSpacing(10);
+        this.setAlignment(Pos.CENTER);
+        this.setPrefWidth(BUTTON_WIDTH);
     }
 }

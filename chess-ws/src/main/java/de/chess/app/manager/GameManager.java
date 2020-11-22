@@ -1,18 +1,16 @@
 package de.chess.app.manager;
 
-import de.chess.dto.GameDTO;
+import de.chess.dto.ChessGame;
+import de.chess.dto.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.IntStream;
 
 public class GameManager implements IGameManager {
     public static final Logger LOGGER = Logger.getGlobal();
     private static IGameManager instance = null;
-    private List<GameDTO> activeGameList = new ArrayList<>();
+    private final List<ChessGame> activeGameList = new ArrayList<>();
     private int gameLimit = 4;
 
 
@@ -27,13 +25,13 @@ public class GameManager implements IGameManager {
     }
 
     @Override
-    public GameDTO requestGame(GameDTO gameDTO) {
-        GameDTO result = gameDTO;
+    public ChessGame requestGame(ChessGame gameDTO) {
+        ChessGame result = gameDTO;
         if (gameLimitNotReached()) {
             gameDTO.setUuid(generateUUID());
             activeGameList.add(gameDTO);
             result = gameDTO;
-        }else{
+        } else {
 
             LOGGER.warning("Limit for concurent running games reached");
         }
@@ -43,7 +41,7 @@ public class GameManager implements IGameManager {
 
     @Override
     public void killGame(UUID uuid) {
-        LOGGER.info("Kill Game: " + uuid + !isGameExists(uuid));
+        LOGGER.info("Kill Game: %s%s".formatted(uuid, !isGameExists(uuid)));
         removeGame(activeGameList, uuid);
     }
 
@@ -61,18 +59,38 @@ public class GameManager implements IGameManager {
     public void reset() {
         activeGameList.clear();
     }
+
     @Override
     public int getGameLimit() {
         return gameLimit;
     }
+
     @Override
     public void setGameLimit(int gameLimit) {
         this.gameLimit = gameLimit;
     }
-    public boolean move(UUID uuid, String move) {
-        if (isGameExists(uuid)) {
 
+    @Override
+    public boolean joinGameRequest(Player player, UUID gameUUID) {
+        Optional<ChessGame> chessGameOptional = findGameByUUID(gameUUID);
+        boolean result = false;
+
+        if (chessGameOptional.isPresent() && chessGameOptional.get().isWaitingForPlayerToJoin()) {
+            ChessGame chessGame = chessGameOptional.get();
+            chessGame.setClientPlayer(player);
+            result = true;
         }
+
+        return result;
+    }
+
+    public Optional<ChessGame> findGameByUUID(UUID gameUUID) {
+        LOGGER.info("Searching for Game %s as a Player requested to join".formatted(gameUUID));
+        Optional<ChessGame> chessGameOptional = getActiveGameList().stream().filter(chessGame -> chessGame.getUuid().equals(gameUUID)).findFirst();
+        return chessGameOptional;
+    }
+
+    public boolean move(UUID uuid, String move) {
         return false;
     }
 
@@ -84,12 +102,13 @@ public class GameManager implements IGameManager {
     private UUID generateUUID() {
         return UUID.randomUUID();
     }
+
     @Override
-    public List<GameDTO> getActiveGameList() {
+    public List<ChessGame> getActiveGameList() {
         return activeGameList;
     }
 
-    private void removeGame(List<GameDTO> list, UUID element) {
+    private void removeGame(List<ChessGame> list, UUID element) {
         for (int i = 0; i < list.size(); i++) {
             if (Objects.equals(element, list.get(i).getUuid())) {
                 list.remove(i);
