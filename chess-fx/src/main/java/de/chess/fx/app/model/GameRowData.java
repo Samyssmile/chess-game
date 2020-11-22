@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public class GameRowData {
 
-    private UUID uuid = UUID.randomUUID();
+    private UUID uuid;
     private final SimpleStringProperty creator;
     private final SimpleStringProperty oppnent;
     private final SimpleStringProperty gameName;
@@ -20,11 +20,12 @@ public class GameRowData {
     private final SimpleObjectProperty<GameType> isRankedGame;
 
 
-    public GameRowData(String creatorValue, String gameNameValue, ChessColor creatorsColorValue) {
-        this(creatorValue, "", gameNameValue, creatorsColorValue, "00:00", "05:00", GameType.FUN);
+    public GameRowData(UUID uuid, String creatorValue, String gameNameValue, ChessColor creatorsColorValue) {
+        this(uuid, creatorValue, "", gameNameValue, creatorsColorValue, "00:00", "05:00", GameType.FUN);
     }
 
-    public GameRowData(String creatorValue, String oppnentValue, String gameNameValue, ChessColor creatorsColorValue, String timeElapsedValue, String timeLimitValue, GameType isRankedGameValue) {
+    public GameRowData(UUID uuid, String creatorValue, String oppnentValue, String gameNameValue, ChessColor creatorsColorValue, String timeElapsedValue, String timeLimitValue, GameType isRankedGameValue) {
+        this.uuid= uuid;
         this.creator = new SimpleStringProperty(creatorValue);
         this.oppnent = new SimpleStringProperty(oppnentValue);
         this.gameName = new SimpleStringProperty(gameNameValue);
@@ -34,8 +35,8 @@ public class GameRowData {
         this.isRankedGame = new SimpleObjectProperty<>(isRankedGameValue);
     }
 
-    public GameRowData(String creatorValue, String gameNameValue, ChessColor creatorsColorValue, String timeLimitValue) {
-        this(creatorValue, "", gameNameValue, creatorsColorValue, "00:00", timeLimitValue, GameType.FUN);
+    public GameRowData(UUID uuid, String creatorValue, String gameNameValue, ChessColor creatorsColorValue, String timeLimitValue) {
+        this(uuid, creatorValue, "", gameNameValue, creatorsColorValue, "00:00", timeLimitValue, GameType.FUN);
     }
 
 

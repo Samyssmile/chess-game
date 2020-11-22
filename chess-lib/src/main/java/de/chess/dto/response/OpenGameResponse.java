@@ -1,6 +1,5 @@
 package de.chess.dto.response;
 
-import de.chess.dto.GameDTO;
 import de.chess.dto.RequestType;
 
 import java.util.UUID;

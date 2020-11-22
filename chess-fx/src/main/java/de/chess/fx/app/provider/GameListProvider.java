@@ -1,9 +1,8 @@
 package de.chess.fx.app.provider;
 
-import de.chess.dto.GameDTO;
+import de.chess.dto.ChessGame;
 import de.chess.dto.RequestType;
 import de.chess.dto.request.ReceiveGameRequest;
-import de.chess.fx.app.client.GameClient;
 import de.chess.fx.app.model.GameRowData;
 
 import java.util.ArrayList;
@@ -27,16 +26,14 @@ public class GameListProvider implements IGameListProvider {
 
     @Override
     public List<GameRowData> receiveGameList() {
-        GameClient.getInstance().sendRequest(new ReceiveGameRequest(RequestType.REQUEST_GAME_LIST));
-
         return gameRowList;
     }
 
     @Override
-    public void setGameList(List<GameDTO> gameList) {
+    public void setGameList(List<ChessGame> gameList) {
         gameRowList.clear();
-        for (GameDTO gameDTO : gameList) {
-            GameRowData gameRowData = new GameRowData(gameDTO.getHostPlayerName(), gameDTO.getGameName(), gameDTO.getHostColor(), gameDTO.getTimeLimit());
+        for (ChessGame gameDTO : gameList) {
+            GameRowData gameRowData = new GameRowData(gameDTO.getUuid(), gameDTO.getHostPlayerName(), gameDTO.getGameName(), gameDTO.getHostColor(), gameDTO.getTimeLimit());
             gameRowList.add(gameRowData);
         }
 

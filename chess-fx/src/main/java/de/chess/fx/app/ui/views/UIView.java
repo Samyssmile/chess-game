@@ -18,4 +18,9 @@ public interface UIView {
     public  void initActionsEvents();
 
     public void initViewModel();
+
+    /**
+     * Configure things like width, hieight, colors, fonts here.
+     */
+    public void confugureView();
 }

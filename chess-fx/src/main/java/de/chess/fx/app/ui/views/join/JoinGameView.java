@@ -40,9 +40,7 @@ public class JoinGameView extends VBox implements Internalization, UIView {
         table = setupGameBrowserTable();
         nodeList = initNodes();
         initActionsEvents();
-        this.setAlignment(Pos.CENTER);
-        this.setPadding(new Insets(50));
-        this.setSpacing(SPACING);
+        confugureView();
 
         getChildren().add(title);
         getChildren().add(table);
@@ -96,6 +94,7 @@ public class JoinGameView extends VBox implements Internalization, UIView {
 
     @Override
     public void initActionsEvents() {
+
         btnJoin.setOnAction(event -> viewModel.getJoinGameCommand(getScene()).execute());
         btnLeave.setOnAction(event -> viewModel.getToMainMenuCommand(getScene()).execute());
     }
@@ -103,5 +102,12 @@ public class JoinGameView extends VBox implements Internalization, UIView {
     @Override
     public void initViewModel() {
         this.viewModel = new JoinGameViewModel();
+    }
+
+    @Override
+    public void confugureView() {
+        this.setAlignment(Pos.CENTER);
+        this.setPadding(new Insets(50));
+        this.setSpacing(SPACING);
     }
 }

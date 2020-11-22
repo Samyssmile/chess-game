@@ -1,6 +1,5 @@
 package de.chess.fx.app.handler;
 
-import de.chess.fx.app.client.GameClient;
 import de.chess.fx.app.ui.dialogs.DialogFactory;
 
 import java.util.logging.Level;
