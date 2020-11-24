@@ -1,6 +1,7 @@
 package de.chess.app;
 
 import de.chess.app.server.ServerProperties;
+import de.chess.io.server.GameServer;
 import de.chess.logging.WebTextLogger;
 
 import java.io.IOException;
@@ -41,6 +42,9 @@ public class ChessBackend implements IChessBackend {
 
   @Override
   public void start() throws IOException, ClassNotFoundException {
+    Thread gameServerThread = new GameServer(serverProperties.getServerPort(), serverProperties.getBacklogLimit(), serverProperties.getLocalHostAddress());
+    gameServerThread.start();
+
   }
 
   @Override

@@ -4,6 +4,8 @@ import de.chess.fx.app.audio.MusicPlayer;
 import de.chess.fx.app.client.IClientProperties;
 import de.chess.fx.app.client.LocalDevPClientProperties;
 import de.chess.fx.app.ui.views.mainMenu.MainMenuView;
+import de.chess.io.client.GameClient;
+import de.chess.io.client.IGameClientApplication;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -13,14 +15,14 @@ import javafx.stage.Stage;
 import java.net.URISyntaxException;
 import java.util.logging.Logger;
 
-public class ChessFX extends Application {
-    private static final Logger LOGGER =  Logger.getGlobal();
+public class ChessFX extends Application implements IGameClientApplication {
+    private static final Logger LOGGER = Logger.getGlobal();
     private static final double FRAME_WIDTH = 1300;
     private static final double FRAME_HEIGHT = 850;
-    private MusicPlayer musicPlayer;
+    private final MusicPlayer musicPlayer;
 
     public ChessFX() throws URISyntaxException {
-        musicPlayer = new MusicPlayer();
+        this.musicPlayer = new MusicPlayer();
     }
 
     public static void main(String[] args) {
@@ -43,6 +45,12 @@ public class ChessFX extends Application {
         stage.show();
         stage.setTitle(clientProperties.getApplicationTitle());
 
-        musicPlayer.playBackgroundMusic();
+        this.musicPlayer.playBackgroundMusic();
+        connect(clientProperties.getServerAddress(), clientProperties.getServerPort());
+    }
+
+    public void connect(String serverAddress, int serverPort) {
+        GameClient client = new GameClient(serverAddress, serverPort);
+        client.execute();
     }
 }
