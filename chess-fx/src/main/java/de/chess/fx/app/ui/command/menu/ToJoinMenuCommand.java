@@ -1,5 +1,6 @@
-package de.chess.fx.app.ui.command;
+package de.chess.fx.app.ui.command.menu;
 
+import de.chess.fx.app.ui.command.ICommando;
 import de.chess.fx.app.ui.views.join.JoinGameView;
 import javafx.scene.Scene;
 

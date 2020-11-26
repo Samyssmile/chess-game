@@ -1,5 +1,8 @@
 package de.chess.io.server;
 
+import de.chess.io.client.ReadThread;
+import de.chess.io.client.WriteThread;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -16,12 +19,15 @@ public class GameServer extends Thread {
     private final int port;
     private final int backlog;
     private final InetAddress address;
+    private final IRequestAnalyzer requestAnalyzer;
     private boolean serverRuning = false;
 
-    public GameServer(int port, int backlog, InetAddress address) {
+
+    public GameServer(int port, int backlog, InetAddress address, IRequestAnalyzer requestAnalyzer) {
         this.port = port;
         this.backlog = backlog;
         this.address = address;
+        this.requestAnalyzer = requestAnalyzer;
         setReady();
     }
 
@@ -34,7 +40,7 @@ public class GameServer extends Thread {
                 Socket socket = serverSocket.accept();
                 LOGGER.log(Level.INFO, "Incoming Client accepted");
 
-                ClientThread client = new ClientThread(socket, this);
+                ClientThread client = new ClientThread(socket, requestAnalyzer);
                 this.clientThreads.add(client);
                 client.start();
             }
@@ -43,6 +49,7 @@ public class GameServer extends Thread {
             ex.printStackTrace();
         }
     }
+
 
     public void stopServer() {
         this.serverRuning = false;

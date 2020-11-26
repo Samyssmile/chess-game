@@ -1,12 +1,13 @@
-package de.chess.fx.app.ui.command;
+package de.chess.fx.app.ui.command.menu;
 
+import de.chess.fx.app.ui.command.ICommando;
 import de.chess.fx.app.ui.views.gameboard.GameView;
 import javafx.scene.Scene;
 
 import java.util.UUID;
 import java.util.logging.Level;
 
-public class ToJoinGameCommand implements ICommando{
+public class ToJoinGameCommand implements ICommando {
     private final Scene scene;
     private final UUID gameUUID;
 

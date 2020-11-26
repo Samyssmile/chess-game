@@ -2,8 +2,8 @@ package de.chess.fx.app.ui.views.mainMenu;
 
 import de.chess.fx.app.ui.command.ExitGameCommand;
 import de.chess.fx.app.ui.command.ICommando;
-import de.chess.fx.app.ui.command.ToHostGameCommand;
-import de.chess.fx.app.ui.command.ToJoinMenuCommand;
+import de.chess.fx.app.ui.command.menu.ToHostGameCommand;
+import de.chess.fx.app.ui.command.menu.ToJoinMenuCommand;
 import javafx.scene.Scene;
 
 public class MainMenuViewModel {

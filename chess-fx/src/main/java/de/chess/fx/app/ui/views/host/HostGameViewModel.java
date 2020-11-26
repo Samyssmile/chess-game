@@ -4,7 +4,8 @@ import de.chess.dto.ChessGame;
 import de.chess.dto.Player;
 import de.chess.fx.app.ui.command.ICommando;
 import de.chess.fx.app.ui.command.StartGameCommand;
-import de.chess.fx.app.ui.command.ToMainMenuCommand;
+import de.chess.fx.app.ui.command.StartHostGameCommand;
+import de.chess.fx.app.ui.command.menu.ToMainMenuCommand;
 import de.chess.model.ChessColor;
 import de.chess.model.GameType;
 import javafx.beans.property.*;
@@ -140,6 +141,10 @@ public class HostGameViewModel {
 
     public ICommando getStartCommand(Scene scene){
         return new StartGameCommand(scene, buildGameDTO());
+    }
+
+    public ICommando requestHosting(Scene scene){
+        return new StartHostGameCommand(scene, buildGameDTO());
     }
 
     public ICommando getToMainMenuCommand(Scene scene) {

@@ -130,7 +130,7 @@ public class HostGameView extends VBox implements Internalization, UIView {
     @Override
     public void initActionsEvents() {
         btnBack.setOnAction(event -> viewModel.getToMainMenuCommand(getScene()).execute());
-        btnStart.setOnAction(event -> viewModel.getStartCommand(getScene()).execute());
+        btnStart.setOnAction(event -> viewModel.requestHosting(getScene()).execute());
     }
 
     private void structureMenu() {

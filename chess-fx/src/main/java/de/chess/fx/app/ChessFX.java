@@ -50,7 +50,7 @@ public class ChessFX extends Application implements IGameClientApplication {
     }
 
     public void connect(String serverAddress, int serverPort) {
-        GameClient client = new GameClient(serverAddress, serverPort);
+        GameClient client = GameClient.getAndIniTInstance(serverAddress, serverPort);
         client.execute();
     }
 }

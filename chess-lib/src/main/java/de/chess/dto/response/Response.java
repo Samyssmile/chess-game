@@ -3,9 +3,10 @@ package de.chess.dto.response;
 import de.chess.dto.ChessGame;
 import de.chess.dto.RequestType;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class Response {
+public class Response implements Serializable {
 
     private UUID gameUUID;
     private RequestType requestType;

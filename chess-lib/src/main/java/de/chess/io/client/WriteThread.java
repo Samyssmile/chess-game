@@ -1,15 +1,24 @@
 package de.chess.io.client;
 
-import java.io.Console;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import de.chess.dto.request.Request;
+
+import java.io.*;
 import java.net.Socket;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class WriteThread extends Thread {
-    private PrintWriter writer;
+    private static final Logger LOGGER = Logger.getGlobal();
+    private ObjectOutputStream writer;
     private final Socket socket;
     private final GameClient client;
+    private LinkedBlockingQueue<Request> requestQueue = new LinkedBlockingQueue<>();
+    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public WriteThread(Socket socket, GameClient client) {
         this.socket = socket;
@@ -17,34 +26,50 @@ public class WriteThread extends Thread {
 
         try {
             OutputStream output = socket.getOutputStream();
-            this.writer = new PrintWriter(output, true);
+            this.writer = new ObjectOutputStream(output);
         } catch (IOException ex) {
             System.out.println("Error getting output stream: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
 
+    @Override
     public void run() {
-
-        Console console = System.console();
-
-        String msg = "Hello World";
-
         do {
-
-            this.writer.println(msg);
-            try {
-                sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            synchronized (requestQueue) {
+                try {
+                    Request request = requestQueue.take();
+                    String jsonRequest = gson.toJson(request);
+                    writer.writeObject(jsonRequest);
+                    writer.flush();
+                    LOGGER.log(Level.INFO, "Request was sent");
+                } catch (InterruptedException | IOException e) {
+                    e.printStackTrace();
+                }
+                if (requestQueue.isEmpty())
+                    requestQueue.notify(); // notify the producer
             }
-        } while (msg != null);
 
+        } while (socket.isConnected());
+
+        closeConnection();
+    }
+
+    private void closeConnection() {
         try {
             this.socket.close();
         } catch (IOException ex) {
-
             System.out.println("Error writing to server: " + ex.getMessage());
         }
+    }
+
+    /**
+     * Add a Request to execution queue.
+     *
+     * @param request
+     */
+    public void addRequest(Request request) {
+        LOGGER.log(Level.INFO, "New Request added to request queue");
+        requestQueue.add(request);
     }
 }

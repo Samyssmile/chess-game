@@ -1,12 +1,11 @@
 package de.chess.fx.app.ui.views.join;
 
 import de.chess.fx.app.model.GameRowData;
-import de.chess.fx.app.provider.DummyProvider;
 import de.chess.fx.app.provider.GameListProvider;
 import de.chess.fx.app.provider.IGameListProvider;
 import de.chess.fx.app.ui.command.ICommando;
-import de.chess.fx.app.ui.command.ToJoinGameCommand;
-import de.chess.fx.app.ui.command.ToMainMenuCommand;
+import de.chess.fx.app.ui.command.menu.ToJoinGameCommand;
+import de.chess.fx.app.ui.command.menu.ToMainMenuCommand;
 import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
