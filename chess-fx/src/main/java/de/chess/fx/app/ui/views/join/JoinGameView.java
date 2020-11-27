@@ -3,6 +3,7 @@ package de.chess.fx.app.ui.views.join;
 import de.chess.fx.app.i18n.Internalization;
 import de.chess.fx.app.model.GameRowData;
 import de.chess.fx.app.ui.views.UIView;
+import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -28,6 +29,7 @@ public class JoinGameView extends VBox implements Internalization, UIView {
     private TableColumn timeElapsed;
     private TableColumn isRanked;
     private Label title;
+    private Button btnRefresh;
     private Button btnJoin;
     private Button btnLeave;
     private TableView table;
@@ -44,6 +46,7 @@ public class JoinGameView extends VBox implements Internalization, UIView {
 
         getChildren().add(title);
         getChildren().add(table);
+        getChildren().add(btnRefresh);
         getChildren().add(btnJoin);
         getChildren().add(btnLeave);
     }
@@ -67,7 +70,15 @@ public class JoinGameView extends VBox implements Internalization, UIView {
         isRanked.setCellValueFactory(new PropertyValueFactory<GameRowData, String>("isRankedGame"));
 
         table.getColumns().addAll(gameName, creator, creatorsColor, timeElapsed, timeLimit, isRanked);
-        table.setItems(viewModel.getData());
+
+        viewModel.getData().addListener(new ListChangeListener<GameRowData>() {
+            @Override
+            public void onChanged(Change<? extends GameRowData> c) {
+                System.out.println("Changed!!");
+                table.setItems(viewModel.getData());
+            }
+        });
+
         viewModel.selectedGameProperty.bind(table.getSelectionModel().selectedItemProperty());
         return table;
     }
@@ -78,14 +89,20 @@ public class JoinGameView extends VBox implements Internalization, UIView {
         title = new Label(i18n("menu.joinGame.title"));
         title.setFont(new Font(FONT_SIZE));
 
+
+        btnRefresh = new Button(i18n("menu.joinGame.refresh"));
+        btnRefresh.setMinWidth(200);
+
         btnJoin = new Button(i18n("menu.joinGame.join"));
         btnJoin.setMinWidth(200);
         btnJoin.disableProperty().bindBidirectional(viewModel.isJoinButtonDisabled);
+
         btnLeave = new Button(i18n("menu.joinGame.back"));
         btnLeave.setMinWidth(200);
 
         nodeList.add(table);
         nodeList.add(title);
+        nodeList.add(btnRefresh);
         nodeList.add(btnJoin);
         nodeList.add(btnLeave);
 
@@ -94,7 +111,7 @@ public class JoinGameView extends VBox implements Internalization, UIView {
 
     @Override
     public void initActionsEvents() {
-
+        btnRefresh.setOnAction(event -> viewModel.getRefreshGameListCommand().execute());
         btnJoin.setOnAction(event -> viewModel.getJoinGameCommand(getScene()).execute());
         btnLeave.setOnAction(event -> viewModel.getToMainMenuCommand(getScene()).execute());
     }

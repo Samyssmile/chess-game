@@ -7,17 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReceiveGameListResponse extends Response {
-    private List<ChessGame> gameList = new ArrayList<>();
+    private final List<ChessGame> gameList;
 
-    public ReceiveGameListResponse(RequestType requestType) {
-        super(requestType);
+    public ReceiveGameListResponse(List<ChessGame> gameList) {
+        super(RequestType.REQUEST_GAME_LIST);
+        System.out.println("Response Game Lsit created: "+gameList.size());
+        this.gameList = gameList;
     }
 
     public List<ChessGame> getGameList() {
         return gameList;
     }
 
-    public void setGameList(List<ChessGame> gameList) {
-        this.gameList = gameList;
-    }
 }

@@ -18,9 +18,9 @@ public class ToJoinGameCommand implements ICommando {
 
     @Override
     public void execute() {
+        LOGGER.log(Level.INFO, "Join Game Command...");
         GameView gameView = new GameView();
         scene.setRoot(gameView);
 
-        LOGGER.log(Level.INFO, "Join Game Command...");
     }
 }

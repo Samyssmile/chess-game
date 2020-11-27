@@ -3,6 +3,7 @@ package de.chess.io.client;
 import de.chess.dto.request.Request;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -12,6 +13,7 @@ public class GameClient {
     private static final Logger LOGGER = Logger.getGlobal();
     private final String hostname;
     private final int port;
+    private final IResponseAnalyzer responseAnalyzer;
     private String userName;
     private Socket socket;
     private ReadThread readingThread;
@@ -24,41 +26,47 @@ public class GameClient {
         return Optional.of(instance);
     }
 
-    public static GameClient getAndIniTInstance(String hostname, int port) {
+    public static GameClient getAndIniTInstance(String hostname, int port, IResponseAnalyzer responseAnalyzer) {
         if (instance == null) {
-            instance = new GameClient(hostname, port);
+            instance = new GameClient(hostname, port, responseAnalyzer);
         }
         return instance;
     }
 
-    private GameClient(String hostname, int port) {
+    private GameClient(String hostname, int port, IResponseAnalyzer responseAnalyzer) {
         this.hostname = hostname;
         this.port = port;
+        this.responseAnalyzer = responseAnalyzer;
     }
 
     /**
      * Connect to Server
      */
     public void execute() {
-        connect(this.hostname, this.port);
-        startReadWriteThreads();
+        if (connect(this.hostname, this.port)) {
+            startReadWriteThreads();
+        }
+
     }
 
     private void startReadWriteThreads() {
         writingThread = new WriteThread(this.socket, this);
-        readingThread = new ReadThread(this.socket, this);
+        readingThread = new ReadThread(this.socket, this, responseAnalyzer);
         readingThread.start();
         writingThread.start();
     }
 
-    private void connect(String hostname, int port) {
+    private boolean connect(String hostname, int port) {
+        boolean conntected = false;
         try {
             this.socket = new Socket(hostname, port);
+            conntected = this.socket.isConnected();
             LOGGER.log(Level.INFO, "Connected");
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, "Connection Refused or Server not found.");
-            e.printStackTrace();
         }
+
+        return conntected;
 
     }
 

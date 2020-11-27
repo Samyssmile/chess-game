@@ -10,9 +10,11 @@ import de.chess.dto.RequestType;
 import de.chess.dto.request.OpenGameRequest;
 import de.chess.dto.request.Request;
 import de.chess.dto.response.OpenGameResponse;
+import de.chess.dto.response.ReceiveGameListResponse;
 import de.chess.dto.response.Response;
 import de.chess.io.server.IRequestAnalyzer;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,11 +38,11 @@ public class RequestAnalyzer implements IRequestAnalyzer {
             OpenGameRequest openGameRequest = gson.fromJson(jsonRequest, OpenGameRequest.class);
             ChessGame game = gameManager.requestGame(openGameRequest.getGameDTO());
             response = new OpenGameResponse(game.getUuid(), NEW_GAME, game != null);
-            System.out.println(openGameRequest);
         } else if (requestType.equals(JOIN.name())) {
             LOGGER.log(Level.INFO, JOIN + "Request Reeceived.");
         } else if (requestType.equals(REQUEST_GAME_LIST.name())) {
-            LOGGER.log(Level.INFO, REQUEST_GAME_LIST + "Request Reeceived.");
+            List<ChessGame> gameList = GameManager.instance().getActiveGameList();
+            response = new ReceiveGameListResponse(gameList);
         }
 
         return response;

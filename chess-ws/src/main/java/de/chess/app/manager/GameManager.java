@@ -4,6 +4,7 @@ import de.chess.dto.ChessGame;
 import de.chess.dto.Player;
 
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.IntStream;
 
@@ -11,7 +12,7 @@ public class GameManager implements IGameManager {
     public static final Logger LOGGER = Logger.getGlobal();
     private static IGameManager instance = null;
     private final List<ChessGame> activeGameList = new ArrayList<>();
-    private int gameLimit = 4;
+    private int gameLimit = 10;
 
 
     private GameManager() {
@@ -31,8 +32,8 @@ public class GameManager implements IGameManager {
             gameDTO.setUuid(generateUUID());
             activeGameList.add(gameDTO);
             result = gameDTO;
+            LOGGER.log(Level.INFO, "Requested Game Granted: GameList Size: {0}", activeGameList.size());
         } else {
-
             LOGGER.warning("Limit for concurent running games reached");
         }
         return result;
@@ -105,7 +106,7 @@ public class GameManager implements IGameManager {
 
     @Override
     public List<ChessGame> getActiveGameList() {
-        return activeGameList;
+        return new ArrayList<>(activeGameList);
     }
 
     private void removeGame(List<ChessGame> list, UUID element) {

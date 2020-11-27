@@ -1,11 +1,13 @@
 package de.chess.fx.app.ui.command.menu;
 
+import de.chess.dto.request.ReceiveGameListRequest;
 import de.chess.fx.app.ui.command.ICommando;
 import de.chess.fx.app.ui.views.join.JoinGameView;
+import de.chess.io.client.GameClient;
 import javafx.scene.Scene;
 
+import java.util.Optional;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ToJoinMenuCommand implements ICommando {
     private final Scene scene;

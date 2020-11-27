@@ -3,16 +3,21 @@ package de.chess.fx.app;
 import de.chess.fx.app.audio.MusicPlayer;
 import de.chess.fx.app.client.IClientProperties;
 import de.chess.fx.app.client.LocalDevPClientProperties;
+import de.chess.fx.app.client.ResponseAnalyzer;
 import de.chess.fx.app.ui.views.mainMenu.MainMenuView;
 import de.chess.io.client.GameClient;
 import de.chess.io.client.IGameClientApplication;
+import de.chess.io.client.IResponseAnalyzer;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.net.ConnectException;
 import java.net.URISyntaxException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ChessFX extends Application implements IGameClientApplication {
@@ -50,7 +55,9 @@ public class ChessFX extends Application implements IGameClientApplication {
     }
 
     public void connect(String serverAddress, int serverPort) {
-        GameClient client = GameClient.getAndIniTInstance(serverAddress, serverPort);
-        client.execute();
+            IResponseAnalyzer responseAnalyzer = new ResponseAnalyzer();
+            GameClient client = GameClient.getAndIniTInstance(serverAddress, serverPort, responseAnalyzer);
+            client.execute();
+
     }
 }
