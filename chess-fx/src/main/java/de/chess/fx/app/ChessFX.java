@@ -41,6 +41,7 @@ public class ChessFX extends Application implements IGameClientApplication {
         IClientProperties clientProperties = LocalDevPClientProperties.instance();
         MainMenuView mainMenu = new MainMenuView();
 
+
         StackPane stackPane = new StackPane(mainMenu);
         stackPane.setAlignment(Pos.CENTER);
         Scene scene = new Scene(stackPane, FRAME_WIDTH, FRAME_HEIGHT);
