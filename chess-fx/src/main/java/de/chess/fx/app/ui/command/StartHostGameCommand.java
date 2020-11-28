@@ -2,7 +2,6 @@ package de.chess.fx.app.ui.command;
 
 import de.chess.dto.ChessGame;
 import de.chess.dto.request.OpenGameRequest;
-import de.chess.fx.app.ui.views.gameboard.GameView;
 import de.chess.io.client.GameClient;
 import javafx.scene.Scene;
 

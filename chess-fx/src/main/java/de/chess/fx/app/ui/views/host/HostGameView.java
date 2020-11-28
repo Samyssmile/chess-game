@@ -1,7 +1,12 @@
 package de.chess.fx.app.ui.views.host;
 
+import de.chess.fx.app.handler.EventHandler;
+import de.chess.fx.app.handler.EventType;
+import de.chess.fx.app.handler.IChannel;
 import de.chess.fx.app.i18n.Internalization;
 import de.chess.fx.app.ui.views.UIView;
+import de.chess.fx.app.ui.views.gameboard.GameBoardView;
+import de.chess.fx.app.ui.views.gameboard.GameView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -15,7 +20,7 @@ import javafx.scene.text.Font;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HostGameView extends VBox implements Internalization, UIView {
+public class HostGameView extends VBox implements Internalization, UIView, IChannel {
 
     private static final double SPACING = 10;
     private static final int RIGHT_COL_WIDTH = 200;
@@ -104,7 +109,16 @@ public class HostGameView extends VBox implements Internalization, UIView {
 
         structureMenu();
         initViewModel();
+        registerForEvents();
+
     }
+
+
+    private void registerForEvents() {
+        EventHandler.getInstance().registerForEvent(this, EventType.OPEN_NEW_GAME);
+    }
+
+
 
     @Override
     public void initViewModel() {
@@ -216,4 +230,13 @@ public class HostGameView extends VBox implements Internalization, UIView {
     }
 
 
+
+    @Override
+    public void update(EventType eventType) {
+        switch (eventType){
+            case OPEN_NEW_GAME:
+                System.out.println("OPEN NEW GAME EVENT ARRIVED");
+                getScene().setRoot(new GameView());
+        }
+    }
 }

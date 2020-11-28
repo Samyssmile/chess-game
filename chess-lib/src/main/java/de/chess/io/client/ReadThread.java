@@ -7,9 +7,11 @@ import de.chess.io.server.IRequestAnalyzer;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.logging.Logger;
 
 
 public class ReadThread extends Thread {
+    private static final Logger LOGGER = Logger.getGlobal();
     private final IResponseAnalyzer responseAnalyzer;
     private ObjectInputStream reader;
     private final Socket socket;
