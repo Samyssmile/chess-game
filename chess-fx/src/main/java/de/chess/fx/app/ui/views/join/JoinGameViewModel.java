@@ -65,7 +65,6 @@ public class JoinGameViewModel implements Flow.Subscriber<List<ChessGame>> {
 
     @Override
     public void onNext(List<ChessGame> gameList) {
-        System.out.println("Next Sub");
         data.clear();
         for (ChessGame gameDTO : gameList) {
             GameRowData gameRowData = new GameRowData(gameDTO.getUuid(), gameDTO.getHostPlayerName(), gameDTO.getGameName(), gameDTO.getHostColor(), gameDTO.getTimeLimit());

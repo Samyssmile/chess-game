@@ -1,5 +1,5 @@
 rootProject.name = 'chess-game'
-include 'chess-ws'
-include 'chess-fx'
-include 'chess-lib'
+include ':chess-lib'
+include ':chess-ws'
+include ':chess-fx'
 

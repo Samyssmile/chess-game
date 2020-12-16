@@ -1,6 +1,5 @@
 package de.chess.fx.app.ui.command;
 
-import de.chess.dto.request.OpenGameRequest;
 import de.chess.dto.request.ReceiveGameListRequest;
 import de.chess.io.client.GameClient;
 
