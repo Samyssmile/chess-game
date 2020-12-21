@@ -74,7 +74,6 @@ public class JoinGameView extends VBox implements Internalization, UIView {
         viewModel.getData().addListener(new ListChangeListener<GameRowData>() {
             @Override
             public void onChanged(Change<? extends GameRowData> c) {
-                System.out.println("Changed!!");
                 table.setItems(viewModel.getData());
             }
         });
@@ -112,7 +111,8 @@ public class JoinGameView extends VBox implements Internalization, UIView {
     @Override
     public void initActionsEvents() {
         btnRefresh.setOnAction(event -> viewModel.getRefreshGameListCommand().execute());
-        btnJoin.setOnAction(event -> viewModel.getJoinGameCommand(getScene()).execute());
+
+        btnJoin.setOnAction(event -> viewModel.getJoinGameCommand(getScene(), viewModel.selectedGameProperty.get()).execute());
         btnLeave.setOnAction(event -> viewModel.getToMainMenuCommand(getScene()).execute());
     }
 

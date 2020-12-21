@@ -46,8 +46,8 @@ public class JoinGameViewModel implements Flow.Subscriber<List<ChessGame>> {
         return new ToMainMenuCommand(scene);
     }
 
-    public ICommando getJoinGameCommand(Scene scene) {
-        return new ToJoinGameCommand(scene, selectedGameProperty.get().getUuid());
+    public ICommando getJoinGameCommand(Scene scene, GameRowData gameRowData) {
+        return new ToJoinGameCommand(gameRowData, scene, selectedGameProperty.get().getUuid());
     }
 
     public ICommando getRefreshGameListCommand(){
