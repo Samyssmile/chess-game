@@ -1,4 +1,4 @@
-# Game of Kings - Multiplayer Chess Game
+# Game of Kings - Multiplayer Chess Game [IN DEVELOPMENT]
 Game of Kings is a multiplayer, platform independent chess game.
 
 ## Core Features
@@ -24,4 +24,11 @@ You dont need to download and/or install any of listed software except gradle. G
 
 1. ``gradlew chess-fx:run`` - will run the UI Client
 2. ``gradlew chess-ws:run`` - will run the Server
+
+# Java Style Guide
+
+We use Google Java Style Guide
+
+* IntelliJ IDEA Plugin: https://plugins.jetbrains.com/plugin/8527-google-java-format
+* Eclipse XML: https://github.com/google/styleguide/blob/gh-pages/eclipse-java-google-style.xml
 
