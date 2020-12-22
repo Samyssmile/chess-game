@@ -27,9 +27,13 @@ class ChessMoveValidatorTest {
         assertTrue(isValid);
     }
 
+
+    /**
+     * Validate one pawn beat another
+     */
     @Test
     void isPawnBeatE2_E4_Valid() {
-        System.out.println("Pawn E3 - F4");
+        System.out.println("\n Pawn E3 - F4");
         gameBoard.putPiece("e3", new Piece(ChessColor.WHITE, PieceType.PAWN));
         gameBoard.putPiece("f4", new Piece(ChessColor.WHITE, PieceType.PAWN));
         Move move = new Move("e2", "e4");
