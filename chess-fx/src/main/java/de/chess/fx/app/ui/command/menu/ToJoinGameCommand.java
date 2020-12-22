@@ -37,8 +37,8 @@ public class ToJoinGameCommand implements ICommando {
         }
 
 
-        GameView gameView = new GameView();
-        scene.setRoot(gameView);
+/*        GameView gameView = new GameView();
+        scene.setRoot(gameView);*/
 
     }
 }

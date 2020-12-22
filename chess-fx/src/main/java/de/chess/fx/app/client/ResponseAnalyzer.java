@@ -23,28 +23,35 @@ public class ResponseAnalyzer implements IResponseAnalyzer {
         switch (response.getRequestType()) {
             case REQUEST_GAME_LIST:
                 onGameListResponse(response);
+                break;
             case JOIN:
+                break;
             case MOVE:
+                break;
             case MESSAGE:
+                break;
             case SURRENDER:
+                break;
             case NEW_GAME:
                 onNewGameResponse(response);
+                break;
             case REMIS:
+                break;
 
         }
     }
 
     private void onNewGameResponse(Response response) {
-        LOGGER.log(Level.INFO,"New Game Response");
+        LOGGER.log(Level.INFO, "New Game Response");
         OpenGameResponse openGameResponse = (OpenGameResponse) response;
-        if (openGameResponse.isGranted()){
+        if (openGameResponse.isGranted()) {
             EventHandler.getInstance().fireEvent(EventType.OPEN_NEW_GAME);
         }
 
     }
 
     private void onGameListResponse(Response response) {
-        LOGGER.log(Level.INFO,"Game List Response");
+        LOGGER.log(Level.INFO, "Game List Response");
         ReceiveGameListResponse receiveGameListResponse = (ReceiveGameListResponse) response;
         List<ChessGame> gameList = receiveGameListResponse.getGameList();
         GameListProvider.getInstance().setGameList(gameList);

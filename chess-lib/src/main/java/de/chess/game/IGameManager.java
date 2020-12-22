@@ -1,4 +1,4 @@
-package de.chess.app.manager;
+package de.chess.game;
 
 import de.chess.dto.ChessGame;
 import de.chess.dto.Player;

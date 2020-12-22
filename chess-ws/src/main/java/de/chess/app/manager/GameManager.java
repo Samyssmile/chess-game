@@ -2,6 +2,7 @@ package de.chess.app.manager;
 
 import de.chess.dto.ChessGame;
 import de.chess.dto.Player;
+import de.chess.game.IGameManager;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -92,6 +93,7 @@ public class GameManager implements IGameManager {
     }
 
     public boolean move(UUID uuid, String move) {
+
         return false;
     }
 

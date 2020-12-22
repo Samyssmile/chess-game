@@ -1,6 +1,7 @@
 package de.chess.dto;
 
 import de.chess.model.ChessColor;
+import de.chess.model.GameBoard;
 import de.chess.model.GameType;
 
 import java.io.Serializable;
@@ -17,6 +18,7 @@ public class ChessGame implements Serializable {
     private ChessColor hostColor;
     private GameType gameType;
     private GameStatus gameStatus;
+    private GameBoard gameBoard;
     private transient SocketChannel hostChannel;
 
     public ChessGame(String gameName, Player hostPlayer, String timeLimit, ChessColor hostColor, GameType gameType) {
@@ -26,6 +28,14 @@ public class ChessGame implements Serializable {
         this.hostColor = hostColor;
         this.gameType = gameType;
         gameStatus = GameStatus.WATING;
+    }
+
+    public GameBoard getGameBoard() {
+        return gameBoard;
+    }
+
+    public void setGameBoard(GameBoard gameBoard) {
+        this.gameBoard = gameBoard;
     }
 
     public UUID getUuid() {
@@ -76,19 +86,20 @@ public class ChessGame implements Serializable {
         this.gameType = gameType;
     }
 
-    public boolean isRunning(){
-        if(gameStatus==GameStatus.RUNNING){
+    public boolean isRunning() {
+        if (gameStatus == GameStatus.RUNNING) {
             return true;
         }
         return false;
     }
 
-    public boolean isWaitingForPlayerToJoin(){
-        if(gameStatus==GameStatus.WATING){
+    public boolean isWaitingForPlayerToJoin() {
+        if (gameStatus == GameStatus.WATING) {
             return true;
         }
         return false;
     }
+
     public Player getHostPlayer() {
         return hostPlayer;
     }
@@ -106,7 +117,7 @@ public class ChessGame implements Serializable {
     }
 
     public String getClientPlayerName() {
-        if (clientPlayer == null){
+        if (clientPlayer == null) {
             return "WAITING FOR PLAYER";
         }
         return clientPlayer.getNickname();

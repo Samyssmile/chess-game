@@ -1,6 +1,8 @@
 package de.chess.app.manager;
 
 import de.chess.dto.ChessGame;
+import de.chess.dto.Player;
+import de.chess.game.IGameManager;
 import de.chess.model.ChessColor;
 import de.chess.model.GameType;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,7 +42,7 @@ class GameManagerTest {
         int limit = ramdomGames().size();
         gameManager.setGameLimit(limit);
         ramdomGames().forEach(game -> {
-            runningGames.add(gameManager.requestGame(game, dataEvent.socket));
+            runningGames.add(gameManager.requestGame(randomGame()));
         });
 
         int numberOfGames = gameManager.numberOfRunningGames();
@@ -63,14 +65,8 @@ class GameManagerTest {
 
     private List<ChessGame> ramdomGames() {
         List<ChessGame> preparedDummyGames = new ArrayList<>();
-        preparedDummyGames.add(new ChessGame("Junut Test Game 1", "JUnit Jupiter", "10", ChessColor.BLACK, GameType.FUN));
-        preparedDummyGames.add(new ChessGame("Junut Test Game 2", "Jumit Jupiter", "20", ChessColor.BLACK, GameType.RANKED));
-        preparedDummyGames.add(new ChessGame("Junut Test Game 3", "Jumit Jupiter", "30", ChessColor.WHITE, GameType.FUN));
-        preparedDummyGames.add(new ChessGame("Junut Test Game 4", "Jumit Jupiter", "60", ChessColor.WHITE, GameType.RANKED));
-        preparedDummyGames.add(new ChessGame("Junut Test Game 5", "JUnit Jupiter", "10", ChessColor.RANDOM, GameType.FUN));
-        preparedDummyGames.add(new ChessGame("Junut Test Game 6", "Jumit Jupiter", "20", ChessColor.RANDOM, GameType.RANKED));
-        preparedDummyGames.add(new ChessGame("Junut Test Game 7", "Jumit Jupiter", "30", ChessColor.WHITE, GameType.FUN));
-        preparedDummyGames.add(new ChessGame("Junut Test Game 8", "Jumit Jupiter", "60", ChessColor.WHITE, GameType.RANKED));
+        preparedDummyGames.add(new ChessGame("Junut Test Game 1", new Player("Random Player", 1500), "10", ChessColor.BLACK, GameType.FUN));
+
         return preparedDummyGames;
     }
 }
