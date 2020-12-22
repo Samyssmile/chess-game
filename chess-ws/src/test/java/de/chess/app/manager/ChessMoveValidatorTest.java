@@ -9,41 +9,33 @@ import static org.junit.jupiter.api.Assertions.*;
 class ChessMoveValidatorTest {
 
     private ChessMoveValidator validator;
+    private GameBoard gameBoard = new GameBoard();
 
     @BeforeEach
     void setUp() {
-
         this.validator = new ChessMoveValidator();
     }
 
     @Test
     void isPawnE2_E4_Valid() {
-        GameBoard gameBoard = new GameBoard();
-
-        gameBoard.putPiece("a2", new Piece(ChessColor.WHITE, PieceType.PAWN));
-        gameBoard.putPiece("b2", new Piece(ChessColor.WHITE, PieceType.PAWN));
-        gameBoard.putPiece("c2", new Piece(ChessColor.WHITE, PieceType.PAWN));
-        gameBoard.putPiece("d2", new Piece(ChessColor.WHITE, PieceType.PAWN));
+        System.out.println("Pawn E2 - E4");
         gameBoard.putPiece("e2", new Piece(ChessColor.WHITE, PieceType.PAWN));
-        gameBoard.putPiece("f2", new Piece(ChessColor.WHITE, PieceType.PAWN));
-        gameBoard.putPiece("g2", new Piece(ChessColor.WHITE, PieceType.PAWN));
-        gameBoard.putPiece("h2", new Piece(ChessColor.WHITE, PieceType.PAWN));
-
-        gameBoard.putPiece("a7", new Piece(ChessColor.BLACK, PieceType.PAWN));
-        gameBoard.putPiece("b7", new Piece(ChessColor.BLACK, PieceType.PAWN));
-        gameBoard.putPiece("c7", new Piece(ChessColor.BLACK, PieceType.PAWN));
-        gameBoard.putPiece("d7", new Piece(ChessColor.BLACK, PieceType.PAWN));
-        gameBoard.putPiece("e7", new Piece(ChessColor.BLACK, PieceType.PAWN));
-        gameBoard.putPiece("f7", new Piece(ChessColor.BLACK, PieceType.PAWN));
-        gameBoard.putPiece("g7", new Piece(ChessColor.BLACK, PieceType.PAWN));
-        gameBoard.putPiece("h7", new Piece(ChessColor.BLACK, PieceType.PAWN));
-
-
         Move move = new Move("e2", "e4");
         boolean isValid = validator.isMoveValid(gameBoard, move);
-
-        assertTrue(isValid);
         gameBoard.print();
 
+        assertTrue(isValid);
+    }
+
+    @Test
+    void isPawnBeatE2_E4_Valid() {
+        System.out.println("Pawn E3 - F4");
+        gameBoard.putPiece("e3", new Piece(ChessColor.WHITE, PieceType.PAWN));
+        gameBoard.putPiece("f4", new Piece(ChessColor.WHITE, PieceType.PAWN));
+        Move move = new Move("e2", "e4");
+        boolean isValid = validator.isMoveValid(gameBoard, move);
+        gameBoard.print();
+
+        assertTrue(isValid);
     }
 }

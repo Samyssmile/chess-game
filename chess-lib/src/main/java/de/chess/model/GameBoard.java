@@ -102,4 +102,24 @@ public class GameBoard implements Serializable {
     }
 
 
+    public void initStartState() {
+        initEmptyBoard();
+        putPiece("a2", new Piece(ChessColor.WHITE, PieceType.PAWN));
+        putPiece("b2", new Piece(ChessColor.WHITE, PieceType.PAWN));
+        putPiece("c2", new Piece(ChessColor.WHITE, PieceType.PAWN));
+        putPiece("d2", new Piece(ChessColor.WHITE, PieceType.PAWN));
+        putPiece("e2", new Piece(ChessColor.WHITE, PieceType.PAWN));
+        putPiece("f2", new Piece(ChessColor.WHITE, PieceType.PAWN));
+        putPiece("g2", new Piece(ChessColor.WHITE, PieceType.PAWN));
+        putPiece("h2", new Piece(ChessColor.WHITE, PieceType.PAWN));
+
+        putPiece("a7", new Piece(ChessColor.BLACK, PieceType.PAWN));
+        putPiece("b7", new Piece(ChessColor.BLACK, PieceType.PAWN));
+        putPiece("c7", new Piece(ChessColor.BLACK, PieceType.PAWN));
+        putPiece("d7", new Piece(ChessColor.BLACK, PieceType.PAWN));
+        putPiece("e7", new Piece(ChessColor.BLACK, PieceType.PAWN));
+        putPiece("f7", new Piece(ChessColor.BLACK, PieceType.PAWN));
+        putPiece("g7", new Piece(ChessColor.BLACK, PieceType.PAWN));
+        putPiece("h7", new Piece(ChessColor.BLACK, PieceType.PAWN));
+    }
 }
