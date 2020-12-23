@@ -112,8 +112,16 @@ public class ChessGame implements Serializable {
         return clientPlayer;
     }
 
+    /**
+     * Add second player to this Game. This Method will change the Gamestatus to @see GameStatus.RUNNING.
+     *
+     * @param clientPlayer Player to join.
+     */
     public void setClientPlayer(Player clientPlayer) {
-        this.clientPlayer = clientPlayer;
+        if (isWaitingForPlayerToJoin()){
+            this.clientPlayer = clientPlayer;
+            gameStatus = GameStatus.RUNNING;
+        }
     }
 
     public String getClientPlayerName() {

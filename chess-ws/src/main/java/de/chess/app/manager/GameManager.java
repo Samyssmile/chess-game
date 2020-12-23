@@ -35,6 +35,7 @@ public class GameManager implements IGameManager {
             result = gameDTO;
             LOGGER.log(Level.INFO, "Requested Game Granted: GameList Size: {0}", activeGameList.size());
         } else {
+            result = null;
             LOGGER.warning("Limit for concurent running games reached");
         }
         return result;
@@ -90,6 +91,29 @@ public class GameManager implements IGameManager {
         LOGGER.info("Searching for Game %s as a Player requested to join".formatted(gameUUID));
         Optional<ChessGame> chessGameOptional = getActiveGameList().stream().filter(chessGame -> chessGame.getUuid().equals(gameUUID)).findFirst();
         return chessGameOptional;
+    }
+
+    @Override
+    public Optional<ChessGame> requestToJoinGame(UUID gameUUID, Player player) {
+        Optional<ChessGame> gameOfInteresst = getGameByUUIID(gameUUID);
+        gameOfInteresst.ifPresentOrElse(e -> {
+            if(e.isWaitingForPlayerToJoin()){
+                e.setClientPlayer(player);
+            }else{
+                LOGGER.info("Game already running");
+                e = null;
+            }
+        }, () -> {
+            LOGGER.info("Requested Game not found.");
+        });
+
+        return gameOfInteresst;
+
+    }
+
+    @Override
+    public Optional<ChessGame> getGameByUUIID(UUID gameUUID) {
+        return activeGameList.stream().filter(e -> e.getUuid().equals(gameUUID)).findFirst();
     }
 
     public boolean move(UUID uuid, String move) {

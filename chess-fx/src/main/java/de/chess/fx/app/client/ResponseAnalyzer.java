@@ -1,7 +1,5 @@
 package de.chess.fx.app.client;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import de.chess.dto.ChessGame;
 import de.chess.dto.response.OpenGameResponse;
 import de.chess.dto.response.ReceiveGameListResponse;
@@ -25,6 +23,8 @@ public class ResponseAnalyzer implements IResponseAnalyzer {
                 onGameListResponse(response);
                 break;
             case JOIN:
+                System.out.println("JOIN");
+                //onJoinGameResponse(response);
                 break;
             case MOVE:
                 break;
