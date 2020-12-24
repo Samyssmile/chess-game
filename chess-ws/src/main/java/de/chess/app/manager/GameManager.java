@@ -28,17 +28,17 @@ public class GameManager implements IGameManager {
 
     @Override
     public ChessGame requestGame(ChessGame gameDTO) {
-        ChessGame result = gameDTO;
+        ChessGame chessGame = gameDTO;
         if (gameLimitNotReached()) {
-            gameDTO.setUuid(generateUUID());
-            activeGameList.add(gameDTO);
-            result = gameDTO;
+            chessGame.setUuid(generateUUID());
+            chessGame.initGameBoard();
+            activeGameList.add(chessGame);
             LOGGER.log(Level.INFO, "Requested Game Granted: GameList Size: {0}", activeGameList.size());
         } else {
-            result = null;
+            chessGame = null;
             LOGGER.warning("Limit for concurent running games reached");
         }
-        return result;
+        return chessGame;
     }
 
 

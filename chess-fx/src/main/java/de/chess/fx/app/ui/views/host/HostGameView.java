@@ -125,10 +125,11 @@ public class HostGameView extends VBox implements Internalization, UIView, IChan
         viewModel = new HostGameViewModel();
         txtPlayerName.textProperty().bindBidirectional((viewModel).payerNameProperty());
         txtHostName.textProperty().bindBidirectional(viewModel.gameNameProperty());
-        radioBlack.disableProperty().bindBidirectional(viewModel.blackSelectedProperty());
-        radioWhite.disableProperty().bindBidirectional(viewModel.whiteSelectedProperty());
-        radioRandom.disableProperty().bindBidirectional(viewModel.randomSelectedProperty());
+        radioBlack.selectedProperty().bindBidirectional(viewModel.blackSelectedProperty());
+        radioWhite.selectedProperty().bindBidirectional(viewModel.whiteSelectedProperty());
+        radioRandom.selectedProperty().bindBidirectional(viewModel.randomSelectedProperty());
         viewModel.timeLimitProperty().bind(comboTimeLimit.getSelectionModel().selectedItemProperty());
+        cbIsRankedGame.selectedProperty().bindBidirectional(viewModel.isRankedGameProperty());
     }
 
     @Override

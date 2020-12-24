@@ -38,6 +38,8 @@ public class ChessGame implements Serializable {
         this.gameBoard = gameBoard;
     }
 
+
+
     public UUID getUuid() {
         return uuid;
     }
@@ -145,5 +147,13 @@ public class ChessGame implements Serializable {
 
     public SocketChannel getHostChannel() {
         return hostChannel;
+    }
+
+    /**
+     * Set all pieces on start position. This is a new Game State
+     */
+    public void initGameBoard() {
+        gameBoard = new GameBoard();
+        gameBoard.initStartState();
     }
 }

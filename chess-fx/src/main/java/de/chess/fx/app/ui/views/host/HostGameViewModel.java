@@ -13,8 +13,10 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 
-public class HostGameViewModel {
+import java.util.logging.Logger;
 
+public class HostGameViewModel {
+    private static final Logger LOGGER = Logger.getGlobal();
     private StringProperty gameName =
             new SimpleStringProperty("Default-Chess-Game");
 
@@ -27,9 +29,10 @@ public class HostGameViewModel {
 
     private BooleanProperty blackSelected = new SimpleBooleanProperty();
     private BooleanProperty whiteSelected = new SimpleBooleanProperty();
-    private BooleanProperty randomSelected = new SimpleBooleanProperty();
+    private BooleanProperty randomSelected = new SimpleBooleanProperty(true);
 
-    private SimpleObjectProperty<GameType> gameType = new SimpleObjectProperty();
+    private BooleanProperty isRankedGame = new SimpleBooleanProperty();
+
     private String timeLimitValue;
     private ChessColor selectedColorValue;
 
@@ -69,11 +72,22 @@ public class HostGameViewModel {
                     }else{
                         selectedColorValue = ChessColor.BLACK;
                     }
+                    LOGGER.info("Random color selected: "+selectedColorValue);
 
                 }
             }
         });
 
+        initRandomHostColor();
+    }
+
+    private void initRandomHostColor() {
+        double randomNumber = Math.random();
+        if (randomNumber>0.5){
+            selectedColorValue = ChessColor.WHITE;
+        }else{
+            selectedColorValue = ChessColor.BLACK;
+        }
     }
 
 
@@ -83,17 +97,25 @@ public class HostGameViewModel {
 
     }
 
+    public boolean isIsRankedGame() {
+        return isRankedGame.get();
+    }
+
+    public BooleanProperty isRankedGameProperty() {
+        return isRankedGame;
+    }
+
+    public void setIsRankedGame(boolean isRankedGame) {
+        this.isRankedGame.set(isRankedGame);
+    }
+
     public GameType getGameType() {
-        return gameType.get();
+        if (isRankedGame.get()){
+            return GameType.RANKED;
+        }
+        return GameType.FUN;
     }
 
-    public SimpleObjectProperty<GameType> gameTypeProperty() {
-        return gameType;
-    }
-
-    public void setGameType(GameType gameType) {
-        this.gameType.set(gameType);
-    }
 
     public String getTimeLimitValue() {
         return timeLimitValue;
