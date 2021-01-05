@@ -4,6 +4,7 @@ import de.chess.dto.Player;
 import de.chess.dto.RequestType;
 import de.chess.dto.request.JoinGameRequest;
 import de.chess.dto.request.ReceiveGameListRequest;
+import de.chess.fx.app.ChessFX;
 import de.chess.fx.app.model.GameRowData;
 import de.chess.fx.app.ui.command.ICommando;
 import de.chess.fx.app.ui.views.gameboard.GameView;
@@ -33,7 +34,7 @@ public class ToJoinGameCommand implements ICommando {
         Optional<GameClient> clientOptional = GameClient.getInstance();
         if (clientOptional.isPresent()) {
             GameClient client = clientOptional.get();
-            client.sendRequest(new JoinGameRequest(RequestType.JOIN, new Player(UUID.randomUUID(), "Jon Snow", 1500), gameRowData.getUuid()));
+            client.sendRequest(new JoinGameRequest(RequestType.JOIN, new Player(ChessFX.PLAYERS_UUID, "Jon Snow", 1500), gameRowData.getUuid()));
         }
 
 

@@ -3,6 +3,7 @@ package de.chess.fx.app.ui.views.gameboard;
 import de.chess.dto.RequestType;
 import de.chess.dto.request.MoveRequest;
 import de.chess.dto.request.Request;
+import de.chess.fx.app.ChessFX;
 import de.chess.fx.app.ui.views.field.FieldView;
 import de.chess.fx.app.ui.views.figure.*;
 import de.chess.model.ChessColor;
@@ -143,7 +144,7 @@ public class GameBoardViewModel implements Flow.Subscriber<String> {
 
     @Override
     public void onNext(String move) {
-        Request request = new MoveRequest(UUID.randomUUID(), RequestType.MOVE, move);
+        Request request = new MoveRequest(UUID.randomUUID(), ChessFX.PLAYERS_UUID, RequestType.MOVE, move);
         subscription.request(100);
     }
 

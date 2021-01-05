@@ -6,10 +6,12 @@ import java.util.UUID;
 
 public class OpenGameResponse extends Response {
     private final boolean granted;
+    private final UUID hostPlayerUUID;
 
-    public OpenGameResponse(UUID gameUUID, RequestType requestType, boolean granted) {
+    public OpenGameResponse(UUID gameUUID, UUID hostPlayerUUID, RequestType requestType, boolean granted) {
         super(gameUUID, requestType);
         this.granted = granted;
+        this.hostPlayerUUID = hostPlayerUUID;
     }
 
     public boolean isGranted() {

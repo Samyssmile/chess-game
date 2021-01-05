@@ -7,16 +7,19 @@ import java.util.UUID;
 
 public class Request implements Serializable {
 
+    private  UUID playerUUID;
     private UUID gameUUID;
     private RequestType requestType;
 
-    public Request(RequestType requestType) {
+    public Request(RequestType requestType, UUID playerUUID) {
         this.requestType = requestType;
+        this.playerUUID = playerUUID;
     }
 
-    public Request(UUID gameUUID, RequestType requestType) {
+    public Request(UUID gameUUID, UUID playerUUID, RequestType requestType) {
         this.gameUUID = gameUUID;
         this.requestType = requestType;
+        this.playerUUID = playerUUID;
     }
 
     public UUID getGameUUID() {
@@ -33,5 +36,18 @@ public class Request implements Serializable {
 
     public void setRequestType(RequestType requestType) {
         this.requestType = requestType;
+    }
+
+    public UUID getPlayerUUID() {
+        return playerUUID;
+    }
+
+    @Override
+    public String toString() {
+        return "Request{" +
+                "playerUUID=" + playerUUID +
+                ", gameUUID=" + gameUUID +
+                ", requestType=" + requestType +
+                '}';
     }
 }

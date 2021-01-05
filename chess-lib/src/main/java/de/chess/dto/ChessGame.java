@@ -1,5 +1,6 @@
 package de.chess.dto;
 
+import de.chess.io.server.ClientThread;
 import de.chess.model.ChessColor;
 import de.chess.model.GameBoard;
 import de.chess.model.GameType;
@@ -19,7 +20,7 @@ public class ChessGame implements Serializable {
     private GameType gameType;
     private GameStatus gameStatus;
     private GameBoard gameBoard;
-    private transient SocketChannel hostChannel;
+    private transient ClientThread hostClientThread;
 
     public ChessGame(String gameName, Player hostPlayer, String timeLimit, ChessColor hostColor, GameType gameType) {
         this.gameName = gameName;
@@ -141,12 +142,12 @@ public class ChessGame implements Serializable {
         this.gameStatus = gameStatus;
     }
 
-    public void setHostChannel(SocketChannel socket) {
-        this.hostChannel = socket;
+    public ClientThread getHostClientThread() {
+        return hostClientThread;
     }
 
-    public SocketChannel getHostChannel() {
-        return hostChannel;
+    public void setHostClientThread(ClientThread hostClientThread) {
+        this.hostClientThread = hostClientThread;
     }
 
     /**

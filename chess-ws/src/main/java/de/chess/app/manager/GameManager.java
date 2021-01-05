@@ -44,7 +44,6 @@ public class GameManager implements IGameManager {
 
     @Override
     public void killGame(UUID uuid) {
-        LOGGER.info("Kill Game: %s%s".formatted(uuid, !isGameExists(uuid)));
         removeGame(activeGameList, uuid);
     }
 
@@ -73,22 +72,8 @@ public class GameManager implements IGameManager {
         this.gameLimit = gameLimit;
     }
 
-    @Override
-    public boolean joinGameRequest(Player player, UUID gameUUID) {
-        Optional<ChessGame> chessGameOptional = findGameByUUID(gameUUID);
-        boolean result = false;
-
-        if (chessGameOptional.isPresent() && chessGameOptional.get().isWaitingForPlayerToJoin()) {
-            ChessGame chessGame = chessGameOptional.get();
-            chessGame.setClientPlayer(player);
-            result = true;
-        }
-
-        return result;
-    }
 
     public Optional<ChessGame> findGameByUUID(UUID gameUUID) {
-        LOGGER.info("Searching for Game %s as a Player requested to join".formatted(gameUUID));
         Optional<ChessGame> chessGameOptional = getActiveGameList().stream().filter(chessGame -> chessGame.getUuid().equals(gameUUID)).findFirst();
         return chessGameOptional;
     }

@@ -10,7 +10,7 @@ public class JoinGameRequest extends Request {
     private Player player;
 
     public JoinGameRequest(RequestType requestType, Player player, UUID gameUUID) {
-        super(gameUUID, requestType);
+        super(gameUUID, player.getUuid(), requestType);
         this.player = player;
     }
 

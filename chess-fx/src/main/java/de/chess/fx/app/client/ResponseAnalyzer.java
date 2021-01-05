@@ -18,27 +18,34 @@ public class ResponseAnalyzer implements IResponseAnalyzer {
 
     @Override
     public void analyze(Response response) {
-        switch (response.getRequestType()) {
-            case REQUEST_GAME_LIST:
-                onGameListResponse(response);
-                break;
-            case JOIN:
-                System.out.println("JOIN");
-                //onJoinGameResponse(response);
-                break;
-            case MOVE:
-                break;
-            case MESSAGE:
-                break;
-            case SURRENDER:
-                break;
-            case NEW_GAME:
-                onNewGameResponse(response);
-                break;
-            case REMIS:
-                break;
 
+        if (response != null){
+            switch (response.getRequestType()) {
+                case REQUEST_GAME_LIST:
+                    onGameListResponse(response);
+                    break;
+                case JOIN:
+                    System.out.println("JOIN");
+                    onJoinGameResponse(response);
+                    break;
+                case MOVE:
+                    break;
+                case MESSAGE:
+                    break;
+                case SURRENDER:
+                    break;
+                case NEW_GAME:
+                    onNewGameResponse(response);
+                    break;
+                case REMIS:
+                    break;
+            }
         }
+    }
+
+    private void onJoinGameResponse(Response response) {
+        LOGGER.log(Level.INFO, "Join Game Response");
+
     }
 
     private void onNewGameResponse(Response response) {

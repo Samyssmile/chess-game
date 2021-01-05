@@ -31,8 +31,6 @@ public interface IGameManager {
 
     public void setGameLimit(int gameLimit);
 
-    boolean joinGameRequest(Player player, UUID gameUUID);
-
     public Optional<ChessGame> findGameByUUID(UUID gameUUID);
 
     Optional<ChessGame> requestToJoinGame(UUID gameUUID, Player player);

@@ -2,6 +2,7 @@ package de.chess.fx.app.ui.command;
 
 import de.chess.dto.ChessGame;
 import de.chess.dto.request.OpenGameRequest;
+import de.chess.fx.app.ChessFX;
 import de.chess.io.client.GameClient;
 import javafx.scene.Scene;
 
@@ -23,7 +24,7 @@ public class StartHostGameCommand implements ICommando {
         Optional<GameClient> clientOptional = GameClient.getInstance();
         if (clientOptional.isPresent()) {
             GameClient client = clientOptional.get();
-            client.sendRequest(new OpenGameRequest(gameDTO));
+            client.sendRequest(new OpenGameRequest(gameDTO, ChessFX.PLAYERS_UUID));
         }
 
 

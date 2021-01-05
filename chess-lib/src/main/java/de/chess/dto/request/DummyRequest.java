@@ -2,6 +2,8 @@ package de.chess.dto.request;
 
 import de.chess.dto.RequestType;
 
+import java.util.UUID;
+
 public class DummyRequest extends Request {
 
     private String msg = "Hello World";
@@ -11,7 +13,7 @@ public class DummyRequest extends Request {
     }
 
     public DummyRequest(RequestType requestType) {
-        super(requestType);
+        super(requestType, UUID.randomUUID());
     }
 
     public String getMsg() {

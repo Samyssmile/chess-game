@@ -39,6 +39,7 @@ public class ClientThread extends Thread {
             OutputStream output = this.socket.getOutputStream();
             this.writer =  new ObjectOutputStream(output);
 
+
             while (socket.isConnected()) {
                 System.out.println("Waiting for requests...");
                 String jsonRequest = (String) this.reader.readObject();

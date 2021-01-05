@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.URISyntaxException;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,6 +26,8 @@ public class ChessFX extends Application implements IGameClientApplication {
     private static final double FRAME_WIDTH = 1300;
     private static final double FRAME_HEIGHT = 850;
     private final MusicPlayer musicPlayer;
+
+    public final static UUID PLAYERS_UUID = UUID.randomUUID();
 
     public ChessFX() throws URISyntaxException {
         this.musicPlayer = new MusicPlayer();
@@ -56,7 +59,7 @@ public class ChessFX extends Application implements IGameClientApplication {
 
     public void connect(String serverAddress, int serverPort) {
             IResponseAnalyzer responseAnalyzer = new ResponseAnalyzer();
-            GameClient client = GameClient.getAndIniTInstance(serverAddress, serverPort, responseAnalyzer);
+            GameClient client = GameClient.getAndIniTInstance(serverAddress, serverPort, responseAnalyzer, PLAYERS_UUID);
             client.execute();
 
     }

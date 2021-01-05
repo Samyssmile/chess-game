@@ -1,11 +1,14 @@
 package de.chess.io.client;
 
+import de.chess.dto.RequestType;
 import de.chess.dto.request.Request;
+import de.chess.dto.request.SelfIntroducingRequest;
 
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,6 +17,7 @@ public class GameClient {
     private final String hostname;
     private final int port;
     private final IResponseAnalyzer responseAnalyzer;
+    private final UUID playersUUID;
     private String userName;
     private Socket socket;
     private ReadThread readingThread;
@@ -26,17 +30,18 @@ public class GameClient {
         return Optional.of(instance);
     }
 
-    public static GameClient getAndIniTInstance(String hostname, int port, IResponseAnalyzer responseAnalyzer) {
+    public static GameClient getAndIniTInstance(String hostname, int port, IResponseAnalyzer responseAnalyzer, UUID playersUUID) {
         if (instance == null) {
-            instance = new GameClient(hostname, port, responseAnalyzer);
+            instance = new GameClient(hostname, port, responseAnalyzer, playersUUID);
         }
         return instance;
     }
 
-    private GameClient(String hostname, int port, IResponseAnalyzer responseAnalyzer) {
+    private GameClient(String hostname, int port, IResponseAnalyzer responseAnalyzer, UUID playersUUID) {
         this.hostname = hostname;
         this.port = port;
         this.responseAnalyzer = responseAnalyzer;
+        this.playersUUID = playersUUID;
     }
 
     /**
@@ -54,6 +59,7 @@ public class GameClient {
         readingThread = new ReadThread(this.socket, this, responseAnalyzer);
         readingThread.start();
         writingThread.start();
+        writingThread.addRequest(new SelfIntroducingRequest(RequestType.SELF_INTRODUCING, playersUUID));
     }
 
     private boolean connect(String hostname, int port) {
