@@ -43,7 +43,7 @@ public class ClientThread extends Thread {
             while (socket.isConnected()) {
                 System.out.println("Waiting for requests...");
                 String jsonRequest = (String) this.reader.readObject();
-                Response response = requestAnalyzer.analyze(jsonRequest);
+                Response response = requestAnalyzer.analyze(jsonRequest, this);
                 sendResponse(response);
             }
 

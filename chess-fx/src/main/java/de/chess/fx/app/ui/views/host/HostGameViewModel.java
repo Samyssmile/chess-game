@@ -2,6 +2,7 @@ package de.chess.fx.app.ui.views.host;
 
 import de.chess.dto.ChessGame;
 import de.chess.dto.Player;
+import de.chess.fx.app.ChessFX;
 import de.chess.fx.app.ui.command.ICommando;
 import de.chess.fx.app.ui.command.StartGameCommand;
 import de.chess.fx.app.ui.command.StartHostGameCommand;
@@ -92,7 +93,13 @@ public class HostGameViewModel {
 
 
     private ChessGame buildGameDTO(){
-         ChessGame gameDTO = new ChessGame(getGameName(), new Player(getPayerName(), 1500), getTimeLimit(), getSelectedColorValue(), getGameType());
+    ChessGame gameDTO =
+        new ChessGame(
+            getGameName(),
+            new Player(ChessFX.PLAYERS_UUID,getPayerName(), 1500),
+            getTimeLimit(),
+            getSelectedColorValue(),
+            getGameType());
          return gameDTO;
 
     }

@@ -14,10 +14,6 @@ public class Player implements Serializable {
         this.elo = elo;
     }
 
-    public Player(String nickname, int elo) {
-        this(UUID.randomUUID(), nickname, elo);
-    }
-
     public UUID getUuid() {
         return uuid;
     }
