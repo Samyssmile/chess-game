@@ -50,7 +50,7 @@ public class RequestAnalyzer implements IRequestAnalyzer {
 
       response =
           new OpenGameResponse(
-              game.getUuid(), openGameRequest.getPlayerUUID(), NEW_GAME, game != null);
+              game.getUuid(), openGameRequest.getPlayerUUID(), NEW_GAME, game != null, game);
     } else if (requestType.equals(JOIN.name())) {
       LOGGER.log(Level.INFO, JOIN + "Request Reeceived.");
       JoinGameRequest joinGameRequest = gson.fromJson(jsonRequest, JoinGameRequest.class);

@@ -1,8 +1,10 @@
 package de.chess.fx.app.ui.views.gameboard;
 
 
+import de.chess.dto.ChessGame;
 import de.chess.fx.app.audio.AudioEffectPlayer;
 import de.chess.fx.app.audio.AudioEffectType;
+import de.chess.fx.app.handler.EventData;
 import de.chess.fx.app.handler.EventHandler;
 import de.chess.fx.app.handler.EventType;
 import de.chess.fx.app.handler.IChannel;
@@ -19,7 +21,7 @@ import javafx.scene.text.Font;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameView extends BorderPane implements UIView , IChannel {
+public class GameView extends BorderPane implements UIView {
     private static final double TITLE_FONT_SIZE = 55;
     private Label labelTitle;
     private Label labelPlayerHostName;
@@ -39,13 +41,16 @@ public class GameView extends BorderPane implements UIView , IChannel {
 
     private GameViewModel viewModel;
 
-    private AudioEffectPlayer audioEffectPlayer;
 
-    public GameView( ) {
+
+
+
+    public GameView(ChessGame gameDTO) {
         this.nodeList = new ArrayList<>();
 
         initNodes();
         initViewModel();
+        viewModel.setChessGame(gameDTO);
         this.topHBox = new HBox(labelPlayerHostName, labelTitle, labelPlayerClientName);
         this.bottomHBox = new HBox(buttonGiveUp, buttonRemisRequest);
 
@@ -55,18 +60,9 @@ public class GameView extends BorderPane implements UIView , IChannel {
         this.setBottom(     this.bottomHBox );
 
 
-        audioEffectPlayer = new AudioEffectPlayer();
         confugureView();
-        registerForEvents();
     }
 
-    private void registerForEvents() {
-        EventHandler.getInstance().registerForEvent(this, EventType.PLAYER_JOINED);
-        EventHandler.getInstance().registerForEvent(this, EventType.MOVE_DONE);
-        EventHandler.getInstance().registerForEvent(this, EventType.REMIS);
-        EventHandler.getInstance().registerForEvent(this, EventType.WON);
-        EventHandler.getInstance().registerForEvent(this, EventType.LOSE);
-    }
 
     @Override
     public List<Node> initNodes() {
@@ -116,11 +112,5 @@ public class GameView extends BorderPane implements UIView , IChannel {
         this.labelTitle.setFont(new Font(TITLE_FONT_SIZE));
     }
 
-    @Override
-    public void update(EventType eventType) {
 
-        switch (eventType){
-            case PLAYER_JOINED -> audioEffectPlayer.playSound(AudioEffectType.PLAYER_JOINED);
-        }
-    }
 }

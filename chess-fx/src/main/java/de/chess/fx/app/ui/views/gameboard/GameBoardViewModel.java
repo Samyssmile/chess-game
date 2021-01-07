@@ -1,9 +1,13 @@
 package de.chess.fx.app.ui.views.gameboard;
 
+import de.chess.dto.ChessGame;
 import de.chess.dto.RequestType;
 import de.chess.dto.request.MoveRequest;
 import de.chess.dto.request.Request;
 import de.chess.fx.app.ChessFX;
+import de.chess.fx.app.handler.EventData;
+import de.chess.fx.app.handler.EventType;
+import de.chess.fx.app.handler.IChannel;
 import de.chess.fx.app.ui.views.field.FieldView;
 import de.chess.fx.app.ui.views.figure.*;
 import de.chess.model.ChessColor;
@@ -15,7 +19,7 @@ import javafx.scene.paint.Color;
 import java.util.UUID;
 import java.util.concurrent.Flow;
 
-public class GameBoardViewModel implements Flow.Subscriber<String> {
+public class GameBoardViewModel implements Flow.Subscriber<String>, IChannel {
 
     private static final String COLOR_BLACK = "#D18B47";
     private static final String COLOR_WHITE = "#FFCE9E";
@@ -25,6 +29,7 @@ public class GameBoardViewModel implements Flow.Subscriber<String> {
     private SimpleObjectProperty<FieldView[][]> boardMatrix = new SimpleObjectProperty<>(new FieldView[8][8]);
 
     private Flow.Subscription subscription;
+    private ChessGame chessGame;
 
     public GameBoardViewModel() {
         initFields();
@@ -161,5 +166,21 @@ public class GameBoardViewModel implements Flow.Subscriber<String> {
 
 
     public void openGame() {
+    }
+
+    @Override
+    public void update(EventType eventType) {
+
+    }
+
+    @Override
+    public void update(EventType eventType, EventData eventData) {
+
+        switch (eventType){
+            case OPEN_NEW_GAME:
+                ChessGame chessGame = (ChessGame) eventData.getData();
+                this.chessGame = chessGame;
+                break;
+        }
     }
 }

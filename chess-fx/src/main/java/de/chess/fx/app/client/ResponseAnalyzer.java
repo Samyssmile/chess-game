@@ -5,6 +5,7 @@ import de.chess.dto.response.OpenGameResponse;
 import de.chess.dto.response.PlayerJoinedIntoMyHostedGameResponse;
 import de.chess.dto.response.ReceiveGameListResponse;
 import de.chess.dto.response.Response;
+import de.chess.fx.app.handler.EventData;
 import de.chess.fx.app.handler.EventHandler;
 import de.chess.fx.app.handler.EventType;
 import de.chess.fx.app.provider.GameListProvider;
@@ -51,7 +52,7 @@ public class ResponseAnalyzer implements IResponseAnalyzer {
     LOGGER.log(Level.INFO, "Player Joined Game Response");
     PlayerJoinedIntoMyHostedGameResponse playerJoinedIntoMyHostedGameResponse = (PlayerJoinedIntoMyHostedGameResponse) response;
     EventHandler.getInstance().fireEvent(EventType.PLAYER_JOINED);
-    System.out.println(playerJoinedIntoMyHostedGameResponse.getPlayer());
+    EventHandler.getInstance().fireGameEvent(EventType.PLAYER_JOINED, new EventData(playerJoinedIntoMyHostedGameResponse.getPlayer()));
   }
 
   private void onJoinGameResponse(Response response) {
@@ -63,6 +64,7 @@ public class ResponseAnalyzer implements IResponseAnalyzer {
     OpenGameResponse openGameResponse = (OpenGameResponse) response;
     if (openGameResponse.isGranted()) {
       EventHandler.getInstance().fireEvent(EventType.OPEN_NEW_GAME);
+      EventHandler.getInstance().fireGameEvent(EventType.OPEN_NEW_GAME, new EventData(openGameResponse.getGameDTO()));
     }
   }
 

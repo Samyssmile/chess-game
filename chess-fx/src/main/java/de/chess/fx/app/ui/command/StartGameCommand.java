@@ -18,7 +18,7 @@ public class StartGameCommand implements ICommando {
     @Override
     public void execute() {
         LOGGER.log(Level.INFO, "Start Game Command...");
-        GameView gameView = new GameView();
+        GameView gameView = new GameView(gameDTO);
         scene.setRoot(gameView);
     }
 }

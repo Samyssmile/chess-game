@@ -1,11 +1,12 @@
 package de.chess.fx.app.ui.views.host;
 
+import de.chess.dto.ChessGame;
+import de.chess.fx.app.handler.EventData;
 import de.chess.fx.app.handler.EventHandler;
 import de.chess.fx.app.handler.EventType;
 import de.chess.fx.app.handler.IChannel;
 import de.chess.fx.app.i18n.Internalization;
 import de.chess.fx.app.ui.views.UIView;
-import de.chess.fx.app.ui.views.gameboard.GameBoardView;
 import de.chess.fx.app.ui.views.gameboard.GameView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -123,7 +124,7 @@ public class HostGameView extends VBox implements Internalization, UIView, IChan
     @Override
     public void initViewModel() {
         viewModel = new HostGameViewModel();
-        txtPlayerName.textProperty().bindBidirectional((viewModel).payerNameProperty());
+        txtPlayerName.textProperty().bindBidirectional((viewModel).playerNameProperty());
         txtHostName.textProperty().bindBidirectional(viewModel.gameNameProperty());
         radioBlack.selectedProperty().bindBidirectional(viewModel.blackSelectedProperty());
         radioWhite.selectedProperty().bindBidirectional(viewModel.whiteSelectedProperty());
@@ -236,8 +237,18 @@ public class HostGameView extends VBox implements Internalization, UIView, IChan
     public void update(EventType eventType) {
         switch (eventType){
             case OPEN_NEW_GAME:
-                System.out.println("OPEN NEW GAME EVENT ARRIVED");
-                getScene().setRoot(new GameView());
+
+
         }
+    }
+
+    @Override
+    public void update(EventType eventType, EventData eventData) {
+        switch (eventType){
+            case OPEN_NEW_GAME:
+                ChessGame chessGame = (ChessGame) eventData.getData();
+                getScene().setRoot(new GameView(chessGame));
+        }
+
     }
 }

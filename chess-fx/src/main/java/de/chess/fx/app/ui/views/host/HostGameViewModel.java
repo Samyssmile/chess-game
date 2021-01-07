@@ -21,7 +21,7 @@ public class HostGameViewModel {
     private StringProperty gameName =
             new SimpleStringProperty("Default-Chess-Game");
 
-    private StringProperty payerName =
+    private StringProperty playerName =
             new SimpleStringProperty(getDefaultRandomName());
 
     private StringProperty timeLimit =
@@ -96,7 +96,7 @@ public class HostGameViewModel {
     ChessGame gameDTO =
         new ChessGame(
             getGameName(),
-            new Player(ChessFX.PLAYERS_UUID,getPayerName(), 1500),
+            new Player(ChessFX.PLAYERS_UUID, getPlayerName(), 1500),
             getTimeLimit(),
             getSelectedColorValue(),
             getGameType());
@@ -156,16 +156,16 @@ public class HostGameViewModel {
         this.timeLimit.set(timeLimit);
     }
 
-    public String getPayerName() {
-        return payerName.get();
+    public String getPlayerName() {
+        return playerName.get();
     }
 
-    public StringProperty payerNameProperty() {
-        return payerName;
+    public StringProperty playerNameProperty() {
+        return playerName;
     }
 
-    public void setPayerName(String payerName) {
-        this.payerName.set(payerName);
+    public void setPlayerName(String playerName) {
+        this.playerName.set(playerName);
     }
 
     public ICommando getStartCommand(Scene scene){

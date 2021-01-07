@@ -4,4 +4,7 @@ public interface IChannel {
 
     public void update(EventType eventType);
 
+    public void update(EventType eventType, EventData eventData);
+
+
 }
