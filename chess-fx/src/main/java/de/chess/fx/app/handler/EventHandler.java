@@ -1,14 +1,10 @@
 package de.chess.fx.app.handler;
 
-import de.chess.fx.app.ui.views.gameboard.GameBoardView;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class EventHandler {
+public class EventHandler implements IEventHandler{
 
-    private ConcurrentLinkedQueue<EventObserver> observerList = new ConcurrentLinkedQueue<>();
+    private final ConcurrentLinkedQueue<EventObserver> observerList = new ConcurrentLinkedQueue<>();
 
     private static EventHandler instance = null;
 
@@ -28,16 +24,7 @@ public class EventHandler {
     }
 
     public void removeObserver(IChannel channel) {
-        observerList.removeIf(e -> channel.equals(e));
-    }
-
-    public void fireEvent(EventType eventType) {
-
-        for(EventObserver eventObserver : observerList ){
-            if (eventObserver.getEventType().equals(eventType)){
-                eventObserver.getChannel().update(eventType);
-            }
-        }
+        observerList.removeIf(observer -> observer.equals(channel));
     }
 
     public void fireGameEvent(EventType eventType, EventData eventData){

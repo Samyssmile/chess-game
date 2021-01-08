@@ -1,11 +1,10 @@
 package de.chess.io.client;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import de.chess.dto.response.Response;
-import de.chess.io.server.IRequestAnalyzer;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.logging.Logger;
 
@@ -16,7 +15,6 @@ public class ReadThread extends Thread {
     private ObjectInputStream reader;
     private final Socket socket;
     private final GameClient client;
-    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public ReadThread(Socket socket, GameClient client, IResponseAnalyzer responseAnalyzer) {
         this.socket = socket;
@@ -37,10 +35,8 @@ public class ReadThread extends Thread {
         while (true) {
             try {
                 Response response = (Response) this.reader.readObject();
-                System.out.println(gson.toJson(response));
                 responseAnalyzer.analyze(response);
             } catch (IOException | ClassNotFoundException ex) {
-                System.out.println("Error reading from server: " + ex.getMessage());
                 ex.printStackTrace();
                 break;
             }

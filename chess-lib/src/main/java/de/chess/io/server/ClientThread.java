@@ -1,10 +1,6 @@
 package de.chess.io.server;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import de.chess.dto.RequestType;
-import de.chess.dto.request.OpenGameRequest;
+import de.chess.dto.request.Request;
 import de.chess.dto.response.Response;
 
 import java.io.*;
@@ -14,8 +10,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static de.chess.dto.RequestType.*;
-
 public class ClientThread extends Thread {
     private static final Logger LOGGER = Logger.getGlobal();
     private final IRequestAnalyzer requestAnalyzer;
@@ -24,7 +18,6 @@ public class ClientThread extends Thread {
     private ObjectOutputStream writer;
     private ObjectInputStream reader;
     private LinkedBlockingQueue requestList = new LinkedBlockingQueue();
-    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public ClientThread(Socket socket,  IRequestAnalyzer requestAnalyzer) {
         this.socket = socket;
@@ -42,7 +35,7 @@ public class ClientThread extends Thread {
 
             while (socket.isConnected()) {
                 System.out.println("Waiting for requests...");
-                String jsonRequest = (String) this.reader.readObject();
+                Request jsonRequest = (Request) this.reader.readObject();
                 Response response = requestAnalyzer.analyze(jsonRequest, this);
                 sendResponse(response);
             }

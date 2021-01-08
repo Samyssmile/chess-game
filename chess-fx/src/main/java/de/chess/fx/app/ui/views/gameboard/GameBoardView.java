@@ -58,8 +58,6 @@ public class GameBoardView extends GridPane implements UIView, IChannel {
     this.setPadding(new Insets(0, 0, 0, SPACING));
   }
 
-  @Override
-  public void update(EventType eventType) {}
 
   @Override
   public void update(EventType eventType, EventData eventData) {

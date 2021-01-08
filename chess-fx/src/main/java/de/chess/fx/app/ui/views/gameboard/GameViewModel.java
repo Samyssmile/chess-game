@@ -57,16 +57,10 @@ public class GameViewModel implements Internalization, IChannel {
     }
 
     @Override
-    public void update(EventType eventType) {
-        switch (eventType){
-            case PLAYER_JOINED -> audioEffectPlayer.playSound(AudioEffectType.PLAYER_JOINED);
-        }
-    }
-
-    @Override
     public void update(EventType eventType, EventData eventData) {
         switch (eventType){
             case PLAYER_JOINED:
+                audioEffectPlayer.playSound(AudioEffectType.PLAYER_JOINED);
                 Player joinedPlayer = (Player) eventData.getData();
                 Platform.runLater(new Runnable(){
                     @Override
@@ -81,6 +75,10 @@ public class GameViewModel implements Internalization, IChannel {
 
 
     public void setChessGame(ChessGame gameDTO) {
-        hostPlayerName.setValue(gameDTO.getHostPlayerName());
+        hostPlayerName.setValue(gameDTO.getHostPlayer().getNickname());
+        if(gameDTO.getClientPlayer() != null){
+            clientPlayerName.setValue(gameDTO.getClientPlayer().getNickname());
+        }
+
     }
 }

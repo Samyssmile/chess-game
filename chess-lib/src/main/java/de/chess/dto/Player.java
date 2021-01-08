@@ -1,6 +1,7 @@
 package de.chess.dto;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Player implements Serializable {
@@ -36,6 +37,21 @@ public class Player implements Serializable {
 
     public void setElo(int elo) {
         this.elo = elo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return elo == player.elo &&
+                Objects.equals(uuid, player.uuid) &&
+                Objects.equals(nickname, player.nickname);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uuid, nickname, elo);
     }
 
     @Override

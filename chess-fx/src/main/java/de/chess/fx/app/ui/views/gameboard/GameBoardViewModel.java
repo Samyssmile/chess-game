@@ -168,10 +168,6 @@ public class GameBoardViewModel implements Flow.Subscriber<String>, IChannel {
     public void openGame() {
     }
 
-    @Override
-    public void update(EventType eventType) {
-
-    }
 
     @Override
     public void update(EventType eventType, EventData eventData) {

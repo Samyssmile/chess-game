@@ -233,14 +233,6 @@ public class HostGameView extends VBox implements Internalization, UIView, IChan
 
 
 
-    @Override
-    public void update(EventType eventType) {
-        switch (eventType){
-            case OPEN_NEW_GAME:
-
-
-        }
-    }
 
     @Override
     public void update(EventType eventType, EventData eventData) {

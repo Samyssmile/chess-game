@@ -7,10 +7,10 @@ import javafx.scene.Scene;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ToHostGameCommand implements ICommando {
+public class ToHostGameMenuCommand implements ICommando {
     private final Scene scene;
 
-    public ToHostGameCommand(Scene scene) {
+    public ToHostGameMenuCommand(Scene scene) {
         this.scene = scene;
     }
 

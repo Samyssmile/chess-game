@@ -1,10 +1,7 @@
 package de.chess.fx.app.client;
 
 import de.chess.dto.ChessGame;
-import de.chess.dto.response.OpenGameResponse;
-import de.chess.dto.response.PlayerJoinedIntoMyHostedGameResponse;
-import de.chess.dto.response.ReceiveGameListResponse;
-import de.chess.dto.response.Response;
+import de.chess.dto.response.*;
 import de.chess.fx.app.handler.EventData;
 import de.chess.fx.app.handler.EventHandler;
 import de.chess.fx.app.handler.EventType;
@@ -27,7 +24,6 @@ public class ResponseAnalyzer implements IResponseAnalyzer {
           onGameListResponse(response);
           break;
         case JOIN:
-          System.out.println("JOIN");
           onJoinGameResponse(response);
           break;
         case MOVE:
@@ -50,21 +46,27 @@ public class ResponseAnalyzer implements IResponseAnalyzer {
 
   private void onPlayerJoinedMyGame(Response response) {
     LOGGER.log(Level.INFO, "Player Joined Game Response");
-    PlayerJoinedIntoMyHostedGameResponse playerJoinedIntoMyHostedGameResponse = (PlayerJoinedIntoMyHostedGameResponse) response;
-    EventHandler.getInstance().fireEvent(EventType.PLAYER_JOINED);
-    EventHandler.getInstance().fireGameEvent(EventType.PLAYER_JOINED, new EventData(playerJoinedIntoMyHostedGameResponse.getPlayer()));
+    PlayerJoinedIntoMyHostedGameResponse playerJoinedIntoMyHostedGameResponse =
+        (PlayerJoinedIntoMyHostedGameResponse) response;
+    EventHandler.getInstance()
+        .fireGameEvent(
+            EventType.PLAYER_JOINED,
+            new EventData(playerJoinedIntoMyHostedGameResponse.getPlayer()));
   }
 
   private void onJoinGameResponse(Response response) {
     LOGGER.log(Level.INFO, "Join Game Response");
+    JoinGameResponse joinGameResponse = (JoinGameResponse) response;
+    EventHandler.getInstance()
+        .fireGameEvent(EventType.JOINED_GAME, new EventData(joinGameResponse.getGameDTO()));
   }
 
   private void onNewGameResponse(Response response) {
     LOGGER.log(Level.INFO, "New Game Response");
     OpenGameResponse openGameResponse = (OpenGameResponse) response;
     if (openGameResponse.isGranted()) {
-      EventHandler.getInstance().fireEvent(EventType.OPEN_NEW_GAME);
-      EventHandler.getInstance().fireGameEvent(EventType.OPEN_NEW_GAME, new EventData(openGameResponse.getGameDTO()));
+      EventHandler.getInstance()
+          .fireGameEvent(EventType.OPEN_NEW_GAME, new EventData(openGameResponse.getGameDTO()));
     }
   }
 

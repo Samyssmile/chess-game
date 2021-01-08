@@ -1,13 +1,11 @@
 package de.chess.io.client;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import de.chess.dto.request.Request;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.Socket;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +16,6 @@ public class WriteThread extends Thread {
     private final Socket socket;
     private final GameClient client;
     private LinkedBlockingQueue<Request> requestQueue = new LinkedBlockingQueue<>();
-    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public WriteThread(Socket socket, GameClient client) {
         this.socket = socket;
@@ -39,8 +36,7 @@ public class WriteThread extends Thread {
             synchronized (requestQueue) {
                 try {
                     Request request = requestQueue.take();
-                    String jsonRequest = gson.toJson(request);
-                    writer.writeObject(jsonRequest);
+                    writer.writeObject(request);
                     writer.flush();
                     LOGGER.log(Level.INFO, "Request was sent");
                 } catch (InterruptedException | IOException e) {

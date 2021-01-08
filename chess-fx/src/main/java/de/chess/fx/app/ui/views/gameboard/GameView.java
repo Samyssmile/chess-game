@@ -61,6 +61,7 @@ public class GameView extends BorderPane implements UIView {
 
 
         confugureView();
+
     }
 
 
