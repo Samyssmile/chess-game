@@ -71,9 +71,10 @@ public class RequestAnalyzer implements IRequestAnalyzer {
   }
 
   private Response onJoinRequestReceived(JoinGameRequest joinGameRequest) {
+    Response response;
     Optional<ChessGame> chessGameOpt =
         gameManager.requestToJoinGame(joinGameRequest.getGameUUID(), joinGameRequest.getPlayer());
-    Response response;
+
     if (chessGameOpt.isPresent()) {
       UUID hostPlayerUUID = chessGameOpt.get().getHostPlayer().getUuid();
       Optional<PlayerConnection> hostPlayerConnection =

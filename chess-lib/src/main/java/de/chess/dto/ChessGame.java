@@ -36,6 +36,23 @@ public class ChessGame implements Serializable {
     gameStatus = GameStatus.WATING;
   }
 
+  public ChessGame(
+          String gameName,
+          Player hostPlayer,
+          Player clientPlayer,
+          String timeLimit,
+          ChessColor hostColor,
+          GameType gameType) {
+    this.gameName = gameName;
+    setHostPlayer(hostPlayer);
+    setClientPlayer(clientPlayer);
+    this.timeLimit = timeLimit;
+    this.hostColor = hostColor;
+    this.gameType = gameType;
+    gameStatus = GameStatus.WATING;
+  }
+
+
   public GameBoard getGameBoard() {
     return gameBoard;
   }
@@ -58,6 +75,14 @@ public class ChessGame implements Serializable {
 
   public void setGameName(String gameName) {
     this.gameName = gameName;
+  }
+
+  public Player[] getPlayers() {
+    return players;
+  }
+
+  public void setPlayers(Player[] players) {
+    this.players = players;
   }
 
   public String getHostPlayerName() {

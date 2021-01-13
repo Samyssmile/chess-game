@@ -57,6 +57,8 @@ public class ResponseAnalyzer implements IResponseAnalyzer {
   private void onJoinGameResponse(Response response) {
     LOGGER.log(Level.INFO, "Join Game Response");
     JoinGameResponse joinGameResponse = (JoinGameResponse) response;
+    joinGameResponse.getGameDTO().setClientPlayer(joinGameResponse.getClientPlayer());
+    joinGameResponse.getGameDTO().setHostPlayer(joinGameResponse.getHostPlayer());
     EventHandler.getInstance()
         .fireGameEvent(EventType.JOINED_GAME, new EventData(joinGameResponse.getGameDTO()));
   }
