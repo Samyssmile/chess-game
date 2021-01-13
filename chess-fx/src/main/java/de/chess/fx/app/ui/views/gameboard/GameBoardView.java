@@ -1,5 +1,6 @@
 package de.chess.fx.app.ui.views.gameboard;
 
+import de.chess.dto.ChessGame;
 import de.chess.dto.Player;
 import de.chess.fx.app.handler.EventData;
 import de.chess.fx.app.handler.EventHandler;
@@ -22,10 +23,12 @@ public class GameBoardView extends GridPane implements UIView, IChannel {
   private static final double SPACING = 10;
   private final SimpleObjectProperty<FieldView[][]> boardMatrix =
       new SimpleObjectProperty<>(new FieldView[8][8]);
+  private final ChessGame gameDTO;
 
   private GameBoardViewModel viewModel;
 
-  public GameBoardView() {
+  public GameBoardView(ChessGame gameDTO) {
+    this.gameDTO = gameDTO;
     initViewModel();
     viewModel.openGame();
 
@@ -50,7 +53,7 @@ public class GameBoardView extends GridPane implements UIView, IChannel {
 
   @Override
   public void initViewModel() {
-    this.viewModel = new GameBoardViewModel();
+    this.viewModel = new GameBoardViewModel(getGameDTO());
   }
 
   @Override
@@ -58,6 +61,9 @@ public class GameBoardView extends GridPane implements UIView, IChannel {
     this.setPadding(new Insets(0, 0, 0, SPACING));
   }
 
+  public ChessGame getGameDTO() {
+    return gameDTO;
+  }
 
   @Override
   public void update(EventType eventType, EventData eventData) {

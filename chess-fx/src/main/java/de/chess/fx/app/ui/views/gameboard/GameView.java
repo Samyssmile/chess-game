@@ -47,10 +47,11 @@ public class GameView extends BorderPane implements UIView {
 
     public GameView(ChessGame gameDTO) {
         this.nodeList = new ArrayList<>();
-
         initNodes();
         initViewModel();
         viewModel.setChessGame(gameDTO);
+        initGameBoardView();
+
         this.topHBox = new HBox(labelPlayerHostName, labelTitle, labelPlayerClientName);
         this.bottomHBox = new HBox(buttonGiveUp, buttonRemisRequest);
 
@@ -64,6 +65,11 @@ public class GameView extends BorderPane implements UIView {
 
     }
 
+    private void initGameBoardView() {
+        gameBoardView = new GameBoardView(viewModel.getGameDTO());
+        nodeList.add(gameBoardView);
+    }
+
 
     @Override
     public List<Node> initNodes() {
@@ -74,7 +80,7 @@ public class GameView extends BorderPane implements UIView {
         labelPlayerVisitorElo = new Label("1566");
         labelCountDown = new Label("3.2.1.GO");
         chatView = new ChatView();
-        gameBoardView = new GameBoardView();
+
         buttonGiveUp = new Button("I give up");
         buttonRemisRequest = new Button("Suggest Draw - Remis");
 
@@ -83,7 +89,6 @@ public class GameView extends BorderPane implements UIView {
         nodeList.add(labelPlayerHostElo);
         nodeList.add(labelPlayerVisitorElo);
         nodeList.add(chatView);
-        nodeList.add(gameBoardView);
         nodeList.add(buttonGiveUp);
         nodeList.add(labelCountDown);
         nodeList.add(labelTitle);
@@ -112,6 +117,8 @@ public class GameView extends BorderPane implements UIView {
         this.topHBox.setAlignment(Pos.CENTER);
         this.labelTitle.setFont(new Font(TITLE_FONT_SIZE));
     }
+
+
 
 
 }

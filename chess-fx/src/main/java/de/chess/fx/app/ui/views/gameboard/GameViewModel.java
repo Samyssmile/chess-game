@@ -18,6 +18,8 @@ public class GameViewModel implements Internalization, IChannel {
     private StringProperty hostPlayerName = new SimpleStringProperty(i18n("game.default.hostname"));
     private StringProperty clientPlayerName = new SimpleStringProperty(i18n("game.client.hostname"));
     private AudioEffectPlayer audioEffectPlayer;
+    private ChessGame gameDTO;
+
     public GameViewModel( ) {
         audioEffectPlayer = new AudioEffectPlayer();
         registerForEvents();
@@ -75,10 +77,14 @@ public class GameViewModel implements Internalization, IChannel {
 
 
     public void setChessGame(ChessGame gameDTO) {
+        this.gameDTO = gameDTO;
         hostPlayerName.setValue(gameDTO.getHostPlayer().getNickname());
         if(gameDTO.getClientPlayer() != null){
             clientPlayerName.setValue(gameDTO.getClientPlayer().getNickname());
         }
+    }
 
+    public ChessGame getGameDTO() {
+        return gameDTO;
     }
 }

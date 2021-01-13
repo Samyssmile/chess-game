@@ -26,6 +26,10 @@ public class ChessField implements Serializable {
         this.piece = piece;
     }
 
+    public Piece getPiece() {
+        return piece;
+    }
+
     public IndexField getAsIndexField() {
         IndexField field = new IndexField();
         switch (position.charAt(0)) {
@@ -174,5 +178,9 @@ public class ChessField implements Serializable {
             fen = piece.getFEN();
         }
         return fen;
+    }
+
+    public boolean isPiecePresent() {
+        return  piece != null;
     }
 }
