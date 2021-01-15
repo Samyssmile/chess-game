@@ -101,10 +101,7 @@ public class GameBoard implements Serializable {
         return field;
     }
 
-    /**
-     * Distribute the Chess Pieces on their start Position
-     */
-    public void initStartState() {
+    public void initialDistibutionOfChessPieces() {
         initEmptyBoard();
         //White
         putPiece("a2", new Piece(ChessColor.WHITE, PieceType.PAWN));
@@ -119,8 +116,8 @@ public class GameBoard implements Serializable {
         putPiece("a1", new Piece(ChessColor.WHITE, PieceType.ROOK));
         putPiece("b1", new Piece(ChessColor.WHITE, PieceType.KNIGHT));
         putPiece("c1", new Piece(ChessColor.WHITE, PieceType.BISHOP));
-        putPiece("d1", new Piece(ChessColor.WHITE, PieceType.QUUEN));
-        putPiece("e1", new Piece(ChessColor.WHITE, PieceType.KING));
+        putPiece("e1", new Piece(ChessColor.WHITE, PieceType.QUUEN));
+        putPiece("d1", new Piece(ChessColor.WHITE, PieceType.KING));
         putPiece("f1", new Piece(ChessColor.WHITE, PieceType.BISHOP));
         putPiece("g1", new Piece(ChessColor.WHITE, PieceType.KNIGHT));
         putPiece("h1", new Piece(ChessColor.WHITE, PieceType.ROOK));
@@ -138,8 +135,8 @@ public class GameBoard implements Serializable {
         putPiece("a8", new Piece(ChessColor.BLACK, PieceType.ROOK));
         putPiece("b8", new Piece(ChessColor.BLACK, PieceType.KNIGHT));
         putPiece("c8", new Piece(ChessColor.BLACK, PieceType.BISHOP));
-        putPiece("d8", new Piece(ChessColor.BLACK, PieceType.QUUEN));
-        putPiece("e8", new Piece(ChessColor.BLACK, PieceType.KING));
+        putPiece("e8", new Piece(ChessColor.BLACK, PieceType.QUUEN));
+        putPiece("d8", new Piece(ChessColor.BLACK, PieceType.KING));
         putPiece("f8", new Piece(ChessColor.BLACK, PieceType.BISHOP));
         putPiece("g8", new Piece(ChessColor.BLACK, PieceType.KNIGHT));
         putPiece("h8", new Piece(ChessColor.BLACK, PieceType.ROOK));

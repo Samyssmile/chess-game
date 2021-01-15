@@ -82,26 +82,46 @@ public class GameBoardViewModel implements Flow.Subscriber<String>, IChannel {
 
   private void initChessFigureMatrix(ChessGame gameDTO, ChessColor color) {
     ChessField a = gameDTO.getGameBoard().getBoard()[1][1];
+    UUID hostUUID = gameDTO.getHostPlayer().getUuid();
+
+    UUID myUUID = ChessFX.PLAYERS_UUID;
+    if (hostUUID.equals(myUUID)){
+      ChessColor hostColor = gameDTO.getHostColor();
+      putPiecesOnChessboard(hostColor, gameDTO );
+
+    }
+
+    if (gameDTO.getClientPlayer() != null && gameDTO.getClientPlayer().getUuid().equals(myUUID)){
+      ChessColor clientColor = gameDTO.getClientColor();
+      putPiecesOnChessboard(clientColor, gameDTO );
+    }
+
+  }
+
+  private void putPiecesOnChessboard(ChessColor color, ChessGame gameDTO) {
     for (int i = 0; i < gameDTO.getGameBoard().getBoard().length; i++) {
       for (int y = 0; y < gameDTO.getGameBoard().getBoard()[i].length; y++) {
+
         ChessField chessField = gameDTO.getGameBoard().getBoard()[i][y];
+
         if (chessField.isPiecePresent()){
-          boardMatrix
-                  .get()[y][i]
-                  .getViewModel()
-                  .figureProperty()
-                  .set(putFigureOf(chessField.getPiece()));
+          if (color == ChessColor.WHITE){
+            boardMatrix
+                    .get()[7-y][7-i]
+                    .getViewModel()
+                    .figureProperty()
+                    .set(putFigureOf(chessField.getPiece()));
+          }else{
+            boardMatrix
+                    .get()[y][i]
+                    .getViewModel()
+                    .figureProperty()
+                    .set(putFigureOf(chessField.getPiece()));
+          }
+
         }
       }
     }
-
-    //        initPawns(color);
-    //        initTowers(color);
-    //        initHorses(color);
-    //        initBishops(color);
-    //        initQueens(color);
-    //        initKings(color);
-
   }
 
   private ChessFigure putFigureOf(Piece piece) {

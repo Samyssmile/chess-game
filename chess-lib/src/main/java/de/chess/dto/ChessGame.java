@@ -105,6 +105,13 @@ public class ChessGame implements Serializable {
     return hostColor;
   }
 
+  public ChessColor getClientColor(){
+    if (getHostColor() == ChessColor.WHITE){
+        return ChessColor.BLACK;
+    }
+    return  ChessColor.WHITE;
+  }
+
   public void setHostColor(ChessColor hostColor) {
     this.hostColor = hostColor;
   }
@@ -177,7 +184,7 @@ public class ChessGame implements Serializable {
   /** Set all pieces on start position. This is a new Game State */
   public void initGameBoard() {
     gameBoard = new GameBoard();
-    gameBoard.initStartState();
+    gameBoard.initialDistibutionOfChessPieces();
   }
 
   public void setHostPlayer(Player player) {
