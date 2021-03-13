@@ -1,0 +1,1 @@
+gradlew :chess-fx:run
