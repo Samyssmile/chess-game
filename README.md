@@ -5,15 +5,19 @@ Game of Kings is a multiplayer, platform independent chess game.
 
 * Elo Ranking System.
 * Multiplayer only chess game.
-* Nice Chat to allows chess enthusiast to communicate.
+* Chat to allow chess enthusiast to communicate.
 * Running on Windows, Mac, Linux, BSD.
 
-# Software Requirements
+# Software Requirements as developer
 You dont need to download and/or install any of listed software except gradle. Gradle will download all necessery software & libraries.
 
 * Java 15
 * Java FX
 * Gradle 6.7
+* 
+# Software Requirements as player
+
+* Java 15
 
 # How to start as developer
 
