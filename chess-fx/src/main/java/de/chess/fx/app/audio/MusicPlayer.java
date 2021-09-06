@@ -12,7 +12,16 @@ public class MusicPlayer {
     private static MediaPlayer player;
     private static Media media;
 
-    public MusicPlayer() throws URISyntaxException {
+    public static MusicPlayer instance = null;
+
+    public static MusicPlayer getInstance() throws URISyntaxException {
+        if (instance == null){
+            instance = new MusicPlayer();
+        }
+        return instance;
+    }
+
+    private MusicPlayer() throws URISyntaxException {
         media = new Media(Thread.currentThread().getContextClassLoader().getResource(MUSIC_FILE_NAME).toURI().toASCIIString());
         player = new MediaPlayer(media);
         player.setVolume(VOLUME);
@@ -20,6 +29,18 @@ public class MusicPlayer {
 
     public void playBackgroundMusic() {
         player.play();
+    }
+
+    public void stopBackgroundMusic(){
+        player.setMute(true);
+    }
+
+    public void muteUnmuteMusic(){
+        if (player.isMute()){
+            player.setMute(false);
+        }else{
+            player.setMute(true);
+        }
     }
 
 

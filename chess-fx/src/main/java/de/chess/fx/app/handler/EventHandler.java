@@ -1,16 +1,18 @@
 package de.chess.fx.app.handler;
 
+import javafx.event.Event;
+
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class EventHandler implements IEventHandler{
+public class EventHandler<W extends Event> implements IEventHandler{
 
     private final ConcurrentLinkedQueue<EventObserver> observerList = new ConcurrentLinkedQueue<>();
 
-    private static EventHandler instance = null;
+    private static EventHandler<Event> instance = null;
 
-    public static EventHandler getInstance() {
+    public static EventHandler<Event> getInstance() {
         if (instance == null) {
-            instance = new EventHandler();
+            instance = new EventHandler<Event>();
         }
         return instance;
     }
