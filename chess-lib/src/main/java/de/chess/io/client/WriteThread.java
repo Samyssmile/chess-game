@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,6 +37,7 @@ public class WriteThread extends Thread {
             synchronized (requestQueue) {
                 try {
                     Request request = requestQueue.take();
+                    Objects.requireNonNull(request);
                     writer.writeObject(request);
                     writer.flush();
                     LOGGER.log(Level.INFO, "Request was sent");

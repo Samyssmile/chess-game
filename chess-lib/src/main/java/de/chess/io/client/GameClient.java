@@ -7,6 +7,7 @@ import de.chess.dto.request.SelfIntroducingRequest;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -31,7 +32,7 @@ public class GameClient {
     }
 
     public static GameClient getAndIniTInstance(String hostname, int port, IResponseAnalyzer responseAnalyzer, UUID playersUUID) {
-        if (instance == null) {
+        if (Objects.isNull(instance)) {
             instance = new GameClient(hostname, port, responseAnalyzer, playersUUID);
         }
         return instance;

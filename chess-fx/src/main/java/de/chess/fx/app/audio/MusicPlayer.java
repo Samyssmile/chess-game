@@ -4,6 +4,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 
 public class MusicPlayer {
@@ -15,7 +16,7 @@ public class MusicPlayer {
     public static MusicPlayer instance = null;
 
     public static MusicPlayer getInstance() throws URISyntaxException {
-        if (instance == null){
+        if (Objects.isNull(instance)) {
             instance = new MusicPlayer();
         }
         return instance;

@@ -13,6 +13,8 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.util.Objects;
+
 public class GameViewModel implements Internalization, IChannel {
 
     private StringProperty hostPlayerName = new SimpleStringProperty(i18n("game.default.hostname"));
@@ -79,7 +81,7 @@ public class GameViewModel implements Internalization, IChannel {
     public void setChessGame(ChessGame gameDTO) {
         this.gameDTO = gameDTO;
         hostPlayerName.setValue(gameDTO.getHostPlayer().getNickname());
-        if(gameDTO.getClientPlayer() != null){
+        if(!Objects.isNull(gameDTO.getClientPlayer())){
             clientPlayerName.setValue(gameDTO.getClientPlayer().getNickname());
         }
     }

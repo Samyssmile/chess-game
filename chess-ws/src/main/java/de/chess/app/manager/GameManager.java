@@ -20,7 +20,7 @@ public class GameManager implements IGameManager {
     }
 
     public static IGameManager instance() {
-        if (instance == null) {
+        if (Objects.isNull(instance)) {
             instance = new GameManager();
         }
         return instance;

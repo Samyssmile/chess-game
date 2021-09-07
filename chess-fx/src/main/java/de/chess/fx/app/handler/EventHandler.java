@@ -2,6 +2,7 @@ package de.chess.fx.app.handler;
 
 import javafx.event.Event;
 
+import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class EventHandler<W extends Event> implements IEventHandler{
@@ -11,7 +12,7 @@ public class EventHandler<W extends Event> implements IEventHandler{
     private static EventHandler<Event> instance = null;
 
     public static EventHandler<Event> getInstance() {
-        if (instance == null) {
+        if (Objects.isNull(instance)) {
             instance = new EventHandler<Event>();
         }
         return instance;

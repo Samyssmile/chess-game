@@ -5,6 +5,7 @@ import de.chess.fx.app.model.GameRowData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Flow;
 import java.util.concurrent.SubmissionPublisher;
 import java.util.logging.Level;
@@ -23,7 +24,7 @@ public class GameListProvider implements IGameListProvider {
     }
 
     public static IGameListProvider getInstance() {
-        if (instance == null) {
+        if (Objects.isNull(instance)) {
             instance = new GameListProvider();
         }
         return instance;

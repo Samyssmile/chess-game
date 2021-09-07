@@ -5,6 +5,7 @@ import de.chess.reader.ApplicationPropertiesReader;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Objects;
 import java.util.Properties;
 
 public class LocalDevPClientProperties implements IClientProperties {
@@ -50,7 +51,7 @@ public class LocalDevPClientProperties implements IClientProperties {
     }
 
     public static IClientProperties instance() throws IOException {
-        if (instance == null) {
+        if (Objects.isNull(instance)) {
             instance = new LocalDevPClientProperties();
         }
         return instance;

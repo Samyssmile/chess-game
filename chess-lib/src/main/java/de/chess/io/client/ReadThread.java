@@ -25,7 +25,6 @@ public class ReadThread extends Thread {
             InputStream input = socket.getInputStream();
             this.reader = new ObjectInputStream(input);
         } catch (IOException ex) {
-            System.out.println("Error getting input stream: " + ex.getMessage());
             ex.printStackTrace();
         }
     }

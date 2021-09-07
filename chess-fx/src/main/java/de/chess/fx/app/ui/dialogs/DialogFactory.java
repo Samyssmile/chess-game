@@ -2,6 +2,8 @@ package de.chess.fx.app.ui.dialogs;
 
 import javafx.scene.control.Alert;
 
+import java.util.Objects;
+
 public class DialogFactory implements IDialogFactory {
 
     private static IDialogFactory instance = null;
@@ -13,7 +15,7 @@ public class DialogFactory implements IDialogFactory {
     }
 
     public static IDialogFactory instance() {
-        if (instance == null) {
+        if (Objects.isNull(instance)) {
             instance = new DialogFactory();
         }
         return instance;
