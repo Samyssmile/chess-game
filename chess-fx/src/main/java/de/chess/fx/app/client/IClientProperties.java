@@ -1,5 +1,7 @@
 package de.chess.fx.app.client;
 
+import de.chess.fx.app.ui.dialog.DialogMessageType;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Properties;
@@ -23,6 +25,7 @@ public interface IClientProperties {
         return Integer.parseInt( getClientProperties().getProperty("server.address.port"));
     }
     public void setClientProperties(Properties properties);
+
 
 
     public InetAddress getLocalHostAddress();

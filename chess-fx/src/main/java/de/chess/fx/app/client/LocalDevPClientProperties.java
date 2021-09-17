@@ -1,5 +1,6 @@
 package de.chess.fx.app.client;
 
+import de.chess.fx.app.ui.dialog.DialogMessageType;
 import de.chess.reader.ApplicationPropertiesReader;
 
 import java.io.IOException;
@@ -38,6 +39,8 @@ public class LocalDevPClientProperties implements IClientProperties {
     public void setClientProperties(Properties properties) {
         this.clientProperties = properties;
     }
+
+
 
     @Override
     public InetAddress getLocalHostAddress() {

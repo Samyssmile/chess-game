@@ -4,6 +4,8 @@ import de.chess.fx.app.audio.MusicPlayer;
 import de.chess.fx.app.client.IClientProperties;
 import de.chess.fx.app.client.LocalDevPClientProperties;
 import de.chess.fx.app.client.ResponseAnalyzer;
+import de.chess.fx.app.i18n.Internalization;
+import de.chess.fx.app.ui.dialog.DialogMessageType;
 import de.chess.fx.app.ui.views.bottom.BottomAudioPanelView;
 import de.chess.fx.app.ui.views.mainMenu.MainMenuView;
 import de.chess.io.client.GameClient;
@@ -14,6 +16,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -23,13 +26,14 @@ import java.net.URISyntaxException;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-public class ChessFX extends Application implements IGameClientApplication {
+public class ChessFX extends Application implements IGameClientApplication, Internalization {
     private static final Logger LOGGER = Logger.getGlobal();
     private static final double FRAME_WIDTH = 1300;
     private static final double FRAME_HEIGHT = 850;
     private final MusicPlayer musicPlayer;
 
     public final static UUID PLAYERS_UUID = UUID.randomUUID();
+    private IClientProperties clientProperties;
 
     public ChessFX() throws URISyntaxException {
         this.musicPlayer = MusicPlayer.getInstance();
@@ -43,7 +47,7 @@ public class ChessFX extends Application implements IGameClientApplication {
     public void start(Stage stage) throws Exception {
         LOGGER.info("************* - Starting ChessFX UI - ************");
 
-        IClientProperties clientProperties = LocalDevPClientProperties.instance();
+        clientProperties = LocalDevPClientProperties.instance();
         MainMenuView mainMenu = new MainMenuView();
         BorderPane mainLayout = new BorderPane();
         BottomAudioPanelView bottomAudioPanelView = new BottomAudioPanelView();
@@ -65,6 +69,7 @@ public class ChessFX extends Application implements IGameClientApplication {
                 System.exit(0);
             }
         });
+
         this.musicPlayer.playBackgroundMusic();
         connect(clientProperties.getServerAddress(), clientProperties.getServerPort());
     }
@@ -72,7 +77,12 @@ public class ChessFX extends Application implements IGameClientApplication {
     public void connect(String serverAddress, int serverPort) {
         IResponseAnalyzer responseAnalyzer = new ResponseAnalyzer();
         GameClient client = GameClient.getAndIniTInstance(serverAddress, serverPort, responseAnalyzer, PLAYERS_UUID);
-        client.execute();
+        if (!client.execute()) {
+            Alert cantConnectAlert = new Alert(Alert.AlertType.ERROR);
+            cantConnectAlert.setContentText(i18n(DialogMessageType.CANT_CONNECT_TO_SERVER));
+            cantConnectAlert.setTitle(i18n(DialogMessageType.CANT_CONNECT_TO_SERVER_TITLE));
+            cantConnectAlert.show();
+        }
 
     }
 }

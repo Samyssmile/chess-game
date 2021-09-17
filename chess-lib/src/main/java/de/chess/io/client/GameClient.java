@@ -47,10 +47,17 @@ public class GameClient {
 
     /**
      * Connect to Server
+     * @return true on success. Otherweise false
      */
-    public void execute() {
+    public boolean execute() {
+        assert Objects.nonNull(this.hostname);
+
         if (connect(this.hostname, this.port)) {
             startReadWriteThreads();
+            return true;
+        }else{
+            LOGGER.log(Level.WARNING, String.format("Cant connected to server with: Hostname %s and Port %s", this.hostname, this.port));
+            return false;
         }
 
     }
