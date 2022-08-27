@@ -10,7 +10,7 @@ import de.chess.fx.app.model.GameRowData;
 import de.chess.fx.app.provider.INicknameProvider;
 import de.chess.fx.app.provider.NicknameProvider;
 import de.chess.fx.app.ui.views.UIView;
-import de.chess.fx.app.ui.views.gameboard.GameView;
+import de.chess.fx.app.ui.views.maingameview.GameView;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

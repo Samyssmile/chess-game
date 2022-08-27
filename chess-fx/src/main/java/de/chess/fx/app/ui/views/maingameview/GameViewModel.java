@@ -1,4 +1,4 @@
-package de.chess.fx.app.ui.views.gameboard;
+package de.chess.fx.app.ui.views.maingameview;
 
 import de.chess.dto.ChessGame;
 import de.chess.dto.Player;

@@ -1,13 +1,7 @@
-package de.chess.fx.app.ui.views.gameboard;
+package de.chess.fx.app.ui.views.maingameview;
 
 
 import de.chess.dto.ChessGame;
-import de.chess.fx.app.audio.AudioEffectPlayer;
-import de.chess.fx.app.audio.AudioEffectType;
-import de.chess.fx.app.handler.EventData;
-import de.chess.fx.app.handler.EventHandler;
-import de.chess.fx.app.handler.EventType;
-import de.chess.fx.app.handler.IChannel;
 import de.chess.fx.app.ui.views.UIView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -40,9 +34,6 @@ public class GameView extends BorderPane implements UIView {
     private GameViewModel viewModel;
 
 
-
-
-
     public GameView(ChessGame gameDTO) {
         this.nodeList = new ArrayList<>();
         initNodes();
@@ -53,13 +44,12 @@ public class GameView extends BorderPane implements UIView {
         this.bottomHBox = new HBox(buttonGiveUp, buttonRemisRequest);
 
         this.setTop(topHBox);
-        this.setBottom(     this.bottomHBox );
+        this.setBottom(this.bottomHBox);
 
 
         confugureView();
 
     }
-
 
 
     @Override
@@ -100,14 +90,12 @@ public class GameView extends BorderPane implements UIView {
 
     @Override
     public void confugureView() {
-        this.bottomHBox .setAlignment(Pos.CENTER);
+        this.bottomHBox.setAlignment(Pos.CENTER);
         this.bottomHBox.setSpacing(10);
         this.bottomHBox.setPadding(new Insets(10));
         this.topHBox.setAlignment(Pos.CENTER);
         this.labelTitle.setFont(new Font(TITLE_FONT_SIZE));
     }
-
-
 
 
 }

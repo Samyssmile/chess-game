@@ -7,7 +7,7 @@ import de.chess.fx.app.handler.EventType;
 import de.chess.fx.app.handler.IChannel;
 import de.chess.fx.app.i18n.Internalization;
 import de.chess.fx.app.ui.views.UIView;
-import de.chess.fx.app.ui.views.gameboard.GameView;
+import de.chess.fx.app.ui.views.maingameview.GameView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;

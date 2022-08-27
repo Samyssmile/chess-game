@@ -1,7 +1,7 @@
 package de.chess.fx.app.ui.command;
 
 import de.chess.dto.ChessGame;
-import de.chess.fx.app.ui.views.gameboard.GameView;
+import de.chess.fx.app.ui.views.maingameview.GameView;
 import javafx.scene.Scene;
 
 import java.util.logging.Level;
