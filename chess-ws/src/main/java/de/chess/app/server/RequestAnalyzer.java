@@ -99,7 +99,6 @@ public class RequestAnalyzer implements IRequestAnalyzer {
 
     private Response onNewGameRequestReceived(OpenGameRequest openGameRequest) {
         ChessGame game = gameManager.requestGame(openGameRequest.getGameDTO());
-        game.setGameStatus(GameStatus.WATING);
 
         return new OpenGameResponse(
                 game.getUuid(), openGameRequest.getPlayerUUID(), NEW_GAME, game != null, game);

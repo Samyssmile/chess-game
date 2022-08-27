@@ -34,6 +34,7 @@ public class GameManager implements IGameManager {
             chessGame.setUuid(generateUUID());
             chessGame.initGameBoard();
             activeGameList.add(chessGame);
+            chessGame.setGameStatus(GameStatus.WATING);
             LOGGER.log(Level.INFO, "Requested Game Granted: GameList Size: {0}", activeGameList.size());
         } else {
             chessGame = null;
