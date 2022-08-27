@@ -1,4 +1,4 @@
-package de.chess.app.manager;
+package de.chess.app.game;
 
 import de.chess.model.*;
 import org.junit.jupiter.api.BeforeEach;

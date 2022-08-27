@@ -30,8 +30,6 @@ public class GameView extends BorderPane implements UIView {
     private Label labelPlayerVisitorElo;
     private Label labelCountDown;
 
-    private ChatView chatView;
-    private GameBoardView gameBoardView;
     private Button buttonGiveUp;
     private Button buttonRemisRequest;
 
@@ -50,13 +48,10 @@ public class GameView extends BorderPane implements UIView {
         initNodes();
         initViewModel();
         viewModel.setChessGame(gameDTO);
-        initGameBoardView();
 
         this.topHBox = new HBox(labelPlayerHostName, labelTitle, labelPlayerClientName);
         this.bottomHBox = new HBox(buttonGiveUp, buttonRemisRequest);
 
-        this.setCenter(gameBoardView);
-        this.setRight(chatView);
         this.setTop(topHBox);
         this.setBottom(     this.bottomHBox );
 
@@ -65,10 +60,6 @@ public class GameView extends BorderPane implements UIView {
 
     }
 
-    private void initGameBoardView() {
-        gameBoardView = new GameBoardView(viewModel.getGameDTO());
-        nodeList.add(gameBoardView);
-    }
 
 
     @Override
@@ -79,7 +70,6 @@ public class GameView extends BorderPane implements UIView {
         labelPlayerHostElo = new Label("1800");
         labelPlayerVisitorElo = new Label("1566");
         labelCountDown = new Label("3.2.1.GO");
-        chatView = new ChatView();
 
         buttonGiveUp = new Button("I give up");
         buttonRemisRequest = new Button("Suggest Draw - Remis");
@@ -88,7 +78,6 @@ public class GameView extends BorderPane implements UIView {
         nodeList.add(labelPlayerClientName);
         nodeList.add(labelPlayerHostElo);
         nodeList.add(labelPlayerVisitorElo);
-        nodeList.add(chatView);
         nodeList.add(buttonGiveUp);
         nodeList.add(labelCountDown);
         nodeList.add(labelTitle);

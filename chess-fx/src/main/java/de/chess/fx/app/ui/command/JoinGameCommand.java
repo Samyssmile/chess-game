@@ -1,12 +1,10 @@
 package de.chess.fx.app.ui.command;
 
-import de.chess.dto.ChessGame;
 import de.chess.dto.Player;
 import de.chess.dto.RequestType;
 import de.chess.dto.request.JoinGameRequest;
 import de.chess.fx.app.ChessFX;
 import de.chess.fx.app.model.GameRowData;
-import de.chess.fx.app.ui.views.gameboard.GameView;
 import de.chess.io.client.GameClient;
 import javafx.scene.Scene;
 

@@ -1,5 +1,5 @@
 package de.chess.dto;
 
 public enum GameStatus {
-    WATING, RUNNING;
+    WATING, RUNNING,READY_TO_START;
 }

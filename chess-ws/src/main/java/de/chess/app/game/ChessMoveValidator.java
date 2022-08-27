@@ -1,6 +1,5 @@
-package de.chess.app.manager;
+package de.chess.app.game;
 
-import de.chess.dto.ChessGame;
 import de.chess.model.GameBoard;
 import de.chess.validation.IMoveValidator;
 import de.chess.model.Move;

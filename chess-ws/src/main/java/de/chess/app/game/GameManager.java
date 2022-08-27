@@ -1,6 +1,7 @@
-package de.chess.app.manager;
+package de.chess.app.game;
 
 import de.chess.dto.ChessGame;
+import de.chess.dto.GameStatus;
 import de.chess.dto.Player;
 import de.chess.game.IGameManager;
 
@@ -80,19 +81,22 @@ public class GameManager implements IGameManager {
 
     @Override
     public Optional<ChessGame> requestToJoinGame(UUID gameUUID, Player player) {
+        Optional<ChessGame> response = Optional.empty();
         Optional<ChessGame> gameOfInteresst = getGameByUUIID(gameUUID);
-        gameOfInteresst.ifPresentOrElse(e -> {
-            if(e.isWaitingForPlayerToJoin()){
-                e.setClientPlayer(player);
-            }else{
+        if (gameOfInteresst.isPresent()){
+            ChessGame chessGame = gameOfInteresst.get();
+            if (chessGame.getGameStatus() == GameStatus.WATING){
+                chessGame.setClientPlayer(player);
+                chessGame.setGameStatus(GameStatus.READY_TO_START);
+                response = Optional.of(chessGame);
+            }else {
                 LOGGER.info("Game already running");
-                e = null;
             }
-        }, () -> {
+        }else{
             LOGGER.info("Requested Game not found.");
-        });
+        }
 
-        return gameOfInteresst;
+        return response;
 
     }
 
