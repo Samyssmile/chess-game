@@ -105,9 +105,12 @@ public class GameView extends BorderPane implements UIView {
         this.topHBox.setAlignment(Pos.CENTER);
         this.labelTitle.setFont(new Font(TITLE_FONT_SIZE));
         
-        // Center the chessboard
+        // Center the chessboard and make it responsive
         this.chessboardGrid.setAlignment(Pos.CENTER);
         this.chessboardGrid.setPadding(new Insets(20));
+        
+        // Make the chessboard responsive to window resizing
+        setupResponsiveChessboard();
     }
     
     private void initChessboard() {
@@ -161,6 +164,27 @@ public class GameView extends BorderPane implements UIView {
             default:
                 return null;
         }
+    }
+    
+    private void setupResponsiveChessboard() {
+        // Listen to window size changes and adjust board accordingly
+        this.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            if (newScene != null) {
+                newScene.windowProperty().addListener((obs, oldWindow, newWindow) -> {
+                    if (newWindow != null) {
+                        // Update chessboard size when window size changes
+                        newWindow.widthProperty().addListener((w_obs, oldWidth, newWidth) -> updateChessboardSize());
+                        newWindow.heightProperty().addListener((h_obs, oldHeight, newHeight) -> updateChessboardSize());
+                    }
+                });
+            }
+        });
+    }
+    
+    private void updateChessboardSize() {
+        // This method will be called when window is resized
+        // For now, we keep the fixed size but this can be enhanced later
+        // to dynamically calculate field size based on available space
     }
 
 

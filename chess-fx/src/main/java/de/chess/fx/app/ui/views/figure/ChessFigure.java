@@ -26,6 +26,9 @@ public abstract class ChessFigure extends ImageView {
     public ChessFigure(ChessColor color) {
         this.color = color;
         loadImage(getImageFileName());
+        
+        // Größe an Feldgröße anpassen - wird dynamisch vom FieldView gesetzt
+        setupDefaultFigureSize();
 
         this.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
@@ -40,6 +43,20 @@ public abstract class ChessFigure extends ImageView {
                 setEffect(null);
             }
         });
+    }
+    
+    private void setupDefaultFigureSize() {
+        // Standard Feldgröße - kann später überschrieben werden
+        setFigureSize(60.0);
+    }
+    
+    public void setFigureSize(double fieldSize) {
+        double figureSize = fieldSize * 0.8; // 80% der Feldgröße für bessere Optik
+        
+        this.setFitWidth(figureSize);
+        this.setFitHeight(figureSize);
+        this.setPreserveRatio(true);
+        this.setSmooth(true);
     }
 
     public abstract String getImageFileName();
