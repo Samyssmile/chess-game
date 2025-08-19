@@ -20,6 +20,11 @@ public class ChessGame implements Serializable {
     private GameType gameType;
     private GameStatus gameStatus;
     private GameBoard gameBoard;
+    private ChessColor currentTurn; // Track whose turn it is
+    private boolean whiteInCheck = false;
+    private boolean blackInCheck = false;
+    private boolean isCheckmate = false;
+    private boolean isStalemate = false;
     private transient ClientThread hostClientThread;
 
     public ChessGame(
@@ -187,6 +192,97 @@ public class ChessGame implements Serializable {
     public void initGameBoard() {
         gameBoard = new GameBoard();
         gameBoard.initialDistibutionOfChessPieces();
+        currentTurn = ChessColor.WHITE; // White always starts first
+    }
+
+    /**
+     * Get the current player's turn color
+     */
+    public ChessColor getCurrentTurn() {
+        return currentTurn;
+    }
+
+    /**
+     * Switch to the next player's turn
+     */
+    public void switchTurn() {
+        currentTurn = (currentTurn == ChessColor.WHITE) ? ChessColor.BLACK : ChessColor.WHITE;
+    }
+
+    /**
+     * Check if it's the specified player's turn
+     */
+    public boolean isPlayerTurn(Player player) {
+        ChessColor playerColor = getPlayerColor(player);
+        return playerColor != null && playerColor == currentTurn;
+    }
+
+    /**
+     * Get the color of a specific player
+     */
+    public ChessColor getPlayerColor(Player player) {
+        if (player == null) return null;
+        if (getHostPlayer() != null && getHostPlayer().equals(player)) {
+            return getHostColor();
+        }
+        if (getClientPlayer() != null && getClientPlayer().equals(player)) {
+            return getClientColor();
+        }
+        return null;
+    }
+
+    /**
+     * Check if white king is in check
+     */
+    public boolean isWhiteInCheck() {
+        return whiteInCheck;
+    }
+
+    /**
+     * Check if black king is in check
+     */
+    public boolean isBlackInCheck() {
+        return blackInCheck;
+    }
+
+    /**
+     * Check if the game is in checkmate
+     */
+    public boolean isCheckmate() {
+        return isCheckmate;
+    }
+
+    /**
+     * Check if the game is in stalemate
+     */
+    public boolean isStalemate() {
+        return isStalemate;
+    }
+
+    /**
+     * Update game state after a move using the chess engine
+     */
+    public void updateGameState() {
+        if (gameBoard == null) return;
+        
+        de.chess.model.ChessGameEngine engine = new de.chess.model.ChessGameEngine();
+        
+        // Check for check conditions
+        whiteInCheck = engine.isInCheck(gameBoard, de.chess.model.ChessColor.WHITE);
+        blackInCheck = engine.isInCheck(gameBoard, de.chess.model.ChessColor.BLACK);
+        
+        // Check for checkmate
+        isCheckmate = engine.isCheckmate(gameBoard, de.chess.model.ChessColor.WHITE) || 
+                     engine.isCheckmate(gameBoard, de.chess.model.ChessColor.BLACK);
+        
+        // Check for stalemate
+        isStalemate = engine.isStalemate(gameBoard, de.chess.model.ChessColor.WHITE) || 
+                     engine.isStalemate(gameBoard, de.chess.model.ChessColor.BLACK);
+        
+        // Update game status based on conditions
+        if (isCheckmate || isStalemate) {
+            setGameStatus(GameStatus.FINISHED);
+        }
     }
 
     public void setHostPlayer(Player player) {
@@ -206,6 +302,11 @@ public class ChessGame implements Serializable {
                 && gameType == chessGame.gameType
                 && gameStatus == chessGame.gameStatus
                 && Objects.equals(gameBoard, chessGame.gameBoard)
+                && currentTurn == chessGame.currentTurn
+                && whiteInCheck == chessGame.whiteInCheck
+                && blackInCheck == chessGame.blackInCheck
+                && isCheckmate == chessGame.isCheckmate
+                && isStalemate == chessGame.isStalemate
                 && Objects.equals(hostClientThread, chessGame.hostClientThread);
     }
 
@@ -219,6 +320,11 @@ public class ChessGame implements Serializable {
                 gameType,
                 gameStatus,
                 gameBoard,
+                currentTurn,
+                whiteInCheck,
+                blackInCheck,
+                isCheckmate,
+                isStalemate,
                 hostClientThread);
     }
 }

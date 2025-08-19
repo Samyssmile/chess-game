@@ -39,6 +39,7 @@ public class GameView extends BorderPane implements UIView {
     private GridPane chessboardGrid;
     private FieldView[][] chessboardFields;
     private GameBoard gameBoard;
+    private DragAndDropHandler dragAndDropHandler;
 
     private GameViewModel viewModel;
 
@@ -49,6 +50,7 @@ public class GameView extends BorderPane implements UIView {
         initChessboard();
         initViewModel();
         viewModel.setChessGame(gameDTO);
+        initDragAndDrop();
 
         this.topHBox = new HBox(labelPlayerHostName, labelTitle, labelPlayerClientName);
         this.bottomHBox = new HBox(buttonGiveUp, buttonRemisRequest);
@@ -187,5 +189,16 @@ public class GameView extends BorderPane implements UIView {
         // to dynamically calculate field size based on available space
     }
 
+    private void initDragAndDrop() {
+        if (chessboardFields != null && viewModel != null) {
+            dragAndDropHandler = new DragAndDropHandler(chessboardFields, viewModel);
+        }
+    }
 
+    /**
+     * Get the drag and drop handler for external access if needed
+     */
+    public DragAndDropHandler getDragAndDropHandler() {
+        return dragAndDropHandler;
+    }
 }

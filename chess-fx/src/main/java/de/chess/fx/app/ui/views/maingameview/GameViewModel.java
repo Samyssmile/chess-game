@@ -9,6 +9,7 @@ import de.chess.fx.app.handler.EventHandler;
 import de.chess.fx.app.handler.EventType;
 import de.chess.fx.app.handler.IChannel;
 import de.chess.fx.app.i18n.Internalization;
+import de.chess.fx.app.ui.command.MoveCommand;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -88,5 +89,28 @@ public class GameViewModel implements Internalization, IChannel {
 
     public ChessGame getGameDTO() {
         return gameDTO;
+    }
+
+    /**
+     * Send a move request to the server
+     * @param moveString The move in chess notation format (e.g., "e2-e4")
+     * @return true if the request was sent successfully (doesn't guarantee move validity)
+     */
+    public boolean makeMove(String moveString) {
+        try {
+            if (gameDTO == null || gameDTO.getUuid() == null) {
+                System.err.println("Cannot make move: Game data not available");
+                return false;
+            }
+
+            // Create and execute move command
+            MoveCommand moveCommand = new MoveCommand(gameDTO.getUuid(), moveString);
+            moveCommand.execute();
+            
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error making move: " + e.getMessage());
+            return false;
+        }
     }
 }

@@ -25,6 +25,24 @@ public class GameBoard implements Serializable {
 
         board[x][y].setPiece(piece);
     }
+
+    public Piece removePiece(String coordinate) {
+        IndexField indexField = getAsIndexField(coordinate);
+        int x = indexField.getX();
+        int y = indexField.getY();
+
+        Piece piece = board[x][y].getPiece();
+        board[x][y].setPiece(null);
+        return piece;
+    }
+
+    public Piece getPiece(String coordinate) {
+        IndexField indexField = getAsIndexField(coordinate);
+        int x = indexField.getX();
+        int y = indexField.getY();
+
+        return board[x][y].getPiece();
+    }
     public ChessField[][] getBoard() {
         return board;
     }

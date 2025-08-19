@@ -11,4 +11,12 @@ public class MoveRequest extends Request {
         super(gameUUID, playerUUID, requestType);
         this.move = move;
     }
+
+    public String getMove() {
+        return move;
+    }
+
+    public void setMove(String move) {
+        this.move = move;
+    }
 }
