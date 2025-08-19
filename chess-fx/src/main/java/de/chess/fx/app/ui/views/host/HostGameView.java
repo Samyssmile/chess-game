@@ -239,7 +239,7 @@ public class HostGameView extends VBox implements Internalization, UIView, IChan
         switch (eventType){
             case OPEN_NEW_GAME:
                 ChessGame chessGame = (ChessGame) eventData.getData();
-                getScene().setRoot(new GameView(chessGame));
+                getScene().setRoot(new GameView(chessGame, true)); // true = is host
         }
 
     }

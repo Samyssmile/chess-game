@@ -26,6 +26,7 @@ public class ChessGame implements Serializable {
     private boolean isCheckmate = false;
     private boolean isStalemate = false;
     private transient ClientThread hostClientThread;
+    private transient ClientThread clientClientThread;
 
     public ChessGame(
             String gameName,
@@ -184,6 +185,14 @@ public class ChessGame implements Serializable {
 
     public void setHostClientThread(ClientThread hostClientThread) {
         this.hostClientThread = hostClientThread;
+    }
+
+    public ClientThread getClientClientThread() {
+        return clientClientThread;
+    }
+
+    public void setClientClientThread(ClientThread clientClientThread) {
+        this.clientClientThread = clientClientThread;
     }
 
     /**

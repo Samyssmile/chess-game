@@ -6,6 +6,8 @@ import de.chess.dto.Player;
 import de.chess.game.IGameManager;
 import de.chess.model.Move;
 import de.chess.model.Piece;
+import de.chess.model.PieceType;
+import de.chess.model.IndexField;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -125,7 +127,7 @@ public class GameManager implements IGameManager {
                 return false;
             }
 
-            // Parse move string (expecting format like "e2-e4" or "e2:e4")
+            // Parse move string (expecting format like "e2-e4", "e2:e4", or "e7-e8Q" for promotion)
             String[] moveParts = move.split("[-:]");
             if (moveParts.length != 2) {
                 LOGGER.warning("Invalid move format: " + move + ". Expected format: 'from-to' or 'from:to'");
@@ -133,8 +135,35 @@ public class GameManager implements IGameManager {
             }
 
             String fromField = moveParts[0].trim();
-            String toField = moveParts[1].trim();
-            Move moveObj = new Move(fromField, toField);
+            String toFieldPart = moveParts[1].trim();
+            
+            // Check for promotion piece at the end (e.g., "e8Q")
+            String toField = toFieldPart;
+            PieceType promotionPiece = null;
+            if (toFieldPart.length() == 3) { // e.g., "e8Q"
+                toField = toFieldPart.substring(0, 2);
+                char promotionChar = toFieldPart.charAt(2);
+                
+                switch (Character.toUpperCase(promotionChar)) {
+                    case 'Q':
+                        promotionPiece = PieceType.QUEEN;
+                        break;
+                    case 'R':
+                        promotionPiece = PieceType.ROOK;
+                        break;
+                    case 'B':
+                        promotionPiece = PieceType.BISHOP;
+                        break;
+                    case 'N':
+                        promotionPiece = PieceType.KNIGHT;
+                        break;
+                    default:
+                        LOGGER.warning("Invalid promotion piece: " + promotionChar);
+                        return false;
+                }
+            }
+            
+            Move moveObj = new Move(fromField, toField, promotionPiece);
 
             // Validate move using ChessMoveValidator
             ChessMoveValidator validator = new ChessMoveValidator();
@@ -156,10 +185,31 @@ public class GameManager implements IGameManager {
                 return false;
             }
 
+            // Check for pawn promotion before executing move
+            ChessMoveValidator validator2 = new ChessMoveValidator();
+            IndexField toIndex = game.getGameBoard().getAsIndexField(toField);
+            boolean isPromotion = validator2.isPawnPromotion(movingPiece, toIndex);
+            
             // Execute the move
             Piece capturedPiece = game.getGameBoard().removePiece(toField); // Remove captured piece if any
             game.getGameBoard().removePiece(fromField); // Remove piece from source
-            game.getGameBoard().putPiece(toField, movingPiece); // Place piece at destination
+            
+            // Handle pawn promotion
+            if (isPromotion) {
+                // Default promotion to Queen if no piece specified
+                PieceType promotionPieceType = moveObj.getPromotionPiece();
+                if (promotionPieceType == null) {
+                    promotionPieceType = PieceType.QUEEN; // Default promotion
+                }
+                
+                // Create promoted piece
+                Piece promotedPiece = new Piece(movingPiece.getColor(), promotionPieceType);
+                game.getGameBoard().putPiece(toField, promotedPiece);
+                
+                LOGGER.info("Pawn promoted to " + promotionPieceType + " at " + toField);
+            } else {
+                game.getGameBoard().putPiece(toField, movingPiece); // Place piece at destination
+            }
 
             // Switch turn
             game.switchTurn();

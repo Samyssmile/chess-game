@@ -28,6 +28,8 @@ public class GameView extends BorderPane implements UIView {
     private Label labelPlayerHostElo;
     private Label labelPlayerVisitorElo;
     private Label labelCountDown;
+    private Label labelTurnIndicator;
+    private Label labelGameStatus;
 
     private Button buttonGiveUp;
     private Button buttonRemisRequest;
@@ -44,16 +46,17 @@ public class GameView extends BorderPane implements UIView {
     private GameViewModel viewModel;
 
 
-    public GameView(ChessGame gameDTO) {
+    public GameView(ChessGame gameDTO, boolean isHost) {
         this.nodeList = new ArrayList<>();
         initNodes();
-        initChessboard();
         initViewModel();
         viewModel.setChessGame(gameDTO);
+        viewModel.setCurrentUserAsHost(isHost);
+        initChessboard();
         initDragAndDrop();
 
         this.topHBox = new HBox(labelPlayerHostName, labelTitle, labelPlayerClientName);
-        this.bottomHBox = new HBox(buttonGiveUp, buttonRemisRequest);
+        this.bottomHBox = new HBox(buttonGiveUp, buttonRemisRequest, labelTurnIndicator, labelGameStatus);
 
         this.setTop(topHBox);
         this.setCenter(chessboardGrid);
@@ -71,6 +74,8 @@ public class GameView extends BorderPane implements UIView {
         labelPlayerHostElo = new Label("1800");
         labelPlayerVisitorElo = new Label("1566");
         labelCountDown = new Label("3.2.1.GO");
+        labelTurnIndicator = new Label("White to move");
+        labelGameStatus = new Label("Game in progress");
 
         buttonGiveUp = new Button("I give up");
         buttonRemisRequest = new Button("Suggest Draw - Remis");
@@ -82,6 +87,8 @@ public class GameView extends BorderPane implements UIView {
         nodeList.add(buttonGiveUp);
         nodeList.add(labelCountDown);
         nodeList.add(labelTitle);
+        nodeList.add(labelTurnIndicator);
+        nodeList.add(labelGameStatus);
 
         return nodeList;
     }
@@ -97,6 +104,8 @@ public class GameView extends BorderPane implements UIView {
 
         labelPlayerHostName.textProperty().bindBidirectional(viewModel.hostPlayerNameProperty());
         labelPlayerClientName.textProperty().bindBidirectional(viewModel.clientPlayerNameProperty());
+        labelTurnIndicator.textProperty().bindBidirectional(viewModel.turnIndicatorProperty());
+        labelGameStatus.textProperty().bindBidirectional(viewModel.gameStatusProperty());
     }
 
     @Override
@@ -122,9 +131,16 @@ public class GameView extends BorderPane implements UIView {
         this.chessboardGrid = new GridPane();
         this.chessboardFields = new FieldView[8][8];
         
+        // Check if board should be rotated for black player
+        boolean shouldRotate = viewModel != null && viewModel.shouldRotateBoard();
+        
         // Create 8x8 grid of FieldViews
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
+                // Calculate display positions - rotate if playing as black
+                int displayRow = shouldRotate ? (7 - row) : row;
+                int displayCol = shouldRotate ? (7 - col) : col;
+                
                 // Create field with appropriate color (alternating pattern)
                 ChessColor fieldColor = (row + col) % 2 == 0 ? ChessColor.WHITE : ChessColor.BLACK;
                 
@@ -136,7 +152,8 @@ public class GameView extends BorderPane implements UIView {
                     new FieldView(row, col);
                     
                 chessboardFields[row][col] = field;
-                chessboardGrid.add(field, col, row);
+                // Add to grid using display coordinates for rotation
+                chessboardGrid.add(field, displayCol, displayRow);
             }
         }
     }

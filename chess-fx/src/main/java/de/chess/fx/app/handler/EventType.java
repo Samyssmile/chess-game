@@ -11,5 +11,7 @@ public enum EventType {
   WON,
   LOSE,
   /** This Player joined a hosted game another player created. */
-  JOINED_GAME;
+  JOINED_GAME,
+  /** Game has started and is now running. */
+  GAME_STARTED;
 }

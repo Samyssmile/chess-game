@@ -162,7 +162,7 @@ public class JoinGameView extends VBox implements Internalization, UIView, IChan
     switch (eventType) {
       case JOINED_GAME:
         ChessGame chessGame = (ChessGame) eventData.getData();
-        GameView gameView = new GameView(chessGame);
+        GameView gameView = new GameView(chessGame, false); // false = is client
         getScene().setRoot(gameView);
         break;
     }

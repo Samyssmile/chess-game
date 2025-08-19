@@ -91,6 +91,16 @@ public class ChessMoveValidator implements IMoveValidator {
         return false;
     }
     
+    public boolean isPawnPromotion(Piece pawn, IndexField to) {
+        if (pawn.getPieceType() != PieceType.PAWN) {
+            return false;
+        }
+        
+        // White pawn reaches rank 1 (row 0), Black pawn reaches rank 8 (row 7)
+        int promotionRow = pawn.getColor() == ChessColor.WHITE ? 0 : 7;
+        return to.getX() == promotionRow;
+    }
+    
     private boolean validateRookMove(GameBoard gameBoard, Piece rook, IndexField from, IndexField to) {
         // Rook moves horizontally or vertically
         if (from.getX() != to.getX() && from.getY() != to.getY()) {

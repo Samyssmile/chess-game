@@ -41,6 +41,9 @@ public class ResponseAnalyzer implements IResponseAnalyzer {
                 case PLAYER_JOINED:
                     onPlayerJoinedMyGame(response);
                     break;
+                case GAME_STARTED:
+                    onGameStartedResponse(response);
+                    break;
             }
         }
     }
@@ -78,6 +81,13 @@ public class ResponseAnalyzer implements IResponseAnalyzer {
         ReceiveGameListResponse receiveGameListResponse = (ReceiveGameListResponse) response;
         List<ChessGame> gameList = receiveGameListResponse.getGameList();
         GameListProvider.getInstance().setGameList(gameList);
+    }
+
+    private void onGameStartedResponse(Response response) {
+        LOGGER.log(Level.INFO, "Game Started Response");
+        GameStartedResponse gameStartedResponse = (GameStartedResponse) response;
+        ChessGame chessGame = gameStartedResponse.getChessGame();
+        EventHandler.getInstance().fireGameEvent(EventType.GAME_STARTED, new EventData(chessGame));
     }
 
     @Override
