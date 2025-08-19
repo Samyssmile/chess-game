@@ -3,9 +3,14 @@ package de.chess.fx.app.ui.views.maingameview;
 import de.chess.fx.app.ui.views.field.FieldView;
 import de.chess.fx.app.ui.views.figure.ChessFigure;
 import de.chess.model.Move;
+import de.chess.model.ChessColor;
+import de.chess.fx.app.audio.AudioEffectPlayer;
+import de.chess.fx.app.audio.AudioEffectType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.*;
 import javafx.scene.paint.Color;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Handles drag and drop functionality for chess pieces on the board
@@ -14,19 +19,23 @@ public class DragAndDropHandler {
     
     private final FieldView[][] chessboardFields;
     private final GameViewModel viewModel;
+    private final AudioEffectPlayer audioPlayer;
     
     // Visual feedback for drag operations
     private static final DropShadow DRAG_SHADOW = new DropShadow(15, Color.GOLD);
     private static final DropShadow DROP_TARGET_SHADOW = new DropShadow(10, Color.LIGHTGREEN);
     private static final DropShadow INVALID_DROP_SHADOW = new DropShadow(10, Color.RED);
+    private static final DropShadow VALID_MOVE_HIGHLIGHT = new DropShadow(8, Color.CYAN);
     
     // Drag state
     private FieldView dragSourceField = null;
     private ChessFigure draggedFigure = null;
+    private List<FieldView> highlightedFields = new ArrayList<>();
 
     public DragAndDropHandler(FieldView[][] chessboardFields, GameViewModel viewModel) {
         this.chessboardFields = chessboardFields;
         this.viewModel = viewModel;
+        this.audioPlayer = new AudioEffectPlayer();
         setupDragAndDrop();
     }
 
@@ -48,6 +57,9 @@ public class DragAndDropHandler {
                 // Check if it's the current player's piece and their turn
                 if (canMovePiece(figure)) {
                     startDrag(field, figure, event);
+                } else {
+                    // Play "not allowed" sound for invalid piece selection
+                    audioPlayer.playSound(AudioEffectType.NOT_ALLOWED);
                 }
             }
             event.consume();
@@ -97,6 +109,13 @@ public class DragAndDropHandler {
             if (dragboard.hasString() && dragSourceField != null) {
                 if (isValidDropTarget(field)) {
                     success = executeMoveIfValid(dragSourceField, field);
+                    if (success) {
+                        audioPlayer.playSound(AudioEffectType.MOVE);
+                    } else {
+                        audioPlayer.playSound(AudioEffectType.NOT_ALLOWED);
+                    }
+                } else {
+                    audioPlayer.playSound(AudioEffectType.NOT_ALLOWED);
                 }
             }
 
@@ -131,11 +150,32 @@ public class DragAndDropHandler {
         // Store drag state
         dragSourceField = sourceField;
         draggedFigure = figure;
+        
+        // Highlight valid moves
+        highlightValidMoves(sourceField);
     }
 
     private boolean canMovePiece(ChessFigure figure) {
-        // TODO: Add logic to check if it's the current player's piece
-        // and if it's their turn. For now, allow all moves.
+        // Check if game is running
+        if (viewModel.getGameDTO() == null || 
+            viewModel.getGameDTO().getCurrentTurn() == null) {
+            return false;
+        }
+        
+        // Check if it's the piece owner's turn
+        ChessColor figureColor = figure.getColor();
+        ChessColor currentTurn = viewModel.getGameDTO().getCurrentTurn();
+        
+        if (figureColor != currentTurn) {
+            return false; // Not this piece's turn
+        }
+        
+        // Check if this player controls this color
+        ChessColor playerColor = viewModel.getCurrentUserColor();
+        if (playerColor != figureColor) {
+            return false; // Player doesn't control this piece
+        }
+        
         return true;
     }
 
@@ -163,14 +203,13 @@ public class DragAndDropHandler {
             String moveString = fromNotation + "-" + toNotation;
             
             // Send move to server through view model
-            boolean moveSuccessful = viewModel.makeMove(moveString);
+            boolean requestSent = viewModel.makeMove(moveString);
             
-            if (moveSuccessful) {
-                // Update UI immediately for responsive feel
-                updateBoardUI(sourceField, targetField);
-            }
+            // DO NOT update UI immediately - wait for server response
+            // The UI will be updated when MOVE_DONE event is received
+            // Return true if request was sent, regardless of move validity
             
-            return moveSuccessful;
+            return requestSent;
             
         } catch (Exception e) {
             System.err.println("Error executing move: " + e.getMessage());
@@ -189,9 +228,11 @@ public class DragAndDropHandler {
 
     private String convertCoordinatesToNotation(int x, int y) {
         // Convert array coordinates to chess notation
-        // x: 0-7 -> a-h, y: 0-7 -> 8-1 (board is flipped)
-        char file = (char) ('a' + x);
-        int rank = 8 - y;  // Flip y coordinate
+        // IMPORTANT: FieldView constructor is called with (row, col) but stored as (x, y)
+        // So x = row index (0-7), y = col index (0-7)
+        // We need: file = col (y), rank = 8 - row (8 - x)
+        char file = (char) ('a' + y);  // y is the column index -> file (a-h)
+        int rank = 8 - x;  // x is the row index -> rank (8-1)
         return file + String.valueOf(rank);
     }
 
@@ -205,6 +246,52 @@ public class DragAndDropHandler {
                 chessboardFields[row][col].setEffect(null);
             }
         }
+    }
+
+    private void highlightValidMoves(FieldView sourceField) {
+        clearHighlightedMoves();
+        
+        if (viewModel.getGameDTO() == null) {
+            return;
+        }
+        
+        ChessFigure selectedFigure = sourceField.getFigure();
+        if (selectedFigure == null) {
+            return;
+        }
+        
+        // Simple highlighting - mark empty fields and opponent pieces as potential targets
+        // The actual move validation will happen server-side
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                FieldView targetField = chessboardFields[row][col];
+                
+                // Skip the source field
+                if (targetField == sourceField) {
+                    continue;
+                }
+                
+                // Highlight empty fields or fields with opponent pieces
+                if (!targetField.isFigurePresent()) {
+                    targetField.setEffect(VALID_MOVE_HIGHLIGHT);
+                    highlightedFields.add(targetField);
+                } else {
+                    ChessFigure targetFigure = targetField.getFigure();
+                    if (targetFigure.getColor() != selectedFigure.getColor()) {
+                        // Highlight opponent pieces (potential captures)
+                        targetField.setEffect(VALID_MOVE_HIGHLIGHT);
+                        highlightedFields.add(targetField);
+                    }
+                }
+            }
+        }
+    }
+    
+    private void clearHighlightedMoves() {
+        for (FieldView field : highlightedFields) {
+            field.setEffect(null);
+        }
+        highlightedFields.clear();
     }
 
     /**
@@ -226,6 +313,17 @@ public class DragAndDropHandler {
                 }
             }
         }
+    }
+
+    /**
+     * Refresh game state to update turn logic after server updates
+     */
+    public void refreshGameState() {
+        // Clear any highlighted moves since game state has changed
+        clearHighlightedMoves();
+        
+        // Clear drag state to prevent issues with stale references
+        clearDragState();
     }
 
     private ChessFigure createFigureFromPiece(de.chess.model.Piece piece) {

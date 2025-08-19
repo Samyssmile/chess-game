@@ -33,4 +33,9 @@ public class PlayerManager {
     LOGGER.info("Player Connection removed");
     return removed;
   }
+
+  public void reset() {
+    playerList.clear();
+    LOGGER.info("PlayerManager reset - all connections cleared");
+  }
 }

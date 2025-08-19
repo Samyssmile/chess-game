@@ -54,6 +54,8 @@ public class GameThread extends Thread {
 
     private boolean startGame() {
         if (this.chessGame.getGameStatus() == GameStatus.READY_TO_START) {
+            // Initialize the game board before starting
+            chessGame.initGameBoard();
             chessGame.setGameStatus(GameStatus.RUNNING);
             
             // Notify both players that the game has started

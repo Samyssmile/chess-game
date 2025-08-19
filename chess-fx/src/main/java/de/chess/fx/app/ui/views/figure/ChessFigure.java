@@ -59,5 +59,9 @@ public abstract class ChessFigure extends ImageView {
         this.setSmooth(true);
     }
 
+    public ChessColor getColor() {
+        return color;
+    }
+
     public abstract String getImageFileName();
 }

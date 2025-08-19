@@ -28,6 +28,7 @@ public class ResponseAnalyzer implements IResponseAnalyzer {
                     onJoinGameResponse(response);
                     break;
                 case MOVE:
+                    onMoveResponse(response);
                     break;
                 case MESSAGE:
                     break;
@@ -88,6 +89,27 @@ public class ResponseAnalyzer implements IResponseAnalyzer {
         GameStartedResponse gameStartedResponse = (GameStartedResponse) response;
         ChessGame chessGame = gameStartedResponse.getChessGame();
         EventHandler.getInstance().fireGameEvent(EventType.GAME_STARTED, new EventData(chessGame));
+    }
+
+    private void onMoveResponse(Response response) {
+        LOGGER.log(Level.INFO, "Move Response");
+        MoveResponse moveResponse = (MoveResponse) response;
+        
+        if (moveResponse.isMoveAccepted()) {
+            // Move was successful - fire event to update UI ONLY if we have game data
+            String moveNotation = moveResponse.getMove() != null ? moveResponse.getMove() : "unknown move";
+            
+            if (moveResponse.getGameDTO() != null) {
+                LOGGER.log(Level.INFO, "Move accepted: " + moveNotation + " - updating game state");
+                EventHandler.getInstance().fireGameEvent(EventType.MOVE_DONE, new EventData(moveResponse.getGameDTO()));
+            } else {
+                LOGGER.warning("Move accepted: " + moveNotation + " - but no game data received, UI will not update");
+            }
+        } else {
+            // Move failed - could fire an error event
+            String moveNotation = moveResponse.getMove() != null ? moveResponse.getMove() : "unknown move";
+            LOGGER.warning("Move rejected: " + moveNotation + " - " + moveResponse.getMessage());
+        }
     }
 
     @Override

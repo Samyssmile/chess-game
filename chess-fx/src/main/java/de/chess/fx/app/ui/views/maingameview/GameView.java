@@ -7,6 +7,11 @@ import de.chess.fx.app.ui.views.field.FieldView;
 import de.chess.fx.app.ui.views.figure.*;
 import de.chess.model.ChessColor;
 import de.chess.model.GameBoard;
+import de.chess.fx.app.handler.EventData;
+import de.chess.fx.app.handler.EventHandler;
+import de.chess.fx.app.handler.EventType;
+import de.chess.fx.app.handler.IChannel;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -20,7 +25,7 @@ import javafx.scene.text.Font;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameView extends BorderPane implements UIView {
+public class GameView extends BorderPane implements UIView, IChannel {
     private static final double TITLE_FONT_SIZE = 55;
     private Label labelTitle;
     private Label labelPlayerHostName;
@@ -54,6 +59,7 @@ public class GameView extends BorderPane implements UIView {
         viewModel.setCurrentUserAsHost(isHost);
         initChessboard();
         initDragAndDrop();
+        registerForEvents();
 
         this.topHBox = new HBox(labelPlayerHostName, labelTitle, labelPlayerClientName);
         this.bottomHBox = new HBox(buttonGiveUp, buttonRemisRequest, labelTurnIndicator, labelGameStatus);
@@ -125,8 +131,14 @@ public class GameView extends BorderPane implements UIView {
     }
     
     private void initChessboard() {
-        this.gameBoard = new GameBoard();
-        this.gameBoard.initialDistibutionOfChessPieces();
+        // Use the GameBoard from the ViewModel (server data) if available
+        if (viewModel != null && viewModel.getGameDTO() != null && viewModel.getGameDTO().getGameBoard() != null) {
+            this.gameBoard = viewModel.getGameDTO().getGameBoard();
+        } else {
+            // Fallback: create local board for initial display
+            this.gameBoard = new GameBoard();
+            this.gameBoard.initialDistibutionOfChessPieces();
+        }
         
         this.chessboardGrid = new GridPane();
         this.chessboardFields = new FieldView[8][8];
@@ -217,5 +229,56 @@ public class GameView extends BorderPane implements UIView {
      */
     public DragAndDropHandler getDragAndDropHandler() {
         return dragAndDropHandler;
+    }
+
+    private void registerForEvents() {
+        EventHandler.getInstance().registerForEvent(this, EventType.GAME_STARTED);
+        EventHandler.getInstance().registerForEvent(this, EventType.MOVE_DONE);
+    }
+
+    @Override
+    public void update(EventType eventType, EventData eventData) {
+        switch (eventType) {
+            case GAME_STARTED:
+                Platform.runLater(() -> {
+                    // Update the game data and refresh the board
+                    ChessGame updatedGame = (ChessGame) eventData.getData();
+                    if (updatedGame != null) {
+                        viewModel.setChessGame(updatedGame);
+                        refreshChessboard();
+                    }
+                });
+                break;
+            case MOVE_DONE:
+                Platform.runLater(() -> {
+                    // Update the game data and refresh the board
+                    ChessGame updatedGame = (ChessGame) eventData.getData();
+                    if (updatedGame != null) {
+                        viewModel.setChessGame(updatedGame);
+                        refreshChessboard();
+                    }
+                });
+                break;
+        }
+    }
+
+    private void refreshChessboard() {
+        if (viewModel.getGameDTO() != null && viewModel.getGameDTO().getGameBoard() != null) {
+            this.gameBoard = viewModel.getGameDTO().getGameBoard();
+            
+            // Update all field views with current board state
+            for (int row = 0; row < 8; row++) {
+                for (int col = 0; col < 8; col++) {
+                    FieldView field = chessboardFields[row][col];
+                    ChessFigure figure = createFigureFromBoard(row, col);
+                    field.setFigure(figure);
+                }
+            }
+            
+            // Refresh drag and drop handler to update turn logic
+            if (dragAndDropHandler != null) {
+                dragAndDropHandler.refreshGameState();
+            }
+        }
     }
 }

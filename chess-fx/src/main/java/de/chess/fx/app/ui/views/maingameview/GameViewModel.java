@@ -117,6 +117,11 @@ public class GameViewModel implements Internalization, IChannel {
 
             case MOVE_DONE:
                 Platform.runLater(() -> {
+                    // Update the game state from server response
+                    ChessGame updatedGame = (ChessGame) eventData.getData();
+                    if (updatedGame != null) {
+                        this.gameDTO = updatedGame; // Update local game state
+                    }
                     updateTurnIndicator();
                     updateGameStatus();
                 });

@@ -151,10 +151,41 @@ public class RequestAnalyzer implements IRequestAnalyzer {
             boolean moveSuccessful = gameManager.move(gameUUID, move);
 
             if (moveSuccessful) {
-                // Notify the other player about the move
-                notifyOtherPlayerAboutMove(game, movingPlayer, move);
+                // CRITICAL: Get the FRESH game state after the move from GameManager
+                // The original 'game' variable might be stale!
+                Optional<ChessGame> updatedGameOptional = gameManager.getGameByUUIID(gameUUID);
+                if (!updatedGameOptional.isPresent()) {
+                    LOGGER.severe("Game disappeared after successful move - this should not happen!");
+                    return new MoveResponse(gameUUID, MOVE, false, move, "Game state error");
+                }
                 
-                return new MoveResponse(gameUUID, MOVE, true, move, game);
+                ChessGame updatedGame = updatedGameOptional.get();
+                
+                // CRITICAL DEBUG: Verify the updated board state
+                LOGGER.info("=== CRITICAL DEBUG AFTER MOVE " + move + " ===");
+                LOGGER.info("Original game object ID: " + System.identityHashCode(game));
+                LOGGER.info("Updated game object ID: " + System.identityHashCode(updatedGame));
+                LOGGER.info("Are they the same object? " + (game == updatedGame));
+                
+                // Check if the board was actually updated
+                de.chess.model.Piece originalE2 = game.getGameBoard() != null ? game.getGameBoard().getPiece("e2") : null;
+                de.chess.model.Piece originalE4 = game.getGameBoard() != null ? game.getGameBoard().getPiece("e4") : null;
+                de.chess.model.Piece updatedE2 = updatedGame.getGameBoard() != null ? updatedGame.getGameBoard().getPiece("e2") : null;
+                de.chess.model.Piece updatedE4 = updatedGame.getGameBoard() != null ? updatedGame.getGameBoard().getPiece("e4") : null;
+                
+                LOGGER.info("Original game e2: " + (originalE2 != null ? originalE2.toString() : "NULL"));
+                LOGGER.info("Original game e4: " + (originalE4 != null ? originalE4.toString() : "NULL"));
+                LOGGER.info("Updated game e2: " + (updatedE2 != null ? updatedE2.toString() : "NULL"));
+                LOGGER.info("Updated game e4: " + (updatedE4 != null ? updatedE4.toString() : "NULL"));
+                
+                // DEBUG: Log board state to verify move was applied
+                LOGGER.info("Updated game board after move " + move + ":");
+                logBoardState(updatedGame.getGameBoard());
+                
+                // Notify both players about the move with updated game state
+                notifyBothPlayersAboutMove(updatedGame, movingPlayer, move);
+                
+                return new MoveResponse(gameUUID, MOVE, true, move, updatedGame);
             } else {
                 return new MoveResponse(gameUUID, MOVE, false, move, "Invalid move");
             }
@@ -165,39 +196,72 @@ public class RequestAnalyzer implements IRequestAnalyzer {
         }
     }
 
-    private void notifyOtherPlayerAboutMove(ChessGame game, de.chess.dto.Player movingPlayer, String move) {
+    private void notifyBothPlayersAboutMove(ChessGame game, de.chess.dto.Player movingPlayer, String move) {
         try {
-            // Determine the other player
-            de.chess.dto.Player otherPlayer;
-            if (game.getHostPlayer().equals(movingPlayer)) {
-                otherPlayer = game.getClientPlayer();
-            } else {
-                otherPlayer = game.getHostPlayer();
-            }
-
-            if (otherPlayer != null) {
-                // Get the other player's connection
-                Optional<PlayerConnection> otherPlayerConnection = 
-                    PlayerManager.getInstance().getConnectionByPlayerUUID(otherPlayer.getUuid());
-                
-                if (otherPlayerConnection.isPresent()) {
-                    // Send move notification to the other player
-                    MoveResponse moveNotification = new MoveResponse(
-                        game.getUuid(), 
-                        MOVE, 
-                        true, 
-                        move, 
-                        game
-                    );
+            // Create move notification with updated game state
+            MoveResponse moveNotification = new MoveResponse(
+                game.getUuid(), 
+                MOVE, 
+                true, 
+                move, 
+                game
+            );
+            
+            // Notify host player
+            if (game.getHostPlayer() != null) {
+                Optional<PlayerConnection> hostConnection = 
+                    PlayerManager.getInstance().getConnectionByPlayerUUID(game.getHostPlayer().getUuid());
                     
-                    otherPlayerConnection.get().getClientThread().sendResponse(moveNotification);
-                    LOGGER.log(Level.INFO, "Move notification sent to player: " + otherPlayer.getUuid());
+                if (hostConnection.isPresent()) {
+                    hostConnection.get().getClientThread().sendResponse(moveNotification);
+                    LOGGER.log(Level.INFO, "Move notification sent to host player: " + game.getHostPlayer().getUuid());
                 } else {
-                    LOGGER.warning("Could not find connection for other player: " + otherPlayer.getUuid());
+                    LOGGER.warning("Could not find connection for host player: " + game.getHostPlayer().getUuid());
                 }
             }
+            
+            // Notify client player
+            if (game.getClientPlayer() != null) {
+                Optional<PlayerConnection> clientConnection = 
+                    PlayerManager.getInstance().getConnectionByPlayerUUID(game.getClientPlayer().getUuid());
+                    
+                if (clientConnection.isPresent()) {
+                    clientConnection.get().getClientThread().sendResponse(moveNotification);
+                    LOGGER.log(Level.INFO, "Move notification sent to client player: " + game.getClientPlayer().getUuid());
+                } else {
+                    LOGGER.warning("Could not find connection for client player: " + game.getClientPlayer().getUuid());
+                }
+            }
+            
         } catch (Exception e) {
-            LOGGER.severe("Error notifying other player about move: " + e.getMessage());
+            LOGGER.severe("Error notifying players about move: " + e.getMessage());
         }
+    }
+    
+    /**
+     * Debug method to log board state
+     */
+    private void logBoardState(de.chess.model.GameBoard gameBoard) {
+        if (gameBoard == null) {
+            LOGGER.warning("GameBoard is null!");
+            return;
+        }
+        
+        StringBuilder boardStr = new StringBuilder();
+        for (int row = 0; row < 8; row++) {
+            boardStr.append("Row ").append(8 - row).append(": ");
+            for (int col = 0; col < 8; col++) {
+                de.chess.model.Piece piece = gameBoard.getPiece(((char)('a' + col)) + String.valueOf(8 - row));
+                if (piece != null) {
+                    boardStr.append(piece.getPieceType().toString().charAt(0))
+                           .append(piece.getColor().toString().charAt(0))
+                           .append(" ");
+                } else {
+                    boardStr.append("-- ");
+                }
+            }
+            boardStr.append("\n");
+        }
+        LOGGER.info("Board state:\n" + boardStr.toString());
     }
 }

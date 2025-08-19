@@ -1,5 +1,6 @@
 package de.chess.model;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 public class GameBoard implements Serializable {
@@ -8,6 +9,15 @@ public class GameBoard implements Serializable {
 
     public GameBoard() {
         initEmptyBoard();
+    }
+
+    /**
+     * Custom deserialization method to prevent constructor from resetting board
+     */
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        // Use default deserialization for all fields
+        in.defaultReadObject();
+        // Do NOT call initEmptyBoard() here - the board state is already deserialized correctly
     }
 
     private void initEmptyBoard() {
