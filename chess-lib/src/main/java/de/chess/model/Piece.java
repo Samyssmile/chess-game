@@ -36,7 +36,7 @@ public class Piece implements Serializable {
             case KNIGHT:
                 fen = "N";
                 break;
-            case QUUEN:
+            case QUEEN:
                 fen = "Q";
                 break;
             case ROOK:

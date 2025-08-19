@@ -65,7 +65,7 @@ class GameManagerTest {
 
     private List<ChessGame> ramdomGames() {
         List<ChessGame> preparedDummyGames = new ArrayList<>();
-        preparedDummyGames.add(new ChessGame("Junut Test Game 1", new Player("Random Player", 1500), "10", ChessColor.BLACK, GameType.FUN));
+        preparedDummyGames.add(new ChessGame("Junut Test Game 1", new Player(java.util.UUID.randomUUID(), "Random Player", 1500), "10", ChessColor.BLACK, GameType.FUN));
 
         return preparedDummyGames;
     }

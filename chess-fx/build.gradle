@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'de.chess'
-version '1.0-SNAPSHOT'
+version '1.0.0'
 evaluationDependsOn(':chess-lib')
 java {
     toolchain {
@@ -27,8 +27,8 @@ application {
 dependencies {
     implementation project(':chess-lib')
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.13.4'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.13.4'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 
@@ -38,12 +38,23 @@ test {
 }
 
 jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
         attributes(
                 'Main-Class': 'de.chess.fx.app.GameLauncher'
         )
     }
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
+
+    // Stelle sicher, dass chess-lib zuerst gebaut wird:
+    dependsOn project(':chess-lib').tasks.named('jar')
+
+    // Nimm *explizit* das Artefakt von :chess-lib als Input:
+    from(project(':chess-lib').tasks.named('jar').map { zipTree(it.archiveFile) })
+
+    // UND (wenn du wirklich ein "Fat-Jar" willst) alle externen Jars:
+    from({
+        configurations.runtimeClasspath
+                .filter { it.name != "${project(':chess-lib').name}-${project(':chess-lib').version}.jar" }
+                .collect { it.isDirectory() ? it : zipTree(it) }
+    })
 }

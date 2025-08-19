@@ -13,4 +13,8 @@ public class Move {
     public String getFromField() {
         return fromField;
     }
+
+    public String getToField() {
+        return toField;
+    }
 }

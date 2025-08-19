@@ -116,8 +116,8 @@ public class GameBoard implements Serializable {
         putPiece("a1", new Piece(ChessColor.WHITE, PieceType.ROOK));
         putPiece("b1", new Piece(ChessColor.WHITE, PieceType.KNIGHT));
         putPiece("c1", new Piece(ChessColor.WHITE, PieceType.BISHOP));
-        putPiece("e1", new Piece(ChessColor.WHITE, PieceType.QUUEN));
-        putPiece("d1", new Piece(ChessColor.WHITE, PieceType.KING));
+        putPiece("d1", new Piece(ChessColor.WHITE, PieceType.QUEEN));
+        putPiece("e1", new Piece(ChessColor.WHITE, PieceType.KING));
         putPiece("f1", new Piece(ChessColor.WHITE, PieceType.BISHOP));
         putPiece("g1", new Piece(ChessColor.WHITE, PieceType.KNIGHT));
         putPiece("h1", new Piece(ChessColor.WHITE, PieceType.ROOK));
@@ -135,8 +135,8 @@ public class GameBoard implements Serializable {
         putPiece("a8", new Piece(ChessColor.BLACK, PieceType.ROOK));
         putPiece("b8", new Piece(ChessColor.BLACK, PieceType.KNIGHT));
         putPiece("c8", new Piece(ChessColor.BLACK, PieceType.BISHOP));
-        putPiece("e8", new Piece(ChessColor.BLACK, PieceType.QUUEN));
-        putPiece("d8", new Piece(ChessColor.BLACK, PieceType.KING));
+        putPiece("d8", new Piece(ChessColor.BLACK, PieceType.QUEEN));
+        putPiece("e8", new Piece(ChessColor.BLACK, PieceType.KING));
         putPiece("f8", new Piece(ChessColor.BLACK, PieceType.BISHOP));
         putPiece("g8", new Piece(ChessColor.BLACK, PieceType.KNIGHT));
         putPiece("h8", new Piece(ChessColor.BLACK, PieceType.ROOK));
