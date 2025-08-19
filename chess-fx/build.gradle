@@ -1,32 +1,33 @@
 plugins {
     id 'java'
     id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.10'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
-mainClassName = 'de.chess.fx.app.ChessFX'
 group 'de.chess'
 version '1.0-SNAPSHOT'
 evaluationDependsOn(':chess-lib')
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
 javafx {
-    version = "17.0.1"
+    version = "21.0.8"
     modules = ['javafx.controls', 'javafx.media' ]
 }
 repositories {
     mavenCentral()
 }
-
+application {
+    mainClass = 'de.chess.fx.app.ChessFX'
+}
 
 dependencies {
     implementation project(':chess-lib')
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.13.4'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 

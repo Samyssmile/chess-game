@@ -3,13 +3,12 @@ plugins {
     id 'application'
 }
 
-mainClassName = 'de.chess.app.ChessBackend'
 group 'de.chess'
 version '1.0-SNAPSHOT'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
@@ -17,12 +16,17 @@ repositories {
     mavenCentral()
 }
 
+application {
+    mainClass = 'de.chess.app.ChessBackend'
+}
+
+
 dependencies {
     implementation project(':chess-lib')
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.13.4'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-    testRuntimeOnly "org.junit.platform:junit-platform-commons:1.7.0"
+    testRuntimeOnly "org.junit.platform:junit-platform-commons:1.13.4"
 }
 
 
@@ -31,11 +35,8 @@ test {
 }
 
 jar {
-
     manifest {
-        attributes(
-                'Main-Class': 'de.chess.app.ChessBackend'
-        )
+        attributes('Main-Class': 'de.chess.app.ChessBackend')
     }
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
